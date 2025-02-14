@@ -1,4 +1,9 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using QuanLyKhoThucPham.Data;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<QuanLyKhoThucPhamContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("QuanLyKhoThucPhamContext") ?? throw new InvalidOperationException("Connection string 'QuanLyKhoThucPhamContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
