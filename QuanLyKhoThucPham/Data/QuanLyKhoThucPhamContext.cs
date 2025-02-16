@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using QuanLyKhoThucPham.Models;
 
-namespace QuanLyKhoThucPham.Data
+namespace QuanLyKhoThucPham.Data    
 {
     public class QuanLyKhoThucPhamContext : DbContext
     {
@@ -15,5 +15,7 @@ namespace QuanLyKhoThucPham.Data
         }
 
         public DbSet<QuanLyKhoThucPham.Models.dskhohangModel> dskhohangModel { get; set; } = default!;
+
+        public DbSet<QuanLyKhoThucPham.Models.dsthucpham>? dsthucpham { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-html {
+﻿html {
   font-size: 14px;
 }
 
@@ -15,4 +15,24 @@ html {
 
 body {
   margin-bottom: 60px;
+}
+.khung {
+    border: 3px outset yellow;
+    background-color: lightyellow;
+    border-radius: 8px;
+    padding: 5px;
+    color: black;
+}
+.form-control {
+    width: 100%; /* Chiều rộng đầy đủ */
+    max-width: 400px; /* Giới hạn tối đa */
+    height: 40px; /* Chiều cao */
+    padding: 10px; /* Khoảng cách bên trong */
+    border-radius: 8px; /* Bo góc */
+    border: 1px solid #ccc; /* Viền */
+    outline: none;
+    transition: border 0.3s;
+}
+.form-control:focus {
+    border: 1px solid #007bff; /* Viền đổi màu khi focus */
 }

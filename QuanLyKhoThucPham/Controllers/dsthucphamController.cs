@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -11,87 +10,87 @@ using QuanLyKhoThucPham.Models;
 
 namespace QuanLyKhoThucPham.Controllers
 {
-    public class dskhohangModelsController : Controller
+    public class dsthucphamController : Controller
     {
         private readonly QuanLyKhoThucPhamContext _context;
 
-        public dskhohangModelsController(QuanLyKhoThucPhamContext context)
+        public dsthucphamController(QuanLyKhoThucPhamContext context)
         {
             _context = context;
         }
 
-        // GET: dskhohangModels
+        // GET: dsthucpham
         public async Task<IActionResult> Index()
         {
-            return _context.dskhohangModel != null ?
-                        View(await _context.dskhohangModel.ToListAsync()) :
-                          Problem("Entity set 'QuanLyKhoThucPhamContext.dskhohangModel'  is null.");
+              return _context.dsthucpham != null ? 
+                          View(await _context.dsthucpham.ToListAsync()) :
+                          Problem("Entity set 'QuanLyKhoThucPhamContext.dsthucpham'  is null.");
         }
 
-        // GET: dskhohangModels/Details/5
+        // GET: dsthucpham/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.dskhohangModel == null)
+            if (id == null || _context.dsthucpham == null)
             {
                 return NotFound();
             }
 
-            var dskhohangModel = await _context.dskhohangModel
+            var dsthucpham = await _context.dsthucpham
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (dskhohangModel == null)
+            if (dsthucpham == null)
             {
                 return NotFound();
             }
 
-            return View(dskhohangModel);
+            return View(dsthucpham);
         }
 
-        // GET: dskhohangModels/Create
+        // GET: dsthucpham/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: dskhohangModels/Create
+        // POST: dsthucpham/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,mota,soluongtong,soluongtrong")] dskhohangModel dskhohangModel)
+        public async Task<IActionResult> Create([Bind("ID,tenSP,mota,soluong,ngaysx,hsd,nhasanxuat")] dsthucpham dsthucpham)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(dskhohangModel);
+                _context.Add(dsthucpham);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(dskhohangModel);
+            return View(dsthucpham);
         }
 
-        // GET: dskhohangModels/Edit/5
+        // GET: dsthucpham/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.dskhohangModel == null)
+            if (id == null || _context.dsthucpham == null)
             {
                 return NotFound();
             }
 
-            var dskhohangModel = await _context.dskhohangModel.FindAsync(id);
-            if (dskhohangModel == null)
+            var dsthucpham = await _context.dsthucpham.FindAsync(id);
+            if (dsthucpham == null)
             {
                 return NotFound();
             }
-            return View(dskhohangModel);
+            return View(dsthucpham);
         }
 
-        // POST: dskhohangModels/Edit/5
+        // POST: dsthucpham/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,mota,soluongtong,soluongtrong")] dskhohangModel dskhohangModel)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,tenSP,mota,soluong,ngaysx,hsd,nhasanxuat")] dsthucpham dsthucpham)
         {
-            if (id != dskhohangModel.ID)
+            if (id != dsthucpham.ID)
             {
                 return NotFound();
             }
@@ -100,12 +99,12 @@ namespace QuanLyKhoThucPham.Controllers
             {
                 try
                 {
-                    _context.Update(dskhohangModel);
+                    _context.Update(dsthucpham);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!dskhohangModelExists(dskhohangModel.ID))
+                    if (!dsthucphamExists(dsthucpham.ID))
                     {
                         return NotFound();
                     }
@@ -116,50 +115,49 @@ namespace QuanLyKhoThucPham.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(dskhohangModel);
+            return View(dsthucpham);
         }
 
-        // GET: dskhohangModels/Delete/5
+        // GET: dsthucpham/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.dskhohangModel == null)
+            if (id == null || _context.dsthucpham == null)
             {
                 return NotFound();
             }
 
-            var dskhohangModel = await _context.dskhohangModel
+            var dsthucpham = await _context.dsthucpham
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (dskhohangModel == null)
+            if (dsthucpham == null)
             {
                 return NotFound();
             }
 
-            return View(dskhohangModel);
+            return View(dsthucpham);
         }
 
-        // POST: dskhohangModels/Delete/5
+        // POST: dsthucpham/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.dskhohangModel == null)
+            if (_context.dsthucpham == null)
             {
-                return Problem("Entity set 'QuanLyKhoThucPhamContext.dskhohangModel'  is null.");
+                return Problem("Entity set 'QuanLyKhoThucPhamContext.dsthucpham'  is null.");
             }
-            var dskhohangModel = await _context.dskhohangModel.FindAsync(id);
-            if (dskhohangModel != null)
+            var dsthucpham = await _context.dsthucpham.FindAsync(id);
+            if (dsthucpham != null)
             {
-                _context.dskhohangModel.Remove(dskhohangModel);
+                _context.dsthucpham.Remove(dsthucpham);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool dskhohangModelExists(int id)
+        private bool dsthucphamExists(int id)
         {
-          return (_context.dskhohangModel?.Any(e => e.ID == id)).GetValueOrDefault();
+          return (_context.dsthucpham?.Any(e => e.ID == id)).GetValueOrDefault();
         }
-       
     }
 }
