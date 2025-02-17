@@ -10,6 +10,6 @@
         public DateTime hsd { get; set; }
         public string nhasanxuat { get; set; }
 
-
+        
     }
 }
