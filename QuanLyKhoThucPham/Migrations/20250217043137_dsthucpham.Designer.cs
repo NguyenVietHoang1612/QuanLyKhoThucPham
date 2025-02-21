@@ -12,7 +12,7 @@ using QuanLyKhoThucPham.Data;
 namespace QuanLyKhoThucPham.Migrations
 {
     [DbContext(typeof(QuanLyKhoThucPhamContext))]
-    [Migration("20250216102207_dsthucpham")]
+    [Migration("20250217043137_dsthucpham")]
     partial class dsthucpham
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,6 +52,10 @@ namespace QuanLyKhoThucPham.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<string>("gia")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("hsd")
                         .HasColumnType("datetime2");

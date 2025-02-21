@@ -37,6 +37,9 @@
                 <a>Nhà sản xuất</a>
             </th>
             <th>
+                <a>Giá</a>
+            </th>
+            <th>
                 <a asp-action="Create" class="khung">Tạo mới</a>
             </th>
 
@@ -66,7 +69,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.nhasanxuat)
             </td>
-                
+                <td>
+                    @Html.DisplayFor(modelItem => item.gia)
+                </td>
             <td>
                     <a asp-action="Edit" asp-route-id="@item.ID" class="khung">Chỉnh sửa </a> 
                     <a asp-action="Details" asp-route-id="@item.ID" class="khung">Xem chi tiết</a> 
