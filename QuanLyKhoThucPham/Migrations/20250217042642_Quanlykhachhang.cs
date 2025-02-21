@@ -4,7 +4,7 @@
 
 namespace QuanLyKhoThucPham.Migrations
 {
-    public partial class KhachHang : Migration
+    public partial class Quanlykhachhang : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

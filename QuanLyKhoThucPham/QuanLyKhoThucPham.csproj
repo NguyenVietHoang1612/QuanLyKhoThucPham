@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Views\QuanLyKhachHang\" />
+    <None Include="Migrations\20250217042642_Quanlykhachhang.cs" />
   </ItemGroup>
 
   <ItemGroup>

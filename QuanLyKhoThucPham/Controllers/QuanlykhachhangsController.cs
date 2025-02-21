@@ -157,7 +157,29 @@ namespace QuanLyKhoThucPham.Controllers
 
         private bool QuanlykhachhangExists(int id)
         {
-          return (_context.Quanlykhachhang?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Quanlykhachhang?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+        //Tìm kiếm
+        [HttpPost, ActionName("search")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Index(string searchString)
+        {
+            if (_context.Quanlykhachhang == null)
+            {
+                return Problem("Entity set 'MvcMovieContext.Movie'  is null.");
+            }
+
+            var movies = from m in _context.Quanlykhachhang
+                         select m;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                movies = movies.Where(s => s.TenKH != null && s.TenKH.ToUpper().Contains(searchString.ToUpper()));
+
+            }
+
+            return View(await movies.ToListAsync());
         }
     }
-}
+ }
+
