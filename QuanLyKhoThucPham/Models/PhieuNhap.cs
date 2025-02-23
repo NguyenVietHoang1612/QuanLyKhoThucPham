@@ -1,35 +1,33 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace KhoThucPham.Models
+namespace QuanLyKhoThucPham.Models;
+public class PhieuNhap
 {
-    public class PhieuNhap
+    public PhieuNhap()
     {
-        public PhieuNhap()
-        {
-            this.DSChiTietPhieuNhap = new HashSet<PhieuNhapChiTiet>();
-        }
-        [Key]
-        public int MaPhieuNhap { get; set; }
-
-        public int MaPhieuNhapChiTiet {  get; set; }
-
-        public DateTime NgayNhap { get; set; }
-
-        public int MaNhanVien { get; set; }
-
-        public int MaKho { get; set; }
-    
-
-        public int? MaNhaCungCap { get; set; }
-  
-
-        public decimal TongTien { get; set; }
-
-        public virtual NhaCungCap NhaCungCap { get; set; }
-        public virtual KhoNhap KhoNhap { get; set; }
-        public virtual NhanVien NhanVien { get; set; }
-
-        public virtual ICollection<PhieuNhapChiTiet> DSChiTietPhieuNhap { get; set; }
+        this.DSChiTietPhieuNhap = new HashSet<PhieuNhapChiTiet>();
     }
+
+    [Key]
+    public int MaPhieuNhap { get; set; }
+
+    public DateTime NgayNhap { get; set; }
+
+    [Required(ErrorMessage = "Vui lòng chọn nhân viên")]
+    public int MaNhanVien { get; set; }
+
+    [Required(ErrorMessage = "Vui lòng chọn kho nhập")]
+    public int MaKho { get; set; }
+
+    public int? MaNhaCungCap { get; set; }
+
+    public decimal TongTien { get; set; }
+
+    public string? Ghichu { get; set; }
+
+    // Các mối quan hệ với các bảng khác
+    public NhaCungCap? NhaCungCap { get; set; }
+
+    // Mối quan hệ một-nhiều với PhieuNhapChiTiet
+    public ICollection<PhieuNhapChiTiet> DSChiTietPhieuNhap { get; set; }
 }

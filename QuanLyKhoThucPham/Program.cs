@@ -1,4 +1,11 @@
+using QuanLyKhoThucPham.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<KhoThucPhamContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("KhoThucPhamContext") ?? throw new InvalidOperationException("Connection string 'KhoThucPhamContext' not found.")));
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

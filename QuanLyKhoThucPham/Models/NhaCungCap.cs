@@ -1,13 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace KhoThucPham.Models
+namespace QuanLyKhoThucPham.Models
 {
     public class NhaCungCap
     {
-        public NhaCungCap()
-        {
-            this.DSPhieuNhap = new HashSet<PhieuNhap>();
-        }
         [Key]
         [Required]
         [Display(Name = "Mã Nhà Cung Cấp")]
@@ -22,7 +18,5 @@ namespace KhoThucPham.Models
 
         [Display(Name = "Số Điện Thoại")]
         public string SoDienThoai { get; set; }
-
-        public virtual ICollection<PhieuNhap> DSPhieuNhap { get; set; }
     }
 }

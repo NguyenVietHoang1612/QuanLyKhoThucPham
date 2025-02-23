@@ -1,0 +1,145 @@
+﻿@model QuanLyKhoThucPham.Models.View_Model.ViewModelPhieuNhap
+
+@{
+    ViewData["Title"] = "Tạo Phiếu Nhập";
+}
+
+<h2>Tạo Phiếu Nhập</h2>
+
+<form asp-action="Create" method="post">
+   @*  <div class="form-group">
+        <label asp-for="PhieuNhap.MaNhaCungCap">Nhà Cung Cấp</label>
+        <select asp-for="PhieuNhap.MaNhaCungCap" class="form-control" data-dichi="diachi" asp-items="@(new SelectList(Model.DSNhaCungCap, "MaNhaCungCap", "TenNhaCungCap"))" onchange="updateNhaCungCap()"></select>
+    </div> *@
+    <div class="form-group">
+        <label asp-for="PhieuNhap.NgayNhap">Ngày Nhập</label>
+        <input  asp-for="PhieuNhap.NgayNhap" class="form-control" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd") />
+        <span asp-validation-for="PhieuNhap.NgayNhap" class="text-danger"></span>
+    </div>
+    
+    <div class="form-group">
+        <label asp-for="PhieuNhap.MaKho">Kho Nhập</label>
+        <select asp-for="PhieuNhap.MaKho" class="form-control" asp-items="@(new SelectList(Model.DSKhoNhap, "MaKho", "TenKho"))">
+            <option value="">Chọn Kho</option>
+        </select>
+        <span asp-validation-for="PhieuNhap.MaKho" class="text-danger"></span>
+    </div>
+
+
+    <div class="form-group">
+        <label asp-for="PhieuNhap.MaNhanVien">Nhân Viên</label>
+        <select asp-for="PhieuNhap.MaNhanVien" class="form-control" asp-items="@(new SelectList(Model.DSNhanVien, "MaNhanVien", "HoTen"))">
+            <option value="">Chọn Nhân Viên</option>
+        </select>
+        <span asp-validation-for="PhieuNhap.MaNhanVien" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PhieuNhap.MaNhaCungCap">Nhà Cung Cấp</label>
+        <select id="selectNhaCungCap" asp-for="PhieuNhap.MaNhaCungCap" class="form-control">
+            <option value="">Chọn Nhà Cung Cấp</option>
+
+            @foreach (var item in Model.DSNhaCungCap)
+            {
+                <option value="@item.MaNhaCungCap" data-diachi="@item.DiaChi">@item.TenNhaCungCap</option>
+            }
+        </select>
+        <span asp-validation-for="PhieuNhap.MaNhaCungCap" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Địa Chỉ</label>
+        <input id="diaChiNhaCungCap" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.PhieuNhap.Ghichu" class="control-label"></label>
+    <input asp-for="@Model.PhieuNhap.Ghichu" class="form-control" />
+    <span asp-validation-for="@Model.PhieuNhap.Ghichu" class="text-danger"></span>
+    </div>
+
+    <h3>Danh Sách Sản Phẩm</h3>
+    <table class="table" id="tableSanPham">
+        <thead>
+            <tr>
+                <th>Sản Phẩm</th>
+                <th>Đơn Giá</th>
+                <th>Số Lượng</th>
+                <th>Tổng Tiền</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <select name="PhieuNhapChiTiet[0].MaSP" class="form-control" onchange="updateSanPham(this)">
+                        <option value="">Chọn sản phẩm</option>
+                        @foreach (var sp in Model.DSSanPham)
+                        {
+                            <option value="@sp.MaSP" data-dongia="@sp.DonGia">@sp.TenSanPham</option>
+                        }
+                    </select>
+                </td>
+                <td><input name="PhieuNhapChiTiet[0].DonGia" class="form-control" readonly /></td>
+                <td><input name="PhieuNhapChiTiet[0].SoLuong" class="form-control" type="number" oninput="updateTongTien(this)" value="1" /></td>
+                <td><input name="PhieuNhapChiTiet[0].ThanhTien" class="form-control" readonly /></td>
+                <td><button type="button" class="btn btn-danger" onclick="removeRow(this)">Xóa</button></td>
+            </tr>
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-success" onclick="addRow()">Thêm sản phẩm</button>
+    <div class="form-group">
+        <label>Tổng tiền phiếu nhập</label>
+        <input id="tongTien" name="PhieuNhap.TongTien" class="form-control" readonly />
+    </div>
+    <button type="submit" class="btn btn-primary">Lưu</button>
+</form>
+
+<script>
+    document.getElementById("selectNhaCungCap").addEventListener("change", function () {
+        var selectedOption = this.options[this.selectedIndex];
+        document.getElementById("diaChiNhaCungCap").value = selectedOption.getAttribute("data-diachi") || "";
+    });
+
+    function updateSanPham(select) {
+        var row = select.closest("tr");
+        var donGiaInput = row.querySelector("input[name$='DonGia']");
+        var tongTienInput = row.querySelector("input[name$='ThanhTien']");
+        var selectedOption = select.options[select.selectedIndex];
+        donGiaInput.value = selectedOption.getAttribute("data-dongia");
+        updateTongTien(row.querySelector("input[name$='SoLuong']"));
+    }
+    function updateTongTien(input) {
+        var row = input.closest("tr");
+        var donGia = parseFloat(row.querySelector("input[name$='DonGia']").value) || 0;
+        var soLuong = parseInt(input.value) || 0;
+        var tongTien = donGia * soLuong;
+        row.querySelector("input[name$='ThanhTien']").value = tongTien;
+        updateTongTienPhieu();
+    }
+    function updateTongTienPhieu() {
+        var total = 0;
+        document.querySelectorAll("#tableSanPham tbody tr").forEach(row => {
+            total += parseFloat(row.querySelector("input[name$='ThanhTien']").value) || 0;
+        });
+        document.getElementById("tongTien").value = total;
+    }
+    function addRow() {
+        var table = document.getElementById("tableSanPham").getElementsByTagName('tbody')[0];
+        var newRow = table.rows[0].cloneNode(true);
+        var index = table.rows.length;
+        newRow.querySelectorAll("select, input").forEach((input) => {
+            var name = input.getAttribute("name");
+            if (name) {
+                input.setAttribute("name", name.replace("[0]", `[${index}]`));
+                input.value = "";
+            }
+        });
+        newRow.querySelector("select").selectedIndex = 0;
+        table.appendChild(newRow);
+    }
+    function removeRow(button) {
+        var row = button.closest("tr");
+        row.remove();
+        updateTongTienPhieu();
+    }
+</script>
