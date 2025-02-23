@@ -15,7 +15,6 @@ public class PhieuNhapChiTiet
     public int SoLuong { get; set; }
     public decimal DonGia { get; set; }
     public decimal? TongTIen { get; set; }
-    public string? GhiChu { get; set; }
 
     public PhieuNhap? PhieuNhap { get; set; }
     public SanPham? SanPham { get; set; }

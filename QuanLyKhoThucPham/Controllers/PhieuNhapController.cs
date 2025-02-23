@@ -74,12 +74,17 @@ namespace QuanLyKhoThucPham.Controllers
             phieuNhap.TongTien = phieuNhapChiTiet.Sum(t => t.SoLuong * t.DonGia);
             _context.PhieuNhap.Add(phieuNhap);
             _context.SaveChanges();
-
+            int phieuNhapNhieu = (int)MathF.Abs(_context.PhieuNhapChiTiet.Count());
+            Console.WriteLine($"Day la phieu nhap nhieu {phieuNhapNhieu}");
             if (phieuNhapChiTiet != null && phieuNhapChiTiet.Any())
             {
                 foreach (var phieuNhapCT in phieuNhapChiTiet)
                 {
+                    phieuNhapNhieu += 1;
+                    phieuNhapCT.MaPhieuNhapChiTiet = phieuNhapNhieu;
+                    phieuNhapCT.PhieuNhap = phieuNhap;
                     phieuNhapCT.MaPhieuNhap = phieuNhap.MaPhieuNhap;
+                    phieuNhapCT.TongTIen = phieuNhapCT.SoLuong * phieuNhapCT.DonGia;
                     _context.PhieuNhapChiTiet.Add(phieuNhapCT);
                     var sanPham = await _context.SanPham.FindAsync(phieuNhapCT.MaSP);
                     if (sanPham != null)
