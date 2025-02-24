@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace KhoThucPham.Models
+namespace QuanLyKhoThucPham.Models
 {
     public class KhachHang
     {

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace KhoThucPham.Models
+namespace QuanLyKhoThucPham.Models
 {
     public class PhieuXuatChiTiet
     {
