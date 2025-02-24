@@ -23,15 +23,30 @@
                 <span asp-validation-for="mota" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Tạo" class="btn btn-primary" />
+                <label asp-for="soluongtong" class="control-label">Số lượng tổng</label>
+                <input asp-for="soluongtong" class="form-control" />
+                <span asp-validation-for="soluongtong" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="soluongtrong" class="control-label">Số lương trống</label>
+                <input asp-for="soluongtrong" class="form-control" />
+                <span asp-validation-for="soluongtrong" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Tạo" class="btn btn-primary" />
+                
+            </div>
+            
         </form>
+        <hr />
+        <form>
+            <input asp-action="Index" type="submit" class="btn btn-primary" value="Trở lại danh sách kho">
+        </form>
+        
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Trở lại danh sách kho</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

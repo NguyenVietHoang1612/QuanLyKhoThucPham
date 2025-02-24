@@ -6,7 +6,7 @@
 
 <h1>Chỉnh sửa kho hàng</h1>
 
-<h4>dskhohangModel</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -23,16 +23,26 @@
                 <input asp-for="mota" class="form-control" />
                 <span asp-validation-for="mota" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Lưu" class="btn btn-primary" />
+             <div class="form-group">
+                <label asp-for="soluongtong" class="control-label">Số lượng tổng</label>
+                <input asp-for="soluongtong" class="form-control" />
+                <span asp-validation-for="soluongtong" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="soluongtrong" class="control-label">Số lương trống</label>
+                <input asp-for="soluongtrong" class="form-control" />
+                <span asp-validation-for="soluongtrong" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Lưu" class="btn btn-primary" /> |
+                <input asp-action="Index" type="submit" class="btn btn-primary" value="Trở lại danh sách kho">
+            </div>
+			
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Trở lại danh sách kho</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

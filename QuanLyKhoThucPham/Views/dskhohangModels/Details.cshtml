@@ -6,10 +6,7 @@
 
 <h1>Chi tiết kho hàng</h1>
 
-
-    
-
-    <div>
+<div>
     <h4>dskhohangModel</h4>
     <hr />
     <dl class="row">
@@ -25,9 +22,23 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.mota)
         </dd>
+
+        <dt class = "col-sm-2">
+                <a>Số lượng tổng</a>
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.soluongtong)
+        </dd>
+        <dt class="col-sm-2">
+            <a>Số lượng trống</a>
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.soluongtrong)
+        </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.ID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<form>
+    <input asp-action="Edit" asp-route-id="@Model?.ID" type="submit" class="btn btn-primary" value="Chỉnh sửa">
+    <input asp-action="Index" type="submit" class="btn btn-primary" value="Trở lại danh sách kho">
+    
+</form>

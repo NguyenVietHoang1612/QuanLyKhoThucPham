@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuanLyKhoThucPham.Data;
 
@@ -11,9 +12,10 @@ using QuanLyKhoThucPham.Data;
 namespace QuanLyKhoThucPham.Migrations
 {
     [DbContext(typeof(QuanLyKhoThucPhamContext))]
-    partial class QuanLyKhoThucPhamContextModelSnapshot : ModelSnapshot
+    [Migration("20250224031500_dskhohangModels")]
+    partial class dskhohangModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,9 +68,6 @@ namespace QuanLyKhoThucPham.Migrations
                     b.Property<DateTime>("hsd")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("khoID")
-                        .HasColumnType("int");
-
                     b.Property<string>("mota")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -90,20 +89,7 @@ namespace QuanLyKhoThucPham.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("khoID");
-
                     b.ToTable("dsthucpham");
-                });
-
-            modelBuilder.Entity("QuanLyKhoThucPham.Models.dsthucpham", b =>
-                {
-                    b.HasOne("QuanLyKhoThucPham.Models.dskhohangModel", "kho")
-                        .WithMany()
-                        .HasForeignKey("khoID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("kho");
                 });
 #pragma warning restore 612, 618
         }

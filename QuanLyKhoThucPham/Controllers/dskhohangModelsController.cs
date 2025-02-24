@@ -161,20 +161,20 @@ namespace QuanLyKhoThucPham.Controllers
           return (_context.dskhohangModel?.Any(e => e.ID == id)).GetValueOrDefault();
         }
         //tìm kiếm
-        
+         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(string searchString)
         {
             if (_context.dskhohangModel == null)
             {
-                return Problem("Entity set 'MvcMovieContext.Movie'  is null.");
+                return Problem("Danh sách kho hàng không có dữ liệu ");
             }
 
-            var dskhohangModels = from m in _context.dskhohangModel
-                         select m;
+            var dskhohangModels = from m in _context.dskhohangModel select m;
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                dskhohangModels = dskhohangModels.Where(s => s.Name.ToUpper().Contains(searchString.ToUpper()));
+                dskhohangModels = dskhohangModels.Where(s => s .Name.ToUpper().Contains(searchString.ToUpper()));
             }
 
             return View(await dskhohangModels.ToListAsync());

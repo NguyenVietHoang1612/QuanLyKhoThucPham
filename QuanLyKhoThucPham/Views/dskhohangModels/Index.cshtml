@@ -6,10 +6,10 @@
 
 <h1>Danh sách kho hàng</h1>
 <form asp-controller="dskhohangModels" asp-action="Index" method="get">
-    <p>
-        <label>Title: <input type="text" name="SearchString" /></label>
-        <input type="submit" value="Filter" />
-    </p>
+    <div class="input-group">
+        <input class="form-control" type="text" name="SearchString" placeholder="Tìm kiếm tên kho hàng..." aria-describedby="btnNavbarSearch" />
+        <button class="btn btn-primary" type="submit"  />Tìm kiếm</button>
+    </div>
 </form>
 <table class="table">
     <thead>
@@ -23,7 +23,12 @@
             <th>
                 <a>Mô tả</a> 
             </th>
-            
+            <th>
+                <a>Số lượng tổng</a>
+            </th>
+            <th>
+                <a>Số lượng trống</a>
+            </th>
             <td>
                 <a asp-action="Create" class="khung">Tạo mới</a>
             </td>
@@ -41,6 +46,13 @@
             <td>
                 @Html.DisplayFor(modelItem => item.mota)
             </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.soluongtong)
+            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.soluongtrong)
+                </td>
+
 				
 				<td >
                     <a asp-action="Edit" asp-route-id="@item.ID" class="khung">Chỉnh sửa</a> 

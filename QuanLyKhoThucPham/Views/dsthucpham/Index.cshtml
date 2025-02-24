@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Quản lý danh sách thực phẩm</h1>
+<h1>Danh sách thực phẩm</h1>
 <form>
     <div class="input-group">
         <input class="form-control" type="text" placeholder="Tìm kiếm kho hàng..." aria-label="Search" aria-describedby="btnNavbarSearch" />
@@ -25,20 +25,14 @@
                 <a>Mô tả</a>
             </th>
             <th>
-                <a>Số lượng</a>
-            </th>
-            <th>
                 <a>Ngày sản xuất</a>
-            </th>
-            <th>
-                <a>Hạn sử dụng</a>
             </th>
             <th>
                 <a>Nhà sản xuất</a>
             </th>
-            <th>
-                <a>Giá</a>
-            </th>
+           <th>
+				<a>tên kho</a>
+           </th>
             <th>
                 <a asp-action="Create" class="khung">Tạo mới</a>
             </th>
@@ -57,20 +51,16 @@
             <td>
                 @Html.DisplayFor(modelItem => item.mota)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.soluong)
-            </td>
+        
             <td>
                 @Html.DisplayFor(modelItem => item.ngaysx)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.hsd)
-            </td>
+            
             <td>
                 @Html.DisplayFor(modelItem => item.nhasanxuat)
             </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.gia)
+                    @Html.DisplayFor(modelItem => item.kho)
                 </td>
             <td>
                     <a asp-action="Edit" asp-route-id="@item.ID" class="khung">Chỉnh sửa </a> 
