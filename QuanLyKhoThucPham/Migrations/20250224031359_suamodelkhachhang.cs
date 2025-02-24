@@ -4,7 +4,7 @@
 
 namespace QuanLyKhoThucPham.Migrations
 {
-    public partial class Quanlykhachhang : Migration
+    public partial class suamodelkhachhang : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,17 +12,15 @@ namespace QuanLyKhoThucPham.Migrations
                 name: "Quanlykhachhang",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    MaKH = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TenKH = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MaKH = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Diachi = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Diachi = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SDT = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Quanlykhachhang", x => x.Id);
+                    table.PrimaryKey("PK_Quanlykhachhang", x => x.MaKH);
                 });
         }
 

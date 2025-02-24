@@ -1,13 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace KhoThucPham.Models
+namespace QuanLyKhoThucPham.Models
 {
     public class NhaCungCap
     {
-        public NhaCungCap()
-        {
-
-        }
+        
         [Key]
         [Required]
         [Display(Name = "Mã Nhà Cung Cấp")]

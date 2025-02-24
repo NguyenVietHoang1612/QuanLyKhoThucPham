@@ -1,12 +1,11 @@
 ﻿@model QuanLyKhoThucPham.Models.Quanlykhachhang
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Details";
 }
 
-<h1>Delete</h1>
+<h1>Chi tiết khách hàng</h1>
 
-<h3>Are you sure you want to delete this?</h3>
 <div>
     <h4>Quanlykhachhang</h4>
     <hr />
@@ -17,24 +16,14 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.TenKH)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MaKH)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MaKH)
-        </dd>
+      
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Diachi)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Diachi)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
+       
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.SDT)
         </dt>
@@ -42,10 +31,8 @@
             @Html.DisplayFor(model => model.SDT)
         </dd>
     </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.MaKH">Chỉnh sửa</a> |
+    <a asp-action="Index">Trở lại danh sách</a>
 </div>

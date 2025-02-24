@@ -10,16 +10,16 @@ using QuanLyKhoThucPham.Models;
 
 namespace QuanLyKhoThucPham.Controllers
 {
-    public class QuanlykhachhangsController : Controller
+    public class QuanlykhachhangController : Controller
     {
         private readonly QuanLyKhoThucPhamContext _context;
 
-        public QuanlykhachhangsController(QuanLyKhoThucPhamContext context)
+        public QuanlykhachhangController(QuanLyKhoThucPhamContext context)
         {
             _context = context;
         }
 
-        // GET: Quanlykhachhangs
+        // GET: Quanlykhachhang
         public async Task<IActionResult> Index()
         {
               return _context.Quanlykhachhang != null ? 
@@ -27,7 +27,7 @@ namespace QuanLyKhoThucPham.Controllers
                           Problem("Entity set 'QuanLyKhoThucPhamContext.Quanlykhachhang'  is null.");
         }
 
-        // GET: Quanlykhachhangs/Details/5
+        // GET: Quanlykhachhang/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Quanlykhachhang == null)
@@ -36,7 +36,7 @@ namespace QuanLyKhoThucPham.Controllers
             }
 
             var quanlykhachhang = await _context.Quanlykhachhang
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.MaKH == id);
             if (quanlykhachhang == null)
             {
                 return NotFound();
@@ -45,13 +45,13 @@ namespace QuanLyKhoThucPham.Controllers
             return View(quanlykhachhang);
         }
 
-        // GET: Quanlykhachhangs/Create
+        // GET: Quanlykhachhang/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Quanlykhachhangs/Create
+        // POST: Quanlykhachhang/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -67,7 +67,7 @@ namespace QuanLyKhoThucPham.Controllers
             return View(quanlykhachhang);
         }
 
-        // GET: Quanlykhachhangs/Edit/5
+        // GET: Quanlykhachhang/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Quanlykhachhang == null)
@@ -83,14 +83,14 @@ namespace QuanLyKhoThucPham.Controllers
             return View(quanlykhachhang);
         }
 
-        // POST: Quanlykhachhangs/Edit/5
+        // POST: Quanlykhachhang/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,TenKH,MaKH,Diachi,Email,SDT")] Quanlykhachhang quanlykhachhang)
         {
-            if (id != quanlykhachhang.Id)
+            if (id != quanlykhachhang.MaKH)
             {
                 return NotFound();
             }
@@ -104,7 +104,7 @@ namespace QuanLyKhoThucPham.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!QuanlykhachhangExists(quanlykhachhang.Id))
+                    if (!QuanlykhachhangExists(quanlykhachhang.MaKH))
                     {
                         return NotFound();
                     }
@@ -118,7 +118,7 @@ namespace QuanLyKhoThucPham.Controllers
             return View(quanlykhachhang);
         }
 
-        // GET: Quanlykhachhangs/Delete/5
+        // GET: Quanlykhachhang/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Quanlykhachhang == null)
@@ -127,7 +127,7 @@ namespace QuanLyKhoThucPham.Controllers
             }
 
             var quanlykhachhang = await _context.Quanlykhachhang
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.MaKH == id);
             if (quanlykhachhang == null)
             {
                 return NotFound();
@@ -136,7 +136,7 @@ namespace QuanLyKhoThucPham.Controllers
             return View(quanlykhachhang);
         }
 
-        // POST: Quanlykhachhangs/Delete/5
+        // POST: Quanlykhachhang/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -157,11 +157,11 @@ namespace QuanLyKhoThucPham.Controllers
 
         private bool QuanlykhachhangExists(int id)
         {
-            return (_context.Quanlykhachhang?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Quanlykhachhang?.Any(e => e.MaKH == id)).GetValueOrDefault();
         }
         //Tìm kiếm
         [HttpPost, ActionName("search")]
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> Index(string searchString)
         {
             if (_context.Quanlykhachhang == null)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using QuanLyKhoThucPham.Models;
+using QuanLyKhoThucPham.Models;
 
 namespace QuanLyKhoThucPham.Data
 {
@@ -15,5 +16,7 @@ namespace QuanLyKhoThucPham.Data
         }
 
         public DbSet<QuanLyKhoThucPham.Models.Quanlykhachhang> Quanlykhachhang { get; set; } = default!;
+
+        public DbSet<QuanLyKhoThucPham.Models.NhaCungCap>? NhaCungCap { get; set; }
     }
 }

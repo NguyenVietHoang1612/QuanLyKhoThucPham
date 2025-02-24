@@ -15,13 +15,12 @@ html {
 
 body {
     margin-bottom: 60px;
-    .khung
-
-{
+  
+}
+.khung {
     border: 3px outset blue;
     background-color: lightyellow;
     border-radius: 8px;
     padding: 5px;
     color: black;
-}
 }

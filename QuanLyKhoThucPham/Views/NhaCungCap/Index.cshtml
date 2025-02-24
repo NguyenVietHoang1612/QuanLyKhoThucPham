@@ -1,0 +1,50 @@
+﻿@model IEnumerable<QuanLyKhoThucPham.Models.NhaCungCap>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Danh Sách Nhà Cung Cấp</h1>
+
+<p>
+    
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TenNhaCungCap)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DiaChi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SoDienThoai)
+            </th>
+            <th>
+                <a asp-action="Create"class="khung">Tạo Mới </a>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenNhaCungCap)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DiaChi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SoDienThoai)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.MaNhaCungCap"class="khung">Chỉnh sửa</a> |
+                <a asp-action="Details" asp-route-id="@item.MaNhaCungCap"class="khung">Chi Tiết</a> |
+                <a asp-action="Delete" asp-route-id="@item.MaNhaCungCap"class="khung">Xóa</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

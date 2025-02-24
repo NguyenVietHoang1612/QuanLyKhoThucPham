@@ -11,8 +11,8 @@ using QuanLyKhoThucPham.Data;
 namespace QuanLyKhoThucPham.Migrations
 {
     [DbContext(typeof(QuanLyKhoThucPhamContext))]
-    [Migration("20250217042642_Quanlykhachhang")]
-    partial class Quanlykhachhang
+    [Migration("20250224031359_suamodelkhachhang")]
+    partial class suamodelkhachhang
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -25,22 +25,13 @@ namespace QuanLyKhoThucPham.Migrations
 
             modelBuilder.Entity("QuanLyKhoThucPham.Models.Quanlykhachhang", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("MaKH")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaKH"), 1L, 1);
 
                     b.Property<string>("Diachi")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MaKH")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SDT")
@@ -51,7 +42,7 @@ namespace QuanLyKhoThucPham.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("MaKH");
 
                     b.ToTable("Quanlykhachhang");
                 });

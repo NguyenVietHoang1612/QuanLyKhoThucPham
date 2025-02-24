@@ -4,10 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Danh Sách Khách Hàng</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    
 </p>
 <table class="table">
     <thead>
@@ -15,19 +15,18 @@
             <th>
                 @Html.DisplayNameFor(model => model.TenKH)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MaKH)
-            </th>
+           
+            
             <th>
                 @Html.DisplayNameFor(model => model.Diachi)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
+           
             <th>
                 @Html.DisplayNameFor(model => model.SDT)
             </th>
-            <th></th>
+            <th>
+                <a asp-action="Create"class="khung">Tạo Mới</a>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -36,22 +35,18 @@
             <td>
                 @Html.DisplayFor(modelItem => item.TenKH)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaKH)
-            </td>
+           
             <td>
                 @Html.DisplayFor(modelItem => item.Diachi)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
+           
             <td>
                 @Html.DisplayFor(modelItem => item.SDT)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="khung">Edit</a> 
-                <a asp-action="Details" asp-route-id="@item.Id"class="Khung">Details</a> 
-                <a asp-action="Delete" asp-route-id="@item.Id"class="khung">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.MaKH" class="khung">chỉnh sửa</a> 
+                <a asp-action="Details" asp-route-id="@item.MaKH"class="khung">Chi Tiết</a> 
+                <a asp-action="Delete" asp-route-id="@item.MaKH"class="khung">Xóa</a>
             </td>
         </tr>
 }
