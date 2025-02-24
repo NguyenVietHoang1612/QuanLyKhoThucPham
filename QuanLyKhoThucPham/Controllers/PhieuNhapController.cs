@@ -106,6 +106,76 @@ namespace QuanLyKhoThucPham.Controllers
 
             return View(phieuNhapViewModel);
         }
+        public async Task<IActionResult> Detail(int id)
+        {
+            var phieuNhap = await _context.PhieuNhap
+            .Include(p => p.NhaCungCap)
+            .FirstOrDefaultAsync(p => p.MaPhieuNhap == id);
+
+            if (phieuNhap == null)
+            {
+                return NotFound();
+            }
+
+            // Lọc danh sách chi tiết phiếu nhập chỉ lấy các mục có MaPhieuNhap khớp với phiếu nhập hiện tại
+            var chiTietPhieuNhap = await _context.PhieuNhapChiTiet
+                .Where(ct => ct.MaPhieuNhap == id)
+                .Include(ct => ct.SanPham)
+                .ToListAsync();
+
+            // Gán danh sách chi tiết vào phiếu nhập
+            phieuNhap.DSChiTietPhieuNhap = chiTietPhieuNhap;
+
+            return View(phieuNhap);
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var phieuNhap = await _context.PhieuNhap
+                .Include(p => p.DSChiTietPhieuNhap)
+                .FirstOrDefaultAsync(p => p.MaPhieuNhap == id);
+
+            if (phieuNhap == null)
+            {
+                return NotFound();
+            }
+
+            return View(phieuNhap);
+        }
+
+        // POST: PhieuNhap/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var phieuNhap = await _context.PhieuNhap
+                .Include(p => p.DSChiTietPhieuNhap)
+                .Include(p => p.NhaCungCap)
+                .FirstOrDefaultAsync(p => p.MaPhieuNhap == id);
+
+            if (phieuNhap == null)
+            {
+                return NotFound();
+            }
+
+            var chiTietPhieuNhap = await _context.PhieuNhapChiTiet
+               .Where(ct => ct.MaPhieuNhap == id)
+               .Include(ct => ct.SanPham)
+               .ToListAsync();
+
+            // Gán danh sách chi tiết vào phiếu nhập
+            phieuNhap.DSChiTietPhieuNhap = chiTietPhieuNhap;
+
+            // Xóa các chi tiết phiếu nhập trước
+            _context.PhieuNhapChiTiet.RemoveRange(phieuNhap.DSChiTietPhieuNhap);
+
+            // Xóa phiếu nhập
+            _context.PhieuNhap.Remove(phieuNhap);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
 
     }
 }

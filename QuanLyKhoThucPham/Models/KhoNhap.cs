@@ -12,6 +12,6 @@ namespace QuanLyKhoThucPham.Models
 
         public string? GhiChu { get; set; }
 
-        public static SanPham SanPham { get; set;}
+        public SanPham SanPham { get; set;}
     }
 }

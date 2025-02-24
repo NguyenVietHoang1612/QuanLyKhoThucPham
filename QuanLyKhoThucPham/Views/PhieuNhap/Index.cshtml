@@ -28,7 +28,7 @@
                 <td>@phieuNhap.TongTien.ToString("C")</td>
                 <td>
                     <!-- Sử dụng asp-controller và asp-action -->
-                    <a asp-controller="PhieuNhap" asp-action="Details" asp-route-id="@phieuNhap.MaPhieuNhap" class="btn btn-info btn-sm">Chi Tiết</a>
+                    <a asp-controller="PhieuNhap" asp-action="Detail" asp-route-id="@phieuNhap.MaPhieuNhap" class="btn btn-info btn-sm">Chi Tiết</a>
                     <a asp-action="Delete" asp-route-id="@phieuNhap.MaPhieuNhap" class="btn btn-danger">Xóa</a>
                 </td>
             </tr>
