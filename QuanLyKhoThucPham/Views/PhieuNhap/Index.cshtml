@@ -25,7 +25,7 @@
                 <td>@Html.DisplayFor(modelItem => phieuNhap.MaNhanVien)</td>
                 <td>@Html.DisplayFor(modelItem => phieuNhap.MaNhaCungCap)</td>
                 <td>@Html.DisplayFor(modelItem => phieuNhap.MaKho)</td>
-                <td>@phieuNhap.TongTien.ToString("C")</td>
+                <td>@phieuNhap.TongTien VND</td>
                 <td>
                     <!-- Sử dụng asp-controller và asp-action -->
                     <a asp-controller="PhieuNhap" asp-action="Detail" asp-route-id="@phieuNhap.MaPhieuNhap" class="btn btn-info btn-sm">Chi Tiết</a>

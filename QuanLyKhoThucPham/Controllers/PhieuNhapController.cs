@@ -149,9 +149,8 @@ namespace QuanLyKhoThucPham.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var phieuNhap = await _context.PhieuNhap
-                .Include(p => p.DSChiTietPhieuNhap)
-                .Include(p => p.NhaCungCap)
-                .FirstOrDefaultAsync(p => p.MaPhieuNhap == id);
+         .Include(p => p.DSChiTietPhieuNhap)
+         .FirstOrDefaultAsync(p => p.MaPhieuNhap == id);
 
             if (phieuNhap == null)
             {
@@ -166,8 +165,11 @@ namespace QuanLyKhoThucPham.Controllers
             // Gán danh sách chi tiết vào phiếu nhập
             phieuNhap.DSChiTietPhieuNhap = chiTietPhieuNhap;
 
-            // Xóa các chi tiết phiếu nhập trước
-            _context.PhieuNhapChiTiet.RemoveRange(phieuNhap.DSChiTietPhieuNhap);
+            foreach (var ct in chiTietPhieuNhap)
+            {
+                _context.PhieuNhapChiTiet.Remove(ct);
+            }
+
 
             // Xóa phiếu nhập
             _context.PhieuNhap.Remove(phieuNhap);
