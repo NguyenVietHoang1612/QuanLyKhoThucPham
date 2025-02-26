@@ -1,4 +1,4 @@
-﻿@model QuanLyKhoThucPham.Models.SanPham
+﻿@model QuanLyKhoThucPham.Models.SanPhamModel
 
 @{
     ViewData["Title"] = "Details";
@@ -14,49 +14,40 @@
             <a>Tên sản phẩm</a>
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.tenSP)
+            @Html.DisplayFor(model => model.TenSP)
         </dd>
         <dt class = "col-sm-2">
            <a>Mô tả</a>
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.mota)
+            @Html.DisplayFor(model => model.MoTa)
         </dd>
         <dt class = "col-sm-2">
            <a>Số lượng</a>
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.soluong)
+            @Html.DisplayFor(model => model.SoLuong)
         </dd>
         <dt class = "col-sm-2">
             <a>Ngày sản xuất</a>
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ngaysx)
-        </dd>
-        <dt class = "col-sm-2">
-            <a>Hạn sử dụng</a>
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.hsd)
-        </dd>
         <dt class = "col-sm-2">
             <a>Nhà sản xuất</a>
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.nhasanxuat)
+            @Html.DisplayFor(model => model.NhaSanXuat)
         </dd>
         <dt class="col-sm-2">
             <a>Giá</a>
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.gia)
+            @Html.DisplayFor(model => model.DonGia)
         </dd>
     </dl>
 </div>
 <div>
     <form>
-		<input asp-action="Edit" asp-route-id="@Model?.ID" type="submit" class="btn btn-primary" value="Chỉnh sửa">
+        <input asp-action="Edit" asp-route-maSP="@Model?.MaSP" type="submit" class="btn btn-primary" value="Chỉnh sửa">
 		<input asp-action="Index" type="submit" class="btn btn-primary" value="Trở lại danh sách ">
     </form>
     

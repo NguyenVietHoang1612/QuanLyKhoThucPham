@@ -28,15 +28,15 @@ namespace QuanLyKhoThucPham.Controllers
         }
 
         // GET: NhanVien/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? maNV)
         {
-            if (id == null || _context.NhanVien == null)
+            if (maNV == null || _context.NhanVien == null)
             {
                 return NotFound();
             }
 
             var nhanVien = await _context.NhanVien
-                .FirstOrDefaultAsync(m => m.MaNhanVien == id);
+                .FirstOrDefaultAsync(m => m.MaNhanVien == maNV);
             if (nhanVien == null)
             {
                 return NotFound();
@@ -56,7 +56,7 @@ namespace QuanLyKhoThucPham.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaNhanVien,HoTen,GioiTinh,ChucVu")] NhanVien nhanVien)
+        public async Task<IActionResult> Create([Bind("MaNhanVien,HoTen,GioiTinh,ChucVu")] NhanVienModel nhanVien)
         {
             if (ModelState.IsValid)
             {
@@ -68,14 +68,14 @@ namespace QuanLyKhoThucPham.Controllers
         }
 
         // GET: NhanVien/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? maNV)
         {
-            if (id == null || _context.NhanVien == null)
+            if (maNV == null || _context.NhanVien == null)
             {
                 return NotFound();
             }
 
-            var nhanVien = await _context.NhanVien.FindAsync(id);
+            var nhanVien = await _context.NhanVien.FindAsync(maNV);
             if (nhanVien == null)
             {
                 return NotFound();
@@ -88,9 +88,9 @@ namespace QuanLyKhoThucPham.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MaNhanVien,HoTen,GioiTinh,ChucVu")] NhanVien nhanVien)
+        public async Task<IActionResult> Edit(int maNV, [Bind("MaNhanVien,HoTen,GioiTinh,ChucVu")] NhanVienModel nhanVien)
         {
-            if (id != nhanVien.MaNhanVien)
+            if (maNV != nhanVien.MaNhanVien)
             {
                 return NotFound();
             }
@@ -119,15 +119,15 @@ namespace QuanLyKhoThucPham.Controllers
         }
 
         // GET: NhanVien/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? maNV)
         {
-            if (id == null || _context.NhanVien == null)
+            if (maNV == null || _context.NhanVien == null)
             {
                 return NotFound();
             }
 
             var nhanVien = await _context.NhanVien
-                .FirstOrDefaultAsync(m => m.MaNhanVien == id);
+                .FirstOrDefaultAsync(m => m.MaNhanVien == maNV);
             if (nhanVien == null)
             {
                 return NotFound();
@@ -139,13 +139,13 @@ namespace QuanLyKhoThucPham.Controllers
         // POST: NhanVien/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int maNV)
         {
             if (_context.NhanVien == null)
             {
                 return Problem("Entity set 'QuanLyKhoThucPhamContext.NhanVien'  is null.");
             }
-            var nhanVien = await _context.NhanVien.FindAsync(id);
+            var nhanVien = await _context.NhanVien.FindAsync(maNV);
             if (nhanVien != null)
             {
                 _context.NhanVien.Remove(nhanVien);
@@ -155,9 +155,9 @@ namespace QuanLyKhoThucPham.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool NhanVienExists(int id)
+        private bool NhanVienExists(int maNV)
         {
-          return (_context.NhanVien?.Any(e => e.MaNhanVien == id)).GetValueOrDefault();
+          return (_context.NhanVien?.Any(e => e.MaNhanVien == maNV)).GetValueOrDefault();
         }
     }
 }

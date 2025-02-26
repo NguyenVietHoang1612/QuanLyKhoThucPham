@@ -28,15 +28,15 @@ namespace QuanLyKhoThucPham.Controllers
         }
 
         // GET: dsthucpham/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? maSP)
         {
-            if (id == null || _context.SanPham == null)
+            if (maSP == null || _context.SanPham == null)
             {
                 return NotFound();
             }
 
             var dsthucpham = await _context.SanPham
-                .FirstOrDefaultAsync(m => m.ID == id);
+                .FirstOrDefaultAsync(m => m.MaSP == maSP);
             if (dsthucpham == null)
             {
                 return NotFound();
@@ -56,7 +56,7 @@ namespace QuanLyKhoThucPham.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,tenSP,mota,soluong,ngaysx,hsd,nhasanxuat,gia")] SanPham dsthucpham)
+        public async Task<IActionResult> Create([Bind("MaSP,TenSP,SoLuong,DonGia,NhaSanXuat,MoTa,MaNhaCungCap")] SanPhamModel dsthucpham)
         {
             if (ModelState.IsValid)
             {
@@ -88,9 +88,9 @@ namespace QuanLyKhoThucPham.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,tenSP,mota,soluong,ngaysx,hsd,nhasanxuat,gia")] SanPham dsthucpham)
+        public async Task<IActionResult> Edit(int id, [Bind("MaSP,TenSP,SoLuong,DonGia,NhaSanXuat,MoTa")] SanPhamModel thucPham)
         {
-            if (id != dsthucpham.ID)
+            if (id != thucPham.MaSP)
             {
                 return NotFound();
             }
@@ -99,12 +99,12 @@ namespace QuanLyKhoThucPham.Controllers
             {
                 try
                 {
-                    _context.Update(dsthucpham);
+                    _context.Update(thucPham);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!dsthucphamExists(dsthucpham.ID))
+                    if (!dsthucphamExists(thucPham.MaSP))
                     {
                         return NotFound();
                     }
@@ -115,37 +115,37 @@ namespace QuanLyKhoThucPham.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(dsthucpham);
+            return View(thucPham);
         }
 
         // GET: dsthucpham/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? maSP)
         {
-            if (id == null || _context.SanPham == null)
+            if (maSP == null || _context.SanPham == null)
             {
                 return NotFound();
             }
 
-            var dsthucpham = await _context.SanPham
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (dsthucpham == null)
+            var dsThucPham = await _context.SanPham
+                .FirstOrDefaultAsync(m => m.MaSP == maSP);
+            if (dsThucPham == null)
             {
                 return NotFound();
             }
 
-            return View(dsthucpham);
+            return View(dsThucPham);
         }
 
         // POST: dsthucpham/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int maSP)
         {
             if (_context.SanPham == null)
             {
                 return Problem("Entity set 'QuanLyKhoThucPhamContext.dsthucpham'  is null.");
             }
-            var dsthucpham = await _context.SanPham.FindAsync(id);
+            var dsthucpham = await _context.SanPham.FindAsync(maSP);
             if (dsthucpham != null)
             {
                 _context.SanPham.Remove(dsthucpham);
@@ -155,9 +155,9 @@ namespace QuanLyKhoThucPham.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool dsthucphamExists(int id)
+        private bool dsthucphamExists(int maSP)
         {
-          return (_context.SanPham?.Any(e => e.ID == id)).GetValueOrDefault();
+          return (_context.SanPham?.Any(e => e.MaSP == maSP)).GetValueOrDefault();
         }
 
         //tìm kiếm
@@ -174,7 +174,7 @@ namespace QuanLyKhoThucPham.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                dsthucphams = dsthucphams.Where(s => s.tenSP.ToUpper().Contains(searchString.ToUpper()));
+                dsthucphams = dsthucphams.Where(s => s.TenSP.ToUpper().Contains(searchString.ToUpper()));
             }
 
             return View(await dsthucphams.ToListAsync());

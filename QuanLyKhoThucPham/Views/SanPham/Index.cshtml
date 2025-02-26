@@ -1,4 +1,4 @@
-﻿@model IEnumerable<QuanLyKhoThucPham.Models.SanPham>
+﻿@model IEnumerable<QuanLyKhoThucPham.Models.SanPhamModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -25,12 +25,11 @@
                 <a>Mô tả</a>
             </th>
             <th>
-                <a>Ngày sản xuất</a>
-            </th>
-            <th>
                 <a>Nhà sản xuất</a>
             </th>
-           
+            <th>
+                <a>Mã nhà cung cấp</a>
+            </th>
             <th>
                 <a asp-action="Create" class="khung">Tạo mới</a>
             </th>
@@ -41,27 +40,25 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ID)
+                @Html.DisplayFor(modelItem => item.MaSP)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.tenSP)
+                @Html.DisplayFor(modelItem => item.TenSP)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.mota)
+                @Html.DisplayFor(modelItem => item.MoTa)
             </td>
-        
             <td>
-                @Html.DisplayFor(modelItem => item.ngaysx)
+                @Html.DisplayFor(modelItem => item.NhaSanXuat)
             </td>
-            
             <td>
-                @Html.DisplayFor(modelItem => item.nhasanxuat)
+                @Html.DisplayFor(modelItem => item.NhaCungCap.MaNhaCungCap)
             </td>
                
             <td>
-                    <a asp-action="Edit" asp-route-id="@item.ID" class="khung">Chỉnh sửa </a> 
-                    <a asp-action="Details" asp-route-id="@item.ID" class="khung">Xem chi tiết</a> 
-                    <a asp-action="Delete" asp-route-id="@item.ID" class="khung">Xóa</a>
+                    <a asp-action="Edit" asp-route-maSP="@item.MaSP" class="khung">Chỉnh sửa </a>
+                    <a asp-action="Details" asp-route-maSP="@item.MaSP" class="khung">Xem chi tiết</a>
+                    <a asp-action="Delete" asp-route-maSP="@item.MaSP" class="khung">Xóa</a>
             </td>
         </tr>
 }

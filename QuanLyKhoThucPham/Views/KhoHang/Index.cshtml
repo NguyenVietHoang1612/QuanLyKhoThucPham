@@ -1,4 +1,4 @@
-﻿@model IEnumerable<QuanLyKhoThucPham.Models.KhoHang>
+﻿@model IEnumerable<QuanLyKhoThucPham.Models.KhoHangModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -55,9 +55,9 @@
 
 				
 				<td >
-                    <a asp-action="Edit" asp-route-id="@item.MaKho" class="khung">Chỉnh sửa</a> 
-                    <a asp-action="Details" asp-route-id="@item.MaKho" class="khung">xem chi tiết</a> 
-                    <a asp-action="Delete" asp-route-id="@item.MaKho" class="khung">Xóa</a>
+                    <a asp-action="Edit" asp-route-maKhoHang="@item.MaKho" class="khung">Chỉnh sửa</a>
+                    <a asp-action="Details" asp-route-maKhoHang="@item.MaKho" class="khung">xem chi tiết</a>
+                    <a asp-action="Delete" asp-route-maKhoHang="@item.MaKho" class="khung">Xóa</a>
             </td>
         </tr>
 }

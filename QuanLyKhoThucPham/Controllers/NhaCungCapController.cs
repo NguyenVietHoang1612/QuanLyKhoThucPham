@@ -28,15 +28,15 @@ namespace QuanLyKhoThucPham.Controllers
         }
 
         // GET: NhaCungCap/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? maNhaCungCap)
         {
-            if (id == null || _context.NhaCungCap == null)
+            if (maNhaCungCap == null || _context.NhaCungCap == null)
             {
                 return NotFound();
             }
 
             var nhaCungCap = await _context.NhaCungCap
-                .FirstOrDefaultAsync(m => m.MaNhaCungCap == id);
+                .FirstOrDefaultAsync(m => m.MaNhaCungCap == maNhaCungCap);
             if (nhaCungCap == null)
             {
                 return NotFound();
@@ -56,7 +56,7 @@ namespace QuanLyKhoThucPham.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaNhaCungCap,TenNhaCungCap,DiaChi,SoDienThoai")] NhaCungCap nhaCungCap)
+        public async Task<IActionResult> Create([Bind("MaNhaCungCap,TenNhaCungCap,DiaChi,SoDienThoai")] NhaCungCapModel nhaCungCap)
         {
             if (ModelState.IsValid)
             {
@@ -68,14 +68,14 @@ namespace QuanLyKhoThucPham.Controllers
         }
 
         // GET: NhaCungCap/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? maNhaCungCap)
         {
-            if (id == null || _context.NhaCungCap == null)
+            if (maNhaCungCap == null || _context.NhaCungCap == null)
             {
                 return NotFound();
             }
 
-            var nhaCungCap = await _context.NhaCungCap.FindAsync(id);
+            var nhaCungCap = await _context.NhaCungCap.FindAsync(maNhaCungCap);
             if (nhaCungCap == null)
             {
                 return NotFound();
@@ -88,9 +88,9 @@ namespace QuanLyKhoThucPham.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MaNhaCungCap,TenNhaCungCap,DiaChi,SoDienThoai")] NhaCungCap nhaCungCap)
+        public async Task<IActionResult> Edit(int maNhaCungCap, [Bind("MaNhaCungCap,TenNhaCungCap,DiaChi,SoDienThoai")] NhaCungCapModel nhaCungCap)
         {
-            if (id != nhaCungCap.MaNhaCungCap)
+            if (maNhaCungCap != nhaCungCap.MaNhaCungCap)
             {
                 return NotFound();
             }
@@ -119,15 +119,15 @@ namespace QuanLyKhoThucPham.Controllers
         }
 
         // GET: NhaCungCap/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? maNhaCungCap)
         {
-            if (id == null || _context.NhaCungCap == null)
+            if (maNhaCungCap == null || _context.NhaCungCap == null)
             {
                 return NotFound();
             }
 
             var nhaCungCap = await _context.NhaCungCap
-                .FirstOrDefaultAsync(m => m.MaNhaCungCap == id);
+                .FirstOrDefaultAsync(m => m.MaNhaCungCap == maNhaCungCap);
             if (nhaCungCap == null)
             {
                 return NotFound();
@@ -139,13 +139,13 @@ namespace QuanLyKhoThucPham.Controllers
         // POST: NhaCungCap/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int maNhaCungCap)
         {
             if (_context.NhaCungCap == null)
             {
                 return Problem("Entity set 'QuanLyKhoThucPhamContext.NhaCungCap'  is null.");
             }
-            var nhaCungCap = await _context.NhaCungCap.FindAsync(id);
+            var nhaCungCap = await _context.NhaCungCap.FindAsync(maNhaCungCap);
             if (nhaCungCap != null)
             {
                 _context.NhaCungCap.Remove(nhaCungCap);
@@ -155,9 +155,9 @@ namespace QuanLyKhoThucPham.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool NhaCungCapExists(int id)
+        private bool NhaCungCapExists(int maNhaCungCap)
         {
-          return (_context.NhaCungCap?.Any(e => e.MaNhaCungCap == id)).GetValueOrDefault();
+          return (_context.NhaCungCap?.Any(e => e.MaNhaCungCap == maNhaCungCap)).GetValueOrDefault();
         }
     }
 }

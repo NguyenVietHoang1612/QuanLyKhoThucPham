@@ -2,10 +2,12 @@
 
 namespace QuanLyKhoThucPham.Models
 {
-    public class NhanVien
+    public class NhanVienModel
     {
         [Key]
+
         public int MaNhanVien  { get; set; }
+
         [Required]
         [Display(Name = "Họ Tên Nhân Viên")]
         public string HoTen { get; set; }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<QuanLyKhoThucPham.Models.KhachHang>
+﻿@model IEnumerable<QuanLyKhoThucPham.Models.KhachHangModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -18,7 +18,7 @@
            
             
             <th>
-                @Html.DisplayNameFor(model => model.Diachi)
+                @Html.DisplayNameFor(model => model.DiaChi)
             </th>
            
             <th>
@@ -37,16 +37,16 @@
             </td>
            
             <td>
-                @Html.DisplayFor(modelItem => item.Diachi)
+                @Html.DisplayFor(modelItem => item.DiaChi)
             </td>
            
             <td>
                 @Html.DisplayFor(modelItem => item.SDT)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.MaKH" class="khung">Chỉnh sửa</a> 
-                <a asp-action="Details" asp-route-id="@item.MaKH"class="khung">Chi Tiết</a> 
-                <a asp-action="Delete" asp-route-id="@item.MaKH"class="khung">Xóa</a>
+                <a asp-action="Edit" asp-route-maKH="@item.MaKH" class="khung">Chỉnh sửa</a> 
+                    <a asp-action="Details" asp-route-maKH="@item.MaKH" class="khung">Chi Tiết</a>
+                    <a asp-action="Delete" asp-route-maKH="@item.MaKH" class="khung">Xóa</a>
             </td>
         </tr>
 }

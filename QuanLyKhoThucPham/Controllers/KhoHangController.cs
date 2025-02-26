@@ -29,15 +29,15 @@ namespace QuanLyKhoThucPham.Controllers
         }
 
         // GET: dskhohangModels/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? maKhoHang)
         {
-            if (id == null || _context.KhoHang == null)
+            if (maKhoHang == null || _context.KhoHang == null)
             {
                 return NotFound();
             }
 
             var dskhohangModel = await _context.KhoHang
-                .FirstOrDefaultAsync(m => m.MaKho == id);
+                .FirstOrDefaultAsync(m => m.MaKho == maKhoHang);
             if (dskhohangModel == null)
             {
                 return NotFound();
@@ -57,7 +57,7 @@ namespace QuanLyKhoThucPham.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,mota,soluongtong,soluongtrong")] KhoHang dskhohangModel)
+        public async Task<IActionResult> Create([Bind("MaKho,TenKho,soluongtong,soluongtrong,mota")] KhoHangModel dskhohangModel)
         {
             if (ModelState.IsValid)
             {
@@ -69,14 +69,14 @@ namespace QuanLyKhoThucPham.Controllers
         }
 
         // GET: dskhohangModels/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? maKhoHang)
         {
-            if (id == null || _context.KhoHang == null)
+            if (maKhoHang == null || _context.KhoHang == null)
             {
                 return NotFound();
             }
 
-            var dskhohangModel = await _context.KhoHang.FindAsync(id);
+            var dskhohangModel = await _context.KhoHang.FindAsync(maKhoHang);
             if (dskhohangModel == null)
             {
                 return NotFound();
@@ -89,9 +89,9 @@ namespace QuanLyKhoThucPham.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,mota,soluongtong,soluongtrong")] KhoHang dskhohangModel)
+        public async Task<IActionResult> Edit(int maKhoHang, [Bind("MaKho,TenKho,soluongtong,soluongtrong,mota")] KhoHangModel dskhohangModel)
         {
-            if (id != dskhohangModel.MaKho)
+            if (maKhoHang != dskhohangModel.MaKho)
             {
                 return NotFound();
             }
@@ -120,15 +120,15 @@ namespace QuanLyKhoThucPham.Controllers
         }
 
         // GET: dskhohangModels/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? maKhoHang)
         {
-            if (id == null || _context.KhoHang == null)
+            if (maKhoHang == null || _context.KhoHang == null)
             {
                 return NotFound();
             }
 
             var dskhohangModel = await _context.KhoHang
-                .FirstOrDefaultAsync(m => m.MaKho == id);
+                .FirstOrDefaultAsync(m => m.MaKho == maKhoHang);
             if (dskhohangModel == null)
             {
                 return NotFound();
@@ -140,13 +140,13 @@ namespace QuanLyKhoThucPham.Controllers
         // POST: dskhohangModels/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int maKhoHang)
         {
             if (_context.KhoHang == null)
             {
                 return Problem("Entity set 'QuanLyKhoThucPhamContext.dskhohangModel'  is null.");
             }
-            var dskhohangModel = await _context.KhoHang.FindAsync(id);
+            var dskhohangModel = await _context.KhoHang.FindAsync(maKhoHang);
             if (dskhohangModel != null)
             {
                 _context.KhoHang.Remove(dskhohangModel);
@@ -156,9 +156,9 @@ namespace QuanLyKhoThucPham.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool dskhohangModelExists(int id)
+        private bool dskhohangModelExists(int maKhoHang)
         {
-          return (_context.KhoHang?.Any(e => e.MaKho == id)).GetValueOrDefault();
+          return (_context.KhoHang?.Any(e => e.MaKho == maKhoHang)).GetValueOrDefault();
         }
         //tìm kiếm
          [HttpPost]

@@ -1,4 +1,4 @@
-﻿@model QuanLyKhoThucPham.Models.KhoHang
+﻿@model QuanLyKhoThucPham.Models.KhoHangModel
 
 @{
     ViewData["Title"] = "Details";
@@ -38,7 +38,7 @@
     </dl>
 </div>
 <form>
-    <input asp-action="Edit" asp-route-id="@Model?.MaKho" type="submit" class="btn btn-primary" value="Chỉnh sửa">
+    <input asp-action="Edit" asp-route-maKhoHang="@Model?.MaKho" type="submit" class="btn btn-primary" value="Chỉnh sửa">
     <input asp-action="Index" type="submit" class="btn btn-primary" value="Trở lại danh sách kho">
     
 </form>

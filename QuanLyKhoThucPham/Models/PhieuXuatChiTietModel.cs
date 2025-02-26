@@ -3,12 +3,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace QuanLyKhoThucPham.Models
 {
-    public class PhieuXuatChiTiet
+    public class PhieuXuatChiTietModel
     {
         [Key]
         public int MaPhieuXuatChiTiet { get; set; }
 
-        public int? MaSP { get; set; }
+        [Key]
+        public int MaSP { get; set; }
 
         public int MaPhieuXuat { get; set; }
 
@@ -18,11 +19,10 @@ namespace QuanLyKhoThucPham.Models
 
         public decimal TongTIen { get; set; }
 
-        public string GhiChu;
+        public string? GhiChu { get; set; }
 
-        public PhieuNhap PhieuXuat { get; set; }
-        [ForeignKey("MaSP")]
-        public virtual SanPham SanPham { get; set; }
+        public PhieuXuatModel PhieuXuat { get; set; }
+        public SanPhamModel SanPham { get; set; }
 
     }
 }

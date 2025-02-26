@@ -2,13 +2,12 @@
 
 namespace QuanLyKhoThucPham.Models
 {
-    public class NhaCungCap
+    public class NhaCungCapModel
     {
         [Key]
         [Required]
         [Display(Name = "Mã Nhà Cung Cấp")]
         public int MaNhaCungCap { get; set; }
-
 
         [Required]
         [Display(Name = "Tên Nhà Cung Cấp")]
@@ -19,6 +18,5 @@ namespace QuanLyKhoThucPham.Models
 
         [Display(Name = "Số Điện Thoại")]
         public string SoDienThoai { get; set; }
-
     }
 }

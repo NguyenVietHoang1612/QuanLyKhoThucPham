@@ -28,15 +28,15 @@ namespace QuanLyKhoThucPham.Controllers
         }
 
         // GET: Quanlykhachhang/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? maKH)
         {
-            if (id == null || _context.KhachHang == null)
+            if (maKH == null || _context.KhachHang == null)
             {
                 return NotFound();
             }
 
             var quanlykhachhang = await _context.KhachHang
-                .FirstOrDefaultAsync(m => m.MaKH == id);
+                .FirstOrDefaultAsync(m => m.MaKH == maKH);
             if (quanlykhachhang == null)
             {
                 return NotFound();
@@ -56,7 +56,7 @@ namespace QuanLyKhoThucPham.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,TenKH,MaKH,Diachi,Email,SDT")] Models.KhachHang quanlykhachhang)
+        public async Task<IActionResult> Create([Bind("MaKH,TenKH,Diachi,Email,SDT")] Models.KhachHangModel quanlykhachhang)
         {
             if (ModelState.IsValid)
             {
@@ -68,14 +68,14 @@ namespace QuanLyKhoThucPham.Controllers
         }
 
         // GET: Quanlykhachhang/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? maKH)
         {
-            if (id == null || _context.KhachHang == null)
+            if (maKH == null || _context.KhachHang == null)
             {
                 return NotFound();
             }
 
-            var quanlykhachhang = await _context.KhachHang.FindAsync(id);
+            var quanlykhachhang = await _context.KhachHang.FindAsync(maKH);
             if (quanlykhachhang == null)
             {
                 return NotFound();
@@ -88,9 +88,9 @@ namespace QuanLyKhoThucPham.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,TenKH,MaKH,Diachi,Email,SDT")] Models.KhachHang quanlykhachhang)
+        public async Task<IActionResult> Edit(int maKH, [Bind("MaKH,TenKH,Diachi,Email,SDT")] Models.KhachHangModel dsKhachHang)
         {
-            if (id != quanlykhachhang.MaKH)
+            if (maKH != dsKhachHang.MaKH)
             {
                 return NotFound();
             }
@@ -99,12 +99,12 @@ namespace QuanLyKhoThucPham.Controllers
             {
                 try
                 {
-                    _context.Update(quanlykhachhang);
+                    _context.Update(dsKhachHang);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!QuanlykhachhangExists(quanlykhachhang.MaKH))
+                    if (!QuanlykhachhangExists(dsKhachHang.MaKH))
                     {
                         return NotFound();
                     }
@@ -115,19 +115,19 @@ namespace QuanLyKhoThucPham.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(quanlykhachhang);
+            return View(dsKhachHang);
         }
 
         // GET: Quanlykhachhang/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? maKH)
         {
-            if (id == null || _context.KhachHang == null)
+            if (maKH == null || _context.KhachHang == null)
             {
                 return NotFound();
             }
 
             var quanlykhachhang = await _context.KhachHang
-                .FirstOrDefaultAsync(m => m.MaKH == id);
+                .FirstOrDefaultAsync(m => m.MaKH == maKH);
             if (quanlykhachhang == null)
             {
                 return NotFound();
@@ -139,13 +139,13 @@ namespace QuanLyKhoThucPham.Controllers
         // POST: Quanlykhachhang/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int maKH)
         {
             if (_context.KhachHang == null)
             {
                 return Problem("Entity set 'QuanLyKhoThucPhamContext.Quanlykhachhang'  is null.");
             }
-            var quanlykhachhang = await _context.KhachHang.FindAsync(id);
+            var quanlykhachhang = await _context.KhachHang.FindAsync(maKH);
             if (quanlykhachhang != null)
             {
                 _context.KhachHang.Remove(quanlykhachhang);
@@ -155,9 +155,9 @@ namespace QuanLyKhoThucPham.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool QuanlykhachhangExists(int id)
+        private bool QuanlykhachhangExists(int maKH)
         {
-            return (_context.KhachHang?.Any(e => e.MaKH == id)).GetValueOrDefault();
+            return (_context.KhachHang?.Any(e => e.MaKH == maKH)).GetValueOrDefault();
         }
         //Tìm kiếm
         [HttpPost, ActionName("search")]
