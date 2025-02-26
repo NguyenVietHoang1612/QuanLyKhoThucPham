@@ -12,7 +12,7 @@
 
         public string gia {  get; set; }
 
-        public dskhohangModel kho { get; set; }
+       
 
     }
 }

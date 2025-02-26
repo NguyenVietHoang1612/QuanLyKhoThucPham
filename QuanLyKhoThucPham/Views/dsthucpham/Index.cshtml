@@ -5,10 +5,10 @@
 }
 
 <h1>Danh sách thực phẩm</h1>
-<form>
+<form asp-controller="dsthucpham" asp-action="Index" method="post">
     <div class="input-group">
-        <input class="form-control" type="text" placeholder="Tìm kiếm kho hàng..." aria-label="Search" aria-describedby="btnNavbarSearch" />
-        <button class="btn btn-primary" id="btnNavbarSearch" type="button">Tìm kiếm</button>
+        <input class="form-control" type="text" name="SearchString" placeholder="Tìm kiếm tên sản phẩm..." aria-describedby="btnNavbarSearch" />
+        <button class="btn btn-primary" type="submit" />Tìm kiếm</button>
     </div>
 </form>
 
@@ -30,9 +30,7 @@
             <th>
                 <a>Nhà sản xuất</a>
             </th>
-           <th>
-				<a>tên kho</a>
-           </th>
+           
             <th>
                 <a asp-action="Create" class="khung">Tạo mới</a>
             </th>
@@ -59,9 +57,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.nhasanxuat)
             </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.kho)
-                </td>
+               
             <td>
                     <a asp-action="Edit" asp-route-id="@item.ID" class="khung">Chỉnh sửa </a> 
                     <a asp-action="Details" asp-route-id="@item.ID" class="khung">Xem chi tiết</a> 

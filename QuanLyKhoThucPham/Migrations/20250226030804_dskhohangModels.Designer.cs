@@ -12,8 +12,8 @@ using QuanLyKhoThucPham.Data;
 namespace QuanLyKhoThucPham.Migrations
 {
     [DbContext(typeof(QuanLyKhoThucPhamContext))]
-    [Migration("20250224043316_dsthucpham")]
-    partial class dsthucpham
+    [Migration("20250226030804_dskhohangModels")]
+    partial class dskhohangModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -68,9 +68,6 @@ namespace QuanLyKhoThucPham.Migrations
                     b.Property<DateTime>("hsd")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("khoID")
-                        .HasColumnType("int");
-
                     b.Property<string>("mota")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -92,20 +89,7 @@ namespace QuanLyKhoThucPham.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("khoID");
-
                     b.ToTable("dsthucpham");
-                });
-
-            modelBuilder.Entity("QuanLyKhoThucPham.Models.dsthucpham", b =>
-                {
-                    b.HasOne("QuanLyKhoThucPham.Models.dskhohangModel", "kho")
-                        .WithMany()
-                        .HasForeignKey("khoID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("kho");
                 });
 #pragma warning restore 612, 618
         }

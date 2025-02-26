@@ -66,9 +66,6 @@ namespace QuanLyKhoThucPham.Migrations
                     b.Property<DateTime>("hsd")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("khoID")
-                        .HasColumnType("int");
-
                     b.Property<string>("mota")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -90,20 +87,7 @@ namespace QuanLyKhoThucPham.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("khoID");
-
                     b.ToTable("dsthucpham");
-                });
-
-            modelBuilder.Entity("QuanLyKhoThucPham.Models.dsthucpham", b =>
-                {
-                    b.HasOne("QuanLyKhoThucPham.Models.dskhohangModel", "kho")
-                        .WithMany()
-                        .HasForeignKey("khoID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("kho");
                 });
 #pragma warning restore 612, 618
         }

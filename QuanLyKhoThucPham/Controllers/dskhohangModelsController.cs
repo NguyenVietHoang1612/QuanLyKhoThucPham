@@ -170,14 +170,14 @@ namespace QuanLyKhoThucPham.Controllers
                 return Problem("Danh sách kho hàng không có dữ liệu ");
             }
 
-            var dskhohangModels = from m in _context.dskhohangModel select m;
+            var dskhohangs = from m in _context.dskhohangModel select m;
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                dskhohangModels = dskhohangModels.Where(s => s .Name.ToUpper().Contains(searchString.ToUpper()));
+                dskhohangs = dskhohangs.Where(s => s.Name.ToUpper().Contains(searchString.ToUpper()));
             }
 
-            return View(await dskhohangModels.ToListAsync());
+            return View(await dskhohangs.ToListAsync());
         }
     }
 }

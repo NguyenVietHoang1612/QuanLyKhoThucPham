@@ -8,6 +8,7 @@
 
         public string soluongtong { get; set; }
         public string soluongtrong { get; set; }
+
        
     }
 }
