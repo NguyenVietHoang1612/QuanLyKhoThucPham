@@ -4,19 +4,18 @@ namespace QuanLyKhoThucPham.Models
 {
     public class KhachHang
     {
-        public KhachHang() { 
-            this.DSPhieuXuat = new HashSet<PhieuXuat>();
-        }
-
         [Key]
-        public int MaKhachHang { get; set; }
+        public int MaKH { get; set; }
+        [Display(Name = "Tên Khách Hàng")]
 
-        public string HoTen {  get; set; }
-
-        public string DiaChi { get; set; }
-
-        public string Sdt { get; set; }
-
-        public virtual ICollection<PhieuXuat> DSPhieuXuat { get; set; }
+        public string TenKH { get; set; }
+        
+      
+        [Display(Name = "Địa chỉ")]
+        public string? Diachi { get; set; }
+        
+        [Display(Name = "SĐT")]
+        public string SDT { get; set; }
+        
     }
 }

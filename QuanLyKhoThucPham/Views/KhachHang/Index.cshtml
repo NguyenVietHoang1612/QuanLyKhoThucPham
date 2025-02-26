@@ -1,0 +1,68 @@
+﻿@model IEnumerable<QuanLyKhoThucPham.Models.KhachHang>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Danh Sách Khách Hàng</h1>
+
+<p>
+    
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TenKH)
+            </th>
+           
+            
+            <th>
+                @Html.DisplayNameFor(model => model.Diachi)
+            </th>
+           
+            <th>
+                @Html.DisplayNameFor(model => model.SDT)
+            </th>
+            <th>
+                <a asp-action="Create"class="khung">Tạo Mới</a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenKH)
+            </td>
+           
+            <td>
+                @Html.DisplayFor(modelItem => item.Diachi)
+            </td>
+           
+            <td>
+                @Html.DisplayFor(modelItem => item.SDT)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.MaKH" class="khung">Chỉnh sửa</a> 
+                <a asp-action="Details" asp-route-id="@item.MaKH"class="khung">Chi Tiết</a> 
+                <a asp-action="Delete" asp-route-id="@item.MaKH"class="khung">Xóa</a>
+            </td>
+        </tr>
+}
+    </tbody>
+    <form asp-controller="Quanlykhachhang" asp-action="Index" method="post" style="margin-bottom: 15px; display: flex; align-items: center;">
+        <label for="searchInput" style="font-weight: bold; color: #007bff; font-size: 16px; margin-right: 10px;">
+            🔍 Tìm kiếm khách hàng:
+        </label>
+        <input id="searchInput" type="text" name="searchString" placeholder="Tìm kiếm dữ liệu"
+               style="border: 2px solid #007bff; border-radius: 5px; padding: 8px; width: 250px;" />
+        <button type="submit"
+                style="background-color: #007bff; color: white; padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer; margin-left: 10px;">
+            🔍 Tìm kiếm
+        </button>
+    </form>
+
+
+
+</table>
