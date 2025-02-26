@@ -1,0 +1,53 @@
+﻿@model QuanLyKhoThucPham.Models.KhoHang
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Tạo mới danh sách kho hàng</h1>
+
+<h4>dskhohangModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="TenKho" class="control-label">Tên kho</label>
+                <input asp-for="TenKho" class="form-control" />
+                <span asp-validation-for="TenKho" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="mota" class="control-label">Mô tả</label>
+                <input asp-for="mota" class="form-control" />
+                <span asp-validation-for="mota" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="soluongtong" class="control-label">Số lượng tổng</label>
+                <input asp-for="soluongtong" class="form-control" />
+                <span asp-validation-for="soluongtong" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="soluongtrong" class="control-label">Số lương trống</label>
+                <input asp-for="soluongtrong" class="form-control" />
+                <span asp-validation-for="soluongtrong" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Tạo" class="btn btn-primary" />
+                
+            </div>
+            
+        </form>
+        <hr />
+        <form>
+            <input asp-action="Index" type="submit" class="btn btn-primary" value="Trở lại danh sách kho">
+        </form>
+        
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

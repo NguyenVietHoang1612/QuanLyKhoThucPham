@@ -24,8 +24,6 @@ namespace QuanLyKhoThucPham.Models
         public decimal TongTien { get; set; }
 
         public virtual KhachHang KhachHang { get; set; }
-        public virtual KhoNhap KhoNhap { get; set; }
-        public virtual NhanVien NhanVien { get; set; }
 
         public virtual ICollection<PhieuXuatChiTiet> DSChiTietPhieuXuat { get; set; }
     }

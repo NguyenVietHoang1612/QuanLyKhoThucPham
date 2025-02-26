@@ -1,0 +1,44 @@
+﻿@model QuanLyKhoThucPham.Models.KhoHang
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Chi tiết kho hàng</h1>
+
+<div>
+    <h4>dskhohangModel</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+                <a>Tên kho</a>
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TenKho)
+        </dd>
+        <dt class = "col-sm-2">
+            <a>Mô tả</a>
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.mota)
+        </dd>
+
+        <dt class = "col-sm-2">
+                <a>Số lượng tổng</a>
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.soluongtong)
+        </dd>
+        <dt class="col-sm-2">
+            <a>Số lượng trống</a>
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.soluongtrong)
+        </dd>
+    </dl>
+</div>
+<form>
+    <input asp-action="Edit" asp-route-id="@Model?.MaKho" type="submit" class="btn btn-primary" value="Chỉnh sửa">
+    <input asp-action="Index" type="submit" class="btn btn-primary" value="Trở lại danh sách kho">
+    
+</form>

@@ -1,0 +1,65 @@
+﻿@model QuanLyKhoThucPham.Models.SanPham
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Chỉnh sửa</h1>
+
+<h4>Danh sách thực phẩm</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ID" />
+            <div class="form-group">
+                <label asp-for="tenSP" class="control-label">Tên sản phẩm</label>
+                <input asp-for="tenSP" class="form-control" />
+                <span asp-validation-for="tenSP" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="mota" class="control-label">Mô tả</label>
+                <input asp-for="mota" class="form-control" />
+                <span asp-validation-for="mota" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="soluong" class="control-label">Số lượng</label>
+                <input asp-for="soluong" class="form-control" />
+                <span asp-validation-for="soluong" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ngaysx" class="control-label">Ngày sản xuất</label>
+                <input asp-for="ngaysx" class="form-control" />
+                <span asp-validation-for="ngaysx" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="hsd" class="control-label">Hạn sử dụng</label>
+                <input asp-for="hsd" class="form-control" />
+                <span asp-validation-for="hsd" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="nhasanxuat" class="control-label">Nhà sản xuất</label>
+                <input asp-for="nhasanxuat" class="form-control" />
+                <span asp-validation-for="nhasanxuat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="gia" class="control-label">Giá</label>
+                <input asp-for="gia" class="form-control" />
+                <span asp-validation-for="gia" class="text-danger"></span>
+            </div>
+            <hr />
+
+            <div class="form-group">
+                <input type="submit" value="Lưu" class="btn btn-primary" />
+                <input asp-action="Index" type="submit" class="btn btn-primary" value="Trở lại danh sách kho">
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

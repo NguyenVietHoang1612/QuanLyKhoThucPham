@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using QuanLyKhoThucPham.Models;
-
-using QuanLyKhoThucPham.Models;
+﻿using Microsoft.EntityFrameworkCore;
 
 
-namespace QuanLyKhoThucPham.Data
+namespace QuanLyKhoThucPham.Data    
+
 {
     public class QuanLyKhoThucPhamContext : DbContext
     {
@@ -18,10 +12,16 @@ namespace QuanLyKhoThucPham.Data
         }
 
 
+
         public DbSet<QuanLyKhoThucPham.Models.NhanVien>? NhanVien { get; set; } = default!;
 
         public DbSet<QuanLyKhoThucPham.Models.KhachHang>? KhachHang { get; set; } = default!;
 
         public DbSet<QuanLyKhoThucPham.Models.NhaCungCap>? NhaCungCap { get; set; }
+
+        public DbSet<QuanLyKhoThucPham.Models.KhoHang> KhoHang { get; set; } = default!;
+
+        public DbSet<QuanLyKhoThucPham.Models.SanPham>? SanPham { get; set; }
+
     }
 }
