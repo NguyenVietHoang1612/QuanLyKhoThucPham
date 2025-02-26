@@ -169,16 +169,16 @@ namespace QuanLyKhoThucPham.Controllers
                 return Problem("Entity set 'MvcMovieContext.Movie'  is null.");
             }
 
-            var movies = from m in _context.Quanlykhachhang
+            var quanlykhachhangs = from m in _context.Quanlykhachhang
                          select m;
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                movies = movies.Where(s => s.TenKH != null && s.TenKH.ToUpper().Contains(searchString.ToUpper()));
+                quanlykhachhangs = quanlykhachhangs.Where(s => s.TenKH != null && s.TenKH.ToUpper().Contains(searchString.ToUpper()));
 
             }
 
-            return View(await movies.ToListAsync());
+            return View(await quanlykhachhangs.ToListAsync());
         }
     }
  }

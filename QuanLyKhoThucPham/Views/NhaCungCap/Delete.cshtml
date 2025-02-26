@@ -6,8 +6,7 @@
 
 <h1>Xóa Thông Tin</h1>
 
-<h3>
-    Bạn có chắc chắn muốn xóa cái này không?<h3>
+
 <div>
     <h4>NhaCungCap</h4>
     <hr />
@@ -31,10 +30,17 @@
             @Html.DisplayFor(model => model.SoDienThoai)
         </dd>
     </dl>
-    
-    <form asp-action="Delete">
+
+    <form asp-action="Delete" method="post">
         <input type="hidden" asp-for="MaNhaCungCap" />
-        <input type="submit" value="Xóa" class="btn btn-danger" /> |
-        <a asp-action="Index">Trở lại danh sách</a>
+
+        <div style="margin-top: 20px; display: flex; gap: 10px; align-items: center;">
+            <button type="submit" style="background-color: red; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
+                Xác nhận xóa
+            </button>
+            <a href="@Url.Action("Index", "NhaCungCap")"
+               style="background-color: #6c757d; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none; font-size: 16px;">
+                Hủy bỏ
+            </a>
+        </div>
     </form>
-</div>

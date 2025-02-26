@@ -4,7 +4,7 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Chi tiết khách hàng</h1>
+<h1>Chi Tiết Khách Hàng</h1>
 
 <div>
     <h4>Quanlykhachhang</h4>
@@ -32,7 +32,12 @@
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.MaKH">Chỉnh sửa</a> |
-    <a asp-action="Index">Trở lại danh sách</a>
+<div style="margin-top: 20px; display: flex; gap: 10px; align-items: center;">
+    
+
+    <a href="@Url.Action("Index", "Quanlykhachhang")"
+       style="background-color: #6c757d; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none; font-size: 16px;">
+        Quay lại
+    </a>
 </div>
+
