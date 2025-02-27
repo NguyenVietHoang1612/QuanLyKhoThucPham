@@ -74,7 +74,7 @@
         <tbody>
             <tr>
                 <td>
-                    <select name="PhieuNhapChiTiet[0].MaSP" class="form-control" onchange="updateSanPham(this)">
+                    <select name="PhieuXuatChiTiet[0].MaSP" class="form-control" onchange="updateSanPham(this)">
                         <option value="">Chọn sản phẩm</option>
                         @foreach (var sp in Model.DSSanPham)
                         {
@@ -82,10 +82,10 @@
                         }
                     </select>
                 </td>
-                <td><input name="PhieuNhapChiTiet[0].DonGia" class="form-control" readonly /></td>
-                <td><input name="PhieuNhapChiTiet[0].SoLuong" class="form-control" type="number" oninput="updateTongTien(this)" value="1" /></td>
+                <td><input name="PhieuXuatChiTiet[0].DonGia" class="form-control" readonly /></td>
+                <td><input name="PhieuXuatChiTiet[0].SoLuong" class="form-control" type="number" oninput="updateTongTien(this)" value="1" /></td>
                 <td><input class="form-control" readonly data-soluongton /></td>
-                <td><input name="PhieuNhapChiTiet[0].ThanhTien" class="form-control" readonly /></td>
+                <td><input name="PhieuXuatChiTiet[0].ThanhTien" class="form-control" readonly /></td>
                 <td><button type="button" class="btn btn-danger" onclick="removeRow(this)">Xóa</button></td>
             </tr>
         </tbody>
@@ -93,7 +93,7 @@
     <button type="button" class="btn btn-success" onclick="addRow()">Thêm sản phẩm</button>
     <div class="form-group">
         <label>Tổng tiền phiếu xuất</label>
-        <input id="tongTien" name="PhieuNhap.TongTien" class="form-control" value="" readonly />
+        <input id="tongTien" name="PhieuXuat.TongTien" class="form-control" value="" readonly />
     </div>
     <button type="submit" class="btn btn-primary">Lưu</button>
 </form>
@@ -143,6 +143,7 @@
         var table = document.getElementById("tableSanPham").getElementsByTagName('tbody')[0];
         var newRow = table.rows[0].cloneNode(true);
         var index = table.rows.length;
+
         newRow.querySelectorAll("select, input").forEach((input) => {
             var name = input.getAttribute("name");
             if (name) {
@@ -153,6 +154,7 @@
         newRow.querySelector("select").selectedIndex = 0;
         table.appendChild(newRow);
     }
+
     function removeRow(button) {
         var row = button.closest("tr");
         row.remove();

@@ -56,7 +56,7 @@ namespace QuanLyKhoThucPham.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaKH,TenKH,Diachi,Email,SDT")] Models.KhachHangModel quanlykhachhang)
+        public async Task<IActionResult> Create([Bind("MaKH,TenKH,DiaChi,Email,SDT")] Models.KhachHangModel quanlykhachhang)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +88,7 @@ namespace QuanLyKhoThucPham.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int maKH, [Bind("MaKH,TenKH,Diachi,Email,SDT")] Models.KhachHangModel dsKhachHang)
+        public async Task<IActionResult> Edit(int maKH, [Bind("MaKH,TenKH,DiaChi,Email,SDT")] Models.KhachHangModel dsKhachHang)
         {
             if (maKH != dsKhachHang.MaKH)
             {

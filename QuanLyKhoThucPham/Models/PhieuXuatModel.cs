@@ -20,13 +20,13 @@ namespace QuanLyKhoThucPham.Models
         public string? Ghichu { get; set; }
         [ForeignKey("MaKH")]
 
-        public virtual KhachHangModel KhachHang { get; set; }
+        public virtual KhachHangModel? KhachHang { get; set; }
 
         [ForeignKey("MaNhanVien")]
         public virtual NhanVienModel? NhanVien { get; set; }
         [ForeignKey("MaKho")]
         public virtual KhoHangModel? KhoHang { get; set; }
 
-        public virtual ICollection<PhieuXuatChiTietModel> DSChiTietPhieuXuat { get; set; }
+        public virtual ICollection<PhieuXuatChiTietModel>? DSChiTietPhieuXuat { get; set; }
     }
 }
