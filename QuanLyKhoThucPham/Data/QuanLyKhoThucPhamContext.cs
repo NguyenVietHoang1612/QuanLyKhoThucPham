@@ -30,10 +30,6 @@ namespace QuanLyKhoThucPham.Data
             modelBuilder.Entity<KhachHangModel>().ToTable("KhachHang");
             modelBuilder.Entity<PhieuNhapModel>().ToTable("PhieuNhap");
             modelBuilder.Entity<PhieuXuatModel>().ToTable("PhieuXuat");
-            modelBuilder.Entity<PhieuNhapChiTietModel>()
-                .HasKey(c => new { c.MaPhieuNhapChiTiet, c.MaSP });
-            modelBuilder.Entity<PhieuXuatChiTietModel>()
-                .HasKey(c => new { c.MaPhieuXuatChiTiet, c.MaSP });
         }
 
 

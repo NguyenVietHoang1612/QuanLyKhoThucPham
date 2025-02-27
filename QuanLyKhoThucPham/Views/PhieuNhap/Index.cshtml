@@ -11,7 +11,7 @@
         <tr>
             <th scope="col">STT</th>
             <th scope="col">Ngày Nhập</th>
-            <th scope="col">Nhân Viên</th>
+            <th scope="col">Người lập</th>
             <th scope="col">Nhà Cung Cấp</th>
             <th scope="col">Kho Nhập</th>
             <th scope="col">Tổng Tiền</th>
@@ -24,12 +24,14 @@
             <tr>
                 <td>@phieuNhap.MaPhieuNhap</td>
                 <td>@phieuNhap.NgayNhap.ToString("dd/MM/yyyy")</td>
-                <td>@Html.DisplayFor(modelItem => phieuNhap.MaNhanVien)</td>
-                <td>@Html.DisplayFor(modelItem => phieuNhap.MaNhaCungCap)</td>
-                <td>@Html.DisplayFor(modelItem => phieuNhap.MaKho)</td>
+
+                <!-- Kiểm tra null trước khi hiển thị -->
+                <td>@phieuNhap.NhanVien.HoTen</td>
+                <td>@phieuNhap.NhaCungCap.TenNhaCungCap</td>
+                <td>@phieuNhap.KhoHang.TenKho</td>
+
                 <td>@phieuNhap.TongTien VND</td>
                 <td>
-
                     <a asp-controller="PhieuNhap" asp-action="Detail" asp-route-maPN="@phieuNhap.MaPhieuNhap" class="btn btn-info btn-sm">Chi Tiết</a>
                     <a asp-controller="PhieuNhap" asp-action="Delete" asp-route-maPN="@phieuNhap.MaPhieuNhap" class="btn btn-danger">Xóa</a>
                 </td>

@@ -4,6 +4,12 @@ namespace QuanLyKhoThucPham.Models
 {
     public class NhaCungCapModel
     {
+
+        public NhaCungCapModel()
+        {
+            this.PhieuNhap = new HashSet<PhieuNhapModel>();
+        }
+
         [Key]
         [Required]
         [Display(Name = "Mã Nhà Cung Cấp")]
@@ -18,5 +24,8 @@ namespace QuanLyKhoThucPham.Models
 
         [Display(Name = "Số Điện Thoại")]
         public string SoDienThoai { get; set; }
+
+        public ICollection<PhieuNhapModel> PhieuNhap {  get; set; } 
+
     }
 }

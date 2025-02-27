@@ -10,11 +10,11 @@ using QuanLyKhoThucPham.Models;
 
 namespace QuanLyKhoThucPham.Controllers
 {
-    public class KhachHang : Controller
+    public class KhachHangController : Controller
     {
         private readonly QuanLyKhoThucPhamContext _context;
 
-        public KhachHang(QuanLyKhoThucPhamContext context)
+        public KhachHangController(QuanLyKhoThucPhamContext context)
         {
             _context = context;
         }

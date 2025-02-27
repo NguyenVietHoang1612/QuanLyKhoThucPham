@@ -18,7 +18,17 @@ namespace QuanLyKhoThucPham.Controllers
 
         public IActionResult Index()
         {
-            var phieuNhap = _context.PhieuNhap;
+            var phieuNhap = _context.PhieuNhap
+                .Include(p => p.NhaCungCap)
+                .Include(p=> p.NhanVien)
+                .Include(p=>p.KhoHang)
+                .ToList();
+
+            foreach (var pn in phieuNhap)
+            {
+                Console.WriteLine($"Phiếu nhập: {pn.MaNhaCungCap}, nhà cung cấp: {pn.NhaCungCap?.TenNhaCungCap ?? "Không có nhà cung cấp"}");
+            }
+
             return View(phieuNhap);
         }
 
@@ -44,76 +54,82 @@ namespace QuanLyKhoThucPham.Controllers
         {
             if (!ModelState.IsValid)
             {
-                foreach (var key in ModelState.Keys)
-                {
-                    foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-                    {
-                        Console.WriteLine($"Lỗi tại cai nay {key}: {error.ErrorMessage}");
-
-                    }
-                }
-
                 ViewModelPhieuNhap phieuNhapViewModel1 = new ViewModelPhieuNhap
                 {
                     DSNhaCungCap = await _context.NhaCungCap.ToListAsync(),
                     DSSanPham = await _context.SanPham.ToListAsync(),
                     DSKhoHang = await _context.KhoHang.ToListAsync(),
-                    DSNhanVien = await _context.NhanVien.ToListAsync()
+                    DSNhanVien = await _context.NhanVien.ToListAsync(),
+                    PhieuNhap = phieuNhap,
+                    DSChiTietPhieuNhap = phieuNhapChiTiet
                 };
 
-                if (!phieuNhapViewModel1.DSKhoHang.Any()) Console.WriteLine("Danh sách kho nhập rỗng!");
-                if (!phieuNhapViewModel1.DSNhanVien.Any()) Console.WriteLine("Danh sách nhân viên rỗng!");
                 return View(phieuNhapViewModel1);
             }
 
-            phieuNhap.NgayNhap = DateTime.Now;
+            // Tính tổng tiền của phiếu nhập
             phieuNhap.TongTien = phieuNhapChiTiet.Sum(t => t.SoLuong * t.DonGia);
+
+            // Thêm phiếu nhập mới vào database
             _context.PhieuNhap.Add(phieuNhap);
-            _context.SaveChanges();
-            int phieuNhapNhieu = (int)MathF.Abs(_context.PhieuNhapChiTiet.Count());
-            Console.WriteLine($"Day la phieu nhap nhieu {phieuNhapNhieu}");
+            await _context.SaveChangesAsync(); // Đảm bảo lưu trước khi lấy MaPhieuNhap
+
+            // Kiểm tra danh sách phiếu nhập chi tiết
             if (phieuNhapChiTiet != null && phieuNhapChiTiet.Any())
             {
                 foreach (var phieuNhapCT in phieuNhapChiTiet)
                 {
-                    phieuNhapNhieu += 1;
-                    phieuNhapCT.MaPhieuNhapChiTiet = phieuNhapNhieu;
-                    phieuNhapCT.PhieuNhap = phieuNhap;
-                    phieuNhapCT.MaPhieuNhap = phieuNhap.MaPhieuNhap;
+                    phieuNhapCT.MaPhieuNhap = phieuNhap.MaPhieuNhap; // Lấy ID đã tạo từ SQL Server
                     phieuNhapCT.TongTIen = phieuNhapCT.SoLuong * phieuNhapCT.DonGia;
-                    _context.PhieuNhapChiTiet.Add(phieuNhapCT);
+
                     var sanPham = await _context.SanPham.FindAsync(phieuNhapCT.MaSP);
+                    var khoHang = await _context.KhoHang.FindAsync(phieuNhap.MaKho);
+
+                    if (khoHang != null)
+                    {
+                        if (khoHang.soluongtrong - phieuNhapCT.SoLuong < 0)
+                        {
+                            ModelState.AddModelError("", "Kho hàng không đủ chỗ trống!");
+                            return View(phieuNhap);
+                        }
+                        khoHang.soluongtrong -= phieuNhapCT.SoLuong;
+                    }
+
                     if (sanPham != null)
                     {
                         sanPham.SoLuong += phieuNhapCT.SoLuong;
                     }
-                    _context.SanPham.Update(sanPham);
-                }
-                _context.SaveChanges();
-            }
 
-            
+                    _context.PhieuNhapChiTiet.Add(phieuNhapCT);
+                    _context.SanPham.Update(sanPham);
+                    _context.KhoHang.Update(khoHang);
+                }
+                await _context.SaveChangesAsync(); 
+            }
 
             return RedirectToAction(nameof(Index));
         }
+
+
+
         public async Task<IActionResult> Detail(int maPN)
         {
             var phieuNhap = await _context.PhieuNhap
             .Include(p => p.NhaCungCap)
+            .Include(p => p.NhanVien)
+            .Include(p => p.KhoHang)
             .FirstOrDefaultAsync(p => p.MaPhieuNhap == maPN);
 
             if (phieuNhap == null)
             {
                 return NotFound();
             }
-
-            // Lọc danh sách chi tiết phiếu nhập chỉ lấy các mục có MaPhieuNhap khớp với phiếu nhập hiện tại
+        
             var chiTietPhieuNhap = await _context.PhieuNhapChiTiet
                 .Where(ct => ct.MaPhieuNhap == maPN)
                 .Include(ct => ct.SanPham)
                 .ToListAsync();
 
-            // Gán danh sách chi tiết vào phiếu nhập
             phieuNhap.DSChiTietPhieuNhap = chiTietPhieuNhap;
 
             return View(phieuNhap);
@@ -122,7 +138,9 @@ namespace QuanLyKhoThucPham.Controllers
         public async Task<IActionResult> Delete(int maPN)
         {
             var phieuNhap = await _context.PhieuNhap
-                .Include(p => p.DSChiTietPhieuNhap)
+                .Include(p => p.NhaCungCap)
+                .Include(p => p.NhanVien)
+                .Include(p => p.KhoHang)
                 .FirstOrDefaultAsync(p => p.MaPhieuNhap == maPN);
 
             if (phieuNhap == null)
@@ -139,8 +157,7 @@ namespace QuanLyKhoThucPham.Controllers
         public async Task<IActionResult> DeleteConfirmed(int maPN)
         {
             var phieuNhap = await _context.PhieuNhap
-         .Include(p => p.DSChiTietPhieuNhap)
-         .FirstOrDefaultAsync(p => p.MaPhieuNhap == maPN);
+             .FirstOrDefaultAsync(p => p.MaPhieuNhap == maPN);
 
             if (phieuNhap == null)
             {
@@ -151,17 +168,19 @@ namespace QuanLyKhoThucPham.Controllers
                .Where(ct => ct.MaPhieuNhap == maPN)
                .Include(ct => ct.SanPham)
                .ToListAsync();
+         
 
-            // Gán danh sách chi tiết vào phiếu nhập
             phieuNhap.DSChiTietPhieuNhap = chiTietPhieuNhap;
+            if(chiTietPhieuNhap != null) {
+                foreach (var ct in chiTietPhieuNhap)
+                {
 
-            foreach (var ct in chiTietPhieuNhap)
-            {
-                _context.PhieuNhapChiTiet.Remove(ct);
+                    _context.PhieuNhapChiTiet.Remove(ct);
+                }
             }
+            
 
 
-            // Xóa phiếu nhập
             _context.PhieuNhap.Remove(phieuNhap);
 
             await _context.SaveChangesAsync();

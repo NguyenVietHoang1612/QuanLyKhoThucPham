@@ -24,10 +24,11 @@
             @Html.DisplayFor(model => model.mota)
         </dd>
     </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="MaKho" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
+
+
+    <form asp-action="Delete" asp-route-maKhoHang="@Model.MaKho" method="post">
+        <input type="hidden" name="maKhoHang" value="@Model.MaKho" />
+        <input type="submit" value="Delete" class="btn btn-danger" />
         <a asp-action="Index">Back to List</a>
     </form>
 </div>

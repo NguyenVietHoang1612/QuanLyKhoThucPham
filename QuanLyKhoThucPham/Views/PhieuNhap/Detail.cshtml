@@ -14,15 +14,15 @@
         </div>
         <div class="row mb-3">
             <div class="col-sm-3 fw-bold">Nhà cung cấp:</div>
-            <div class="col-sm-9">@Html.DisplayFor(model => model.NhaCungCap)</div>
+            <div class="col-sm-9">@Html.DisplayFor(model => model.NhaCungCap.TenNhaCungCap)</div>
         </div>
         <div class="row mb-3">
             <div class="col-sm-3 fw-bold">Kho:</div>
-            <div class="col-sm-9">@Html.DisplayFor(model => model.MaKho)</div>
+            <div class="col-sm-9">@Html.DisplayFor(model => model.KhoHang.TenKho)</div>
         </div>
         <div class="row mb-3">
             <div class="col-sm-3 fw-bold">Nhân viên nhập:</div>
-            <div class="col-sm-9">@Html.DisplayFor(model => model.MaNhanVien)</div>
+            <div class="col-sm-9">@Html.DisplayFor(model => model.NhanVien.HoTen)</div>
         </div>
     </div>
 
@@ -57,6 +57,6 @@
 
     <div class="mt-4 text-center">
         <a asp-action="Index" class="btn btn-secondary btn-lg">Thoát</a>
-        <a asp-action="Delete" asp-route-id="@Model?.MaPhieuNhap" class="btn btn-danger btn-lg">Xóa</a>
+        <a asp-action="Delete" asp-route-maPN="@Model.MaPhieuNhap" method ="post" class="btn btn-danger btn-lg">Xóa</a>
     </div>
 </div>
