@@ -67,19 +67,17 @@ namespace QuanLyKhoThucPham.Controllers
                 return View(phieuNhapViewModel1);
             }
 
-            // Tính tổng tiền của phiếu nhập
+
             phieuNhap.TongTien = phieuNhapChiTiet.Sum(t => t.SoLuong * t.DonGia);
 
-            // Thêm phiếu nhập mới vào database
             _context.PhieuNhap.Add(phieuNhap);
-            await _context.SaveChangesAsync(); // Đảm bảo lưu trước khi lấy MaPhieuNhap
+            await _context.SaveChangesAsync(); 
 
-            // Kiểm tra danh sách phiếu nhập chi tiết
             if (phieuNhapChiTiet != null && phieuNhapChiTiet.Any())
             {
                 foreach (var phieuNhapCT in phieuNhapChiTiet)
                 {
-                    phieuNhapCT.MaPhieuNhap = phieuNhap.MaPhieuNhap; // Lấy ID đã tạo từ SQL Server
+                    phieuNhapCT.MaPhieuNhap = phieuNhap.MaPhieuNhap; 
                     phieuNhapCT.TongTIen = phieuNhapCT.SoLuong * phieuNhapCT.DonGia;
 
                     var sanPham = await _context.SanPham.FindAsync(phieuNhapCT.MaSP);
@@ -141,6 +139,8 @@ namespace QuanLyKhoThucPham.Controllers
                 .Include(p => p.NhaCungCap)
                 .Include(p => p.NhanVien)
                 .Include(p => p.KhoHang)
+                .Include(p => p.DSChiTietPhieuNhap)
+                    .ThenInclude(p=>p.SanPham)
                 .FirstOrDefaultAsync(p => p.MaPhieuNhap == maPN);
 
             if (phieuNhap == null)
