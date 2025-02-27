@@ -23,12 +23,6 @@ namespace QuanLyKhoThucPham.Controllers
                 .Include(p=> p.NhanVien)
                 .Include(p=>p.KhoHang)
                 .ToList();
-
-            foreach (var pn in phieuNhap)
-            {
-                Console.WriteLine($"Phiếu nhập: {pn.MaNhaCungCap}, nhà cung cấp: {pn.NhaCungCap?.TenNhaCungCap ?? "Không có nhà cung cấp"}");
-            }
-
             return View(phieuNhap);
         }
 
@@ -99,8 +93,8 @@ namespace QuanLyKhoThucPham.Controllers
                     }
 
                     _context.PhieuNhapChiTiet.Add(phieuNhapCT);
-                    _context.SanPham.Update(sanPham);
                     _context.KhoHang.Update(khoHang);
+                    _context.SanPham.Update(sanPham);
                 }
                 await _context.SaveChangesAsync(); 
             }

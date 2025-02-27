@@ -1,0 +1,44 @@
+﻿@model IEnumerable<QuanLyKhoThucPham.Models.PhieuXuatModel>
+
+@{
+    ViewData["Title"] = "Danh Sách Phiếu Xuất";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">STT</th>
+            <th scope="col">Ngày Nhập</th>
+            <th scope="col">Người lập</th>
+            <th scope="col">Khách hàng</th>
+            <th scope="col">Kho Nhập</th>
+            <th scope="col">Tổng Tiền</th>
+            <th scope="col">Hành Động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var phieuXuat in Model)
+        {
+            <tr>
+                <td>@phieuXuat.MaPhieuXuat</td>
+                <td>@phieuXuat.NgayXuat.ToString("dd/MM/yyyy")</td>
+
+                <!-- Kiểm tra null trước khi hiển thị -->
+                <td>@phieuXuat.NhanVien.HoTen</td>
+                <td>@phieuXuat.KhachHang.TenKH</td>
+                <td>@phieuXuat.KhoHang.TenKho</td>
+
+                <td>@phieuXuat.TongTien VND</td>
+                <td>
+                    <a asp-action="Detail" asp-route-maPN="@phieuXuat.MaPhieuXuat" class="btn btn-info btn-sm">Chi Tiết</a>
+                    <a asp-action="Delete" asp-route-maPN="@phieuXuat.MaPhieuXuat" class="btn btn-danger">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-controller="PhieuXuat" asp-action="Create" class="btn btn-primary">Tạo Phiếu Nhập Mới</a>
+
