@@ -68,14 +68,14 @@ namespace QuanLyKhoThucPham.Controllers
         }
 
         // GET: dsthucpham/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? maSP)
         {
-            if (id == null || _context.SanPham == null)
+            if (maSP == null || _context.SanPham == null)
             {
                 return NotFound();
             }
 
-            var dsthucpham = await _context.SanPham.FindAsync(id);
+            var dsthucpham = await _context.SanPham.FindAsync(maSP);
             if (dsthucpham == null)
             {
                 return NotFound();
@@ -88,9 +88,9 @@ namespace QuanLyKhoThucPham.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MaSP,TenSP,SoLuong,DonGia,NhaSanXuat,MoTa")] SanPhamModel thucPham)
+        public async Task<IActionResult> Edit(int? maSP, [Bind("MaSP,TenSP,SoLuong,DonGia,NhaSanXuat,MoTa")] SanPhamModel thucPham)
         {
-            if (id != thucPham.MaSP)
+            if (maSP != thucPham.MaSP)
             {
                 return NotFound();
             }

@@ -22,12 +22,12 @@
 
             <div class="row mb-3">
                 <div class="col-sm-3 fw-bold">Kho Nhập:</div>
-                <div class="col-sm-9">@Html.DisplayFor(model => model.MaKho)</div>
+                <div class="col-sm-9">@Html.DisplayFor(model => model.KhoHang.TenKho)</div>
             </div>
 
             <div class="row mb-3">
                 <div class="col-sm-3 fw-bold">Nhân Viên Nhập:</div>
-                <div class="col-sm-9">@Html.DisplayFor(model => model.MaNhanVien)</div>
+                <div class="col-sm-9">@Html.DisplayFor(model => model.NhanVien.HoTen)</div>
             </div>
 
             <h5 class="mt-4">Chi Tiết Phiếu Nhập</h5>
@@ -41,15 +41,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.DSChiTietPhieuNhap)
+                    @if(Model.DSChiTietPhieuNhap != null)
                     {
-                        <tr>
-                            <td>@Html.DisplayFor(modelItem => item.SanPham.TenSP)</td>
-                            <td>@Html.DisplayFor(modelItem => item.SoLuong)</td>
-                            <td>@Html.DisplayFor(modelItem => item.DonGia)</td>
-                            <td>@Html.DisplayFor(modelItem => item.TongTIen)</td>
-                        </tr>
+                        @foreach (var item in Model.DSChiTietPhieuNhap)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.SanPham.TenSP)</td>
+                                <td>@Html.DisplayFor(modelItem => item.SoLuong)</td>
+                                <td>@Html.DisplayFor(modelItem => item.DonGia)</td>
+                                <td>@Html.DisplayFor(modelItem => item.TongTIen)</td>
+                            </tr>
+                        }
+
                     }
+                    
                 </tbody>
                 <tfoot>
                     <tr class="table-warning">
@@ -60,7 +65,7 @@
             </table>
 
             <div class="text-center mt-4">
-                <form asp-action="Delete" asp-route-id="@Model.MaPhieuNhap" method="post" class="d-inline">
+                <form asp-action="Delete" asp-route-maPN="@Model.MaPhieuNhap" method="post" class="d-inline">
                     <button type="submit" class="btn btn-danger px-4">Xóa</button>
                 </form>
                 <a asp-action="Index" class="btn btn-secondary px-4 ms-2">Thoát</a>

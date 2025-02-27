@@ -7,12 +7,8 @@ namespace QuanLyKhoThucPham.Models
     {
         [Key]
         public int MaPhieuXuatChiTiet { get; set; }
-
-        [Key]
         public int MaSP { get; set; }
-
         public int MaPhieuXuat { get; set; }
-
         public int SoLuong { get; set; }
 
         public decimal DonGia { get; set; }
@@ -21,8 +17,14 @@ namespace QuanLyKhoThucPham.Models
 
         public string? GhiChu { get; set; }
 
-        public PhieuXuatModel PhieuXuat { get; set; }
-        public SanPhamModel SanPham { get; set; }
+        [ForeignKey("MaSP")]        
+        public virtual SanPhamModel? SanPham { get; set; }
+        
+
+        [ForeignKey("MaPhieuXuat")]
+        public virtual PhieuXuatModel? PhieuXuat { get; set; }
+        
+        
 
     }
 }

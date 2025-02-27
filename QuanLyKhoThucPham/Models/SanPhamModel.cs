@@ -1,5 +1,6 @@
 
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace QuanLyKhoThucPham.Models
 {
@@ -13,8 +14,6 @@ namespace QuanLyKhoThucPham.Models
         public decimal DonGia { get; set; }
         public string NhaSanXuat { get; set; }
         public string? MoTa { get; set; }
-        public int MaNhaCungCap { get; set; }
-        public NhaCungCapModel? NhaCungCap { get; set; }
 
     }
 }

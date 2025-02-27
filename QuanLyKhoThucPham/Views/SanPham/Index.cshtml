@@ -16,19 +16,23 @@
     <thead>
         <tr>
             <th>
-                <a>STT</a>
+                <a>Mã sản phẩm</a>
             </th>
             <th>
                 <a>Tên sản phẩm</a>
             </th>
             <th>
-                <a>Mô tả</a>
-            </th>
-            <th>
                 <a>Nhà sản xuất</a>
             </th>
             <th>
-                <a>Mã nhà cung cấp</a>
+                <a>Số lượng</a>
+            </th>
+       
+            <th>
+                <a>Giá/1 sản phẩm</a>
+            </th>
+            <th>
+                <a>Mô tả</a>
             </th>
             <th>
                 <a asp-action="Create" class="khung">Tạo mới</a>
@@ -46,13 +50,16 @@
                 @Html.DisplayFor(modelItem => item.TenSP)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MoTa)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.NhaSanXuat)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.NhaCungCap.MaNhaCungCap)
+                @Html.DisplayFor(modelItem => item.SoLuong)
+            </td>          
+            <td>
+                @Html.DisplayFor(modelItem => item.DonGia)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MoTa)
             </td>
                
             <td>
