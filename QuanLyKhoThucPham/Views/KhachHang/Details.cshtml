@@ -9,7 +9,7 @@
 <div>
     <h4>Quanlykhachhang</h4>
     <hr />
-    <dl class="row">
+    <dl class="khung">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.TenKH)
         </dt>
@@ -33,11 +33,8 @@
     </dl>
 </div>
 <div style="margin-top: 20px; display: flex; gap: 10px; align-items: center;">
-    
 
-    <a href="@Url.Action("Index", "Quanlykhachhang")"
-       style="background-color: #6c757d; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none; font-size: 16px;">
-        Quay lại
-    </a>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+    
 </div>
 

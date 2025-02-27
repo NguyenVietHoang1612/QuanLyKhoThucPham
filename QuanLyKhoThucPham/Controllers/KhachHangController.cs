@@ -10,11 +10,11 @@ using QuanLyKhoThucPham.Models;
 
 namespace QuanLyKhoThucPham.Controllers
 {
-    public class KhachHang : Controller
+    public class KhachHangController : Controller
     {
         private readonly QuanLyKhoThucPhamContext _context;
 
-        public KhachHang(QuanLyKhoThucPhamContext context)
+        public KhachHangController(QuanLyKhoThucPhamContext context)
         {
             _context = context;
         }
@@ -24,7 +24,7 @@ namespace QuanLyKhoThucPham.Controllers
         {
               return _context.KhachHang != null ? 
                           View(await _context.KhachHang.ToListAsync()) :
-                          Problem("Entity set 'QuanLyKhoThucPhamContext.Quanlykhachhang'  is null.");
+                          Problem("Entity set 'QuanLyKhoThucPhamContext.'  is null.");
         }
 
         // GET: Quanlykhachhang/Details/5
@@ -56,7 +56,7 @@ namespace QuanLyKhoThucPham.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaKH,TenKH,Diachi,Email,SDT")] Models.KhachHangModel quanlykhachhang)
+        public async Task<IActionResult> Create([Bind("MaKH,TenKH,DiaChi,Email,SDT")] Models.KhachHangModel quanlykhachhang)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +88,7 @@ namespace QuanLyKhoThucPham.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int maKH, [Bind("MaKH,TenKH,Diachi,Email,SDT")] Models.KhachHangModel dsKhachHang)
+        public async Task<IActionResult> Edit(int maKH, [Bind("MaKH,TenKH,DiaChi,Email,SDT")] Models.KhachHangModel dsKhachHang)
         {
             if (maKH != dsKhachHang.MaKH)
             {
@@ -166,8 +166,9 @@ namespace QuanLyKhoThucPham.Controllers
         {
             if (_context.KhachHang == null)
             {
-                return Problem("Entity set 'MvcMovieContext.Movie'  is null.");
+                return Problem("Entity set 'QuanLyKhoThucPhamContext.KhachHang' is null.");
             }
+
 
             var quanlykhachhangs = from m in _context.KhachHang
                          select m;

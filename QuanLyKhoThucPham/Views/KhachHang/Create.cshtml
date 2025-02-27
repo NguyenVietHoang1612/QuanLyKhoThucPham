@@ -8,7 +8,7 @@
 
 <h4>Quanlykhachhang</h4>
 <hr />
-<div class="row">
+<div class="khung">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -36,10 +36,8 @@
                     Tạo mới
                 </button>
 
-                <a href="@Url.Action("Index", "KhachHang")"
-                   style="background-color: #6c757d; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none; font-size: 16px;">
-                    Quay lại
-                </a>
+                <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+
             </div>
         </form>
     </div>

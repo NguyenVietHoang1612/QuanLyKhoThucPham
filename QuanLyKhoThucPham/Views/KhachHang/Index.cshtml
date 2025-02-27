@@ -3,8 +3,11 @@
 @{
     ViewData["Title"] = "Index";
 }
+<div class="khung">
+    
+    <h1>Danh Sách Khách Hàng</h1>
+    </div>
 
-<h1>Danh Sách Khách Hàng</h1>
 
 <p>
     
@@ -51,7 +54,7 @@
         </tr>
 }
     </tbody>
-    <form asp-controller="Quanlykhachhang" asp-action="Index" method="post" style="margin-bottom: 15px; display: flex; align-items: center;">
+    <form asp-controller="KhachHang" asp-action="Index" method="post" style="margin-bottom: 15px; display: flex; align-items: center;">
         <label for="searchInput" style="font-weight: bold; color: #007bff; font-size: 16px; margin-right: 10px;">
             🔍 Tìm kiếm khách hàng:
         </label>
