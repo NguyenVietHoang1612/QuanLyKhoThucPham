@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace QuanLyKhoThucPham.Migrations
 {
-    public partial class CreatMigration : Migration
+    public partial class khachhang1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

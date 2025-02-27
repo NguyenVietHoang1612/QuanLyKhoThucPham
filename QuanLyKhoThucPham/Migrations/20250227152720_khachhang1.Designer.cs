@@ -12,8 +12,8 @@ using QuanLyKhoThucPham.Data;
 namespace QuanLyKhoThucPham.Migrations
 {
     [DbContext(typeof(QuanLyKhoThucPhamContext))]
-    [Migration("20250227091236_CreatMigration")]
-    partial class CreatMigration
+    [Migration("20250227152720_khachhang1")]
+    partial class khachhang1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
