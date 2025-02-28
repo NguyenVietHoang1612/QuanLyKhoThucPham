@@ -97,6 +97,10 @@ namespace QuanLyKhoThucPham.Controllers
                         {
                             sanPham.SoLuong -= phieuXuatCT.SoLuong;
                         }
+                        else
+                        {
+
+                        }
                     }
 
                     _context.PhieuXuatChiTiet.Add(phieuXuatCT);
@@ -107,6 +111,29 @@ namespace QuanLyKhoThucPham.Controllers
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Detail(int maPX)
+        {
+            var phieuXuat = await _context.PhieuXuat
+            .Include(p => p.KhachHang)
+            .Include(p => p.NhanVien)
+            .Include(p => p.KhoHang)
+            .FirstOrDefaultAsync(p => p.MaPhieuXuat == maPX);
+
+            if (phieuXuat == null)
+            {
+                return NotFound();
+            }
+
+            var chiTietPhieuXuat = await _context.PhieuXuatChiTiet
+                .Where(ct => ct.MaPhieuXuat == maPX)
+                .Include(ct => ct.SanPham)
+                .ToListAsync();
+
+            phieuXuat.DSChiTietPhieuXuat = chiTietPhieuXuat;
+
+            return View(phieuXuat);
         }
 
     }
