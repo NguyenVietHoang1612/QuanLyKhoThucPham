@@ -20,11 +20,23 @@ namespace QuanLyKhoThucPham.Controllers
         }
 
         // GET: Quanlykhachhang
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-              return _context.KhachHang != null ? 
-                          View(await _context.KhachHang.ToListAsync()) :
-                          Problem("Entity set 'QuanLyKhoThucPhamContext.Quanlykhachhang'  is null.");
+            if (_context.KhachHang == null)
+            {
+                return Problem("Entity set 'QuanLyKhoThucPhamContext.KhachHang' is null.");
+            }
+
+
+            var quanlykhachhangs = from m in _context.KhachHang select m;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                quanlykhachhangs = quanlykhachhangs.Where(s => s.TenKH.ToUpper().Contains(searchString.ToUpper()));
+
+            }
+
+            return View(await quanlykhachhangs.ToListAsync());
         }
 
         // GET: Quanlykhachhang/Details/5
@@ -159,27 +171,7 @@ namespace QuanLyKhoThucPham.Controllers
         {
             return (_context.KhachHang?.Any(e => e.MaKH == maKH)).GetValueOrDefault();
         }
-        //Tìm kiếm
-        [HttpPost, ActionName("search")]
         
-        public async Task<IActionResult> Index(string searchString)
-        {
-            if (_context.KhachHang == null)
-            {
-                return Problem("Entity set 'MvcMovieContext.Movie'  is null.");
-            }
-
-            var quanlykhachhangs = from m in _context.KhachHang
-                         select m;
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                quanlykhachhangs = quanlykhachhangs.Where(s => s.TenKH != null && s.TenKH.ToUpper().Contains(searchString.ToUpper()));
-
-            }
-
-            return View(await quanlykhachhangs.ToListAsync());
-        }
     }
  }
 
