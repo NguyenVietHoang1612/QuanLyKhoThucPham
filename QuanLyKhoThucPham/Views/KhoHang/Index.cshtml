@@ -5,23 +5,25 @@
 }
 
 <h1>Danh sách kho hàng</h1>
-<form asp-controller="dskhohangModels" asp-action="Index" >
+
+<form asp-controller="KhoHang" asp-action="Index">
     <div class="input-group">
         <input class="form-control" type="text" name="SearchString" placeholder="Tìm kiếm tên kho hàng..." aria-describedby="btnNavbarSearch" />
-        <button class="btn btn-primary" type="submit"  />Tìm kiếm</button>
+        <button class="btn btn-primary" type="submit" />Tìm kiếm</button>
     </div>
 </form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-				<a >STT</a> 
+                <a>STT</a>
             </th>
             <th>
-                <a>Tên kho</a> 
+                <a>Tên kho</a>
             </th>
             <th>
-                <a>Mô tả</a> 
+                <a>Mô tả</a>
             </th>
             <th>
                 <a>Số lượng tổng</a>
@@ -30,16 +32,16 @@
                 <a>Số lượng trống</a>
             </th>
             <td>
-                <a asp-action="Create" class="khung">Tạo mới</a>
+                <a asp-action="Create" >Tạo mới</a>
             </td>
-        </tr>   
+        </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
             <td>
-				@Html.DisplayFor(modelItem => item.MaKho)
-           </td>
+                    @Html.DisplayFor(modelItem => item.MaKho)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TenKho)
             </td>
@@ -49,15 +51,13 @@
             <td>
                 @Html.DisplayFor(modelItem => item.soluongtong)
             </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.soluongtrong)
-                </td>
-
-				
-				<td >
-                    <a asp-action="Edit" asp-route-maKhoHang="@item.MaKho" class="khung">Chỉnh sửa</a>
-                    <a asp-action="Details" asp-route-maKhoHang="@item.MaKho" class="khung">xem chi tiết</a>
-                    <a asp-action="Delete" asp-route-maKhoHang="@item.MaKho" class="khung">Xóa</a>
+            <td>
+                @Html.DisplayFor(modelItem => item.soluongtrong)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.MaKho">Chỉnh sửa</a> |
+                <a asp-action="Details" asp-route-id="@item.MaKho">Chỉ tiết</a> |
+                <a asp-action="Delete" asp-route-id="@item.MaKho">Xóa</a>
             </td>
         </tr>
 }

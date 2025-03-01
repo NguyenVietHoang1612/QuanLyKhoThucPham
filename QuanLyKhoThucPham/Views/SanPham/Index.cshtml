@@ -4,14 +4,13 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Danh sách thực phẩm</h1>
-<form asp-controller="dsthucpham" asp-action="Index" method="post">
+<h1>Danh Sách Thực Phẩm </h1>
+<form asp-controller="SanPham" asp-action="Index">
     <div class="input-group">
         <input class="form-control" type="text" name="SearchString" placeholder="Tìm kiếm tên sản phẩm..." aria-describedby="btnNavbarSearch" />
         <button class="btn btn-primary" type="submit" />Tìm kiếm</button>
     </div>
 </form>
-
 <table class="table">
     <thead>
         <tr>
@@ -27,7 +26,7 @@
             <th>
                 <a>Số lượng</a>
             </th>
-       
+
             <th>
                 <a>Giá/1 sản phẩm</a>
             </th>
@@ -35,7 +34,7 @@
                 <a>Mô tả</a>
             </th>
             <th>
-                <a asp-action="Create" class="khung">Tạo mới</a>
+                <a asp-action="Create" >Tạo mới</a>
             </th>
 
         </tr>
@@ -50,22 +49,21 @@
                 @Html.DisplayFor(modelItem => item.TenSP)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.NhaSanXuat)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.SoLuong)
-            </td>          
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DonGia)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.NhaSanXuat)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.MoTa)
             </td>
-               
             <td>
-                    <a asp-action="Edit" asp-route-maSP="@item.MaSP" class="khung">Chỉnh sửa </a>
-                    <a asp-action="Details" asp-route-maSP="@item.MaSP" class="khung">Xem chi tiết</a>
-                    <a asp-action="Delete" asp-route-maSP="@item.MaSP" class="khung">Xóa</a>
+                <a asp-action="Edit" asp-route-id="@item.MaSP">Chỉnh sửa </a> |
+                <a asp-action="Details" asp-route-id="@item.MaSP">Chỉ tiết</a> |
+                <a asp-action="Delete" asp-route-id="@item.MaSP">Xóa</a>
             </td>
         </tr>
 }

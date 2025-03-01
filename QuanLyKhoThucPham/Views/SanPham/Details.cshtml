@@ -4,10 +4,9 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Xem chi tiết</h1>
+<h1>Chi tiết</h1>
 
 <div>
-    <h4>Danh sách thực phẩm</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -16,28 +15,28 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.MaSP)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             <a>Tên sản phẩm</a>
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.TenSP)
         </dd>
-        <dt class = "col-sm-2">
-           <a>Mô tả</a>
+        <dt class="col-sm-2">
+            <a>Mô tả</a>
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.MoTa)
         </dd>
-        <dt class = "col-sm-2">
-           <a>Số lượng</a>
+        <dt class="col-sm-2">
+            <a>Số lượng</a>
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.SoLuong)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             <a>Nhà sản xuất</a>
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.NhaSanXuat)
         </dd>
         <dt class="col-sm-2">
@@ -49,9 +48,6 @@
     </dl>
 </div>
 <div>
-    <form>
-        <input asp-action="Edit" asp-route-maSP="@Model.MaSP" type="submit" class="btn btn-primary" value="Chỉnh sửa">
-		<input asp-action="Index" type="submit" class="btn btn-primary" value="Trở lại danh sách ">
-    </form>
-    
+    <a asp-action="Edit" asp-route-id="@Model?.MaSP">Chỉnh sửa</a> |
+    <a asp-action="Index">Quay lại</a>
 </div>
