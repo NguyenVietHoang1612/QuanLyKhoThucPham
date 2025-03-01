@@ -8,7 +8,7 @@
 <form asp-controller="SanPham" asp-action="Index">
     <div class="input-group">
         <input class="form-control" type="text" name="SearchString" placeholder="Tìm kiếm tên sản phẩm..." aria-describedby="btnNavbarSearch" />
-        <button class="btn btn-primary" type="submit" />Tìm kiếm</button>
+        <button class="btn btn-primary" type="submit" /> 🔍</button>
     </div>
 </form>
 <table class="table">
@@ -34,7 +34,7 @@
                 <a>Mô tả</a>
             </th>
             <th>
-                <a asp-action="Create" >Tạo mới</a>
+                <a asp-action="Create" class="btn btn-primary" >Tạo mới</a>
             </th>
 
         </tr>
@@ -61,9 +61,9 @@
                 @Html.DisplayFor(modelItem => item.MoTa)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.MaSP">Chỉnh sửa </a> |
-                <a asp-action="Details" asp-route-id="@item.MaSP">Chỉ tiết</a> |
-                <a asp-action="Delete" asp-route-id="@item.MaSP">Xóa</a>
+                    <a asp-action="Edit" asp-route-id="@item.MaSP" class="btn btn-warning">Chỉnh sửa </a> 
+                    <a asp-action="Details" asp-route-id="@item.MaSP" class="btn btn-info">Chỉ tiết</a> 
+                    <a asp-action="Delete" asp-route-id="@item.MaSP" class="btn btn-danger">Xóa</a>
             </td>
         </tr>
 }

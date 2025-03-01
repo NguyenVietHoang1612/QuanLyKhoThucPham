@@ -9,7 +9,7 @@
 <form asp-controller="KhoHang" asp-action="Index">
     <div class="input-group">
         <input class="form-control" type="text" name="SearchString" placeholder="Tìm kiếm tên kho hàng..." aria-describedby="btnNavbarSearch" />
-        <button class="btn btn-primary" type="submit" />Tìm kiếm</button>
+        <button class="btn btn-primary" type="submit" /> 🔍</button>
     </div>
 </form>
 
@@ -32,7 +32,7 @@
                 <a>Số lượng trống</a>
             </th>
             <td>
-                <a asp-action="Create" >Tạo mới</a>
+                <a asp-action="Create" class="btn btn-primary">Tạo mới</a>
             </td>
         </tr>
     </thead>
@@ -55,9 +55,9 @@
                 @Html.DisplayFor(modelItem => item.soluongtrong)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.MaKho">Chỉnh sửa</a> |
-                <a asp-action="Details" asp-route-id="@item.MaKho">Chỉ tiết</a> |
-                <a asp-action="Delete" asp-route-id="@item.MaKho">Xóa</a>
+                    <a asp-action="Edit" asp-route-id="@item.MaKho" class="btn btn-warning">Chỉnh sửa</a> 
+                    <a asp-action="Details" asp-route-id="@item.MaKho" class="btn btn-info">Chỉ tiết</a> 
+                    <a asp-action="Delete" asp-route-id="@item.MaKho" class="btn btn-danger">Xóa</a>
             </td>
         </tr>
 }
