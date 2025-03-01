@@ -1,11 +1,12 @@
 ﻿@model QuanLyKhoThucPham.Models.PhieuXuatModel;
 
+
 @{
-    ViewData["Title"] = "Chi tiết Phiếu Xuất";
+    ViewData["Title"] = "Xóa Phiếu Xuất";
 }
 
 <div class="container mt-4">
-    <h2 class="text-center text-primary">Chi tiết Phiếu Xuất</h2>
+    <h2 class="text-center text-primary">Xóa Phiếu Xuất</h2>
 
     <div class="card shadow-sm p-4">
         <div class="row mb-3">
@@ -13,13 +14,18 @@
             <div class="col-sm-9">@Html.DisplayFor(model => model.NgayXuat)</div>
         </div>
         <div class="row mb-3">
-            <div class="col-sm-3 fw-bold">Khách Hàng:</div>
+            <div class="col-sm-3 fw-bold">Khách hàng:</div>
             <div class="col-sm-9">@Html.DisplayFor(model => model.KhachHang.TenKH)</div>
         </div>
         <div class="row mb-3">
-            <div class="col-sm-3 fw-bold">Địa chỉ khách hàng:</div>
+            <div class="col-sm-3 fw-bold">Khách hàng:</div>
             <div class="col-sm-9">@Html.DisplayFor(model => model.KhachHang.DiaChi)</div>
         </div>
+        <div class="row mb-3">
+            <div class="col-sm-3 fw-bold">Khách hàng:</div>
+            <div class="col-sm-9">@Html.DisplayFor(model => model.KhachHang.SDT)</div>
+        </div>
+
         <div class="row mb-3">
             <div class="col-sm-3 fw-bold">Kho:</div>
             <div class="col-sm-9">@Html.DisplayFor(model => model.KhoHang.TenKho)</div>
@@ -60,9 +66,9 @@
     </table>
 
     <div class="mt-4 text-center">
-        <a asp-action="Delete" asp-route-maPX="@Model.MaPhieuXuat" method="post" class="btn btn-danger btn-lg">Xóa</a>
-        <a asp-action="Index" class="btn btn-secondary btn-lg">Thoát</a>
+        <form asp-action="Delete" asp-route-maPX="@Model.MaPhieuXuat" method="post" class="d-inline">
+            <button type="submit" class="btn btn-danger px-4">Xóa</button>
+        </form>
+        <a asp-action="Index" class="btn btn-secondary px-4 ms-2">Thoát</a>
     </div>
 </div>
-
-

@@ -136,5 +136,62 @@ namespace QuanLyKhoThucPham.Controllers
             return View(phieuXuat);
         }
 
+        public async Task<IActionResult> Delete(int maPX)
+        {
+            var phieuXuat = await _context.PhieuXuat
+                .Include(p => p.KhachHang)
+                .Include(p => p.NhanVien)
+                .Include(p => p.KhoHang)
+                .Include(p => p.DSChiTietPhieuXuat)
+                    .ThenInclude(p => p.SanPham)
+                .FirstOrDefaultAsync(p => p.MaPhieuXuat == maPX);
+
+            if (phieuXuat == null)
+            {
+                return NotFound();
+            }
+
+            return View(phieuXuat);
+        }
+
+        // POST: PhieuNhap/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int maPX)
+        {
+            var phieuXuat = await _context.PhieuXuat
+             .FirstOrDefaultAsync(p => p.MaPhieuXuat == maPX);
+
+            if (phieuXuat == null)
+            {
+                return NotFound();
+            }
+
+            var chiTietPhieuXuat = await _context.PhieuXuatChiTiet
+               .Where(ct => ct.MaPhieuXuat == maPX)
+               .Include(ct => ct.SanPham)
+               .ToListAsync();
+
+
+            phieuXuat.DSChiTietPhieuXuat = chiTietPhieuXuat;
+            if (chiTietPhieuXuat != null)
+            {
+                foreach (var ct in chiTietPhieuXuat)
+                {
+
+                    _context.PhieuXuatChiTiet.Remove(ct);
+                }
+            }
+
+
+
+            _context.PhieuXuat.Remove(phieuXuat);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
     }
 }
