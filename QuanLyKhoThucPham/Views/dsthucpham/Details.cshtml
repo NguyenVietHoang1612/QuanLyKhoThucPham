@@ -4,19 +4,20 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Xem chi tiết</h1>
+<h1>Details</h1>
 
 <div>
-    <h4>Danh sách thực phẩm</h4>
+    <h4>SanPhamModel</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            <a>Tên sản phẩm</a>
+            @Html.DisplayNameFor(model => model.TenSP)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.tenSP)
         </dd>
         <dt class = "col-sm-2">
+<<<<<<< Updated upstream:QuanLyKhoThucPham/Views/dsthucpham/Details.cshtml
            <a>Mô tả</a>
         </dt>
         <dd class = "col-sm-10">
@@ -24,6 +25,9 @@
         </dd>
         <dt class = "col-sm-2">
            <a>Số lượng</a>
+=======
+            @Html.DisplayNameFor(model => model.SoLuong)
+>>>>>>> Stashed changes:QuanLyKhoThucPham/Views/SanPham/Details.cshtml
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.soluong)
@@ -41,23 +45,39 @@
             @Html.DisplayFor(model => model.hsd)
         </dd>
         <dt class = "col-sm-2">
-            <a>Nhà sản xuất</a>
+            @Html.DisplayNameFor(model => model.DonGia)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DonGia)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NhaSanXuat)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.nhasanxuat)
         </dd>
-        <dt class="col-sm-2">
-            <a>Giá</a>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MoTa)
         </dt>
+<<<<<<< Updated upstream:QuanLyKhoThucPham/Views/dsthucpham/Details.cshtml
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.gia)
+=======
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MoTa)
+>>>>>>> Stashed changes:QuanLyKhoThucPham/Views/SanPham/Details.cshtml
         </dd>
     </dl>
 </div>
 <div>
+<<<<<<< Updated upstream:QuanLyKhoThucPham/Views/dsthucpham/Details.cshtml
     <form>
 		<input asp-action="Edit" asp-route-id="@Model?.ID" type="submit" class="btn btn-primary" value="Chỉnh sửa">
 		<input asp-action="Index" type="submit" class="btn btn-primary" value="Trở lại danh sách ">
     </form>
     
+=======
+    <a asp-action="Edit" asp-route-id="@Model?.MaSP">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+>>>>>>> Stashed changes:QuanLyKhoThucPham/Views/SanPham/Details.cshtml
 </div>

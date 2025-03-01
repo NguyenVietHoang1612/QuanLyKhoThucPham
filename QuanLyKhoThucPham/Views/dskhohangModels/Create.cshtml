@@ -4,49 +4,50 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Tạo mới danh sách kho hàng</h1>
+<h1>Create</h1>
 
-<h4>dskhohangModel</h4>
+<h4>KhoHangModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+<<<<<<< Updated upstream:QuanLyKhoThucPham/Views/dskhohangModels/Create.cshtml
                 <label asp-for="Name" class="control-label">Tên kho</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
+=======
+                <label asp-for="TenKho" class="control-label"></label>
+                <input asp-for="TenKho" class="form-control" />
+                <span asp-validation-for="TenKho" class="text-danger"></span>
+>>>>>>> Stashed changes:QuanLyKhoThucPham/Views/KhoHang/Create.cshtml
             </div>
             <div class="form-group">
-                <label asp-for="mota" class="control-label">Mô tả</label>
+                <label asp-for="mota" class="control-label"></label>
                 <input asp-for="mota" class="form-control" />
                 <span asp-validation-for="mota" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="soluongtong" class="control-label">Số lượng tổng</label>
+                <label asp-for="soluongtong" class="control-label"></label>
                 <input asp-for="soluongtong" class="form-control" />
                 <span asp-validation-for="soluongtong" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="soluongtrong" class="control-label">Số lương trống</label>
+                <label asp-for="soluongtrong" class="control-label"></label>
                 <input asp-for="soluongtrong" class="form-control" />
                 <span asp-validation-for="soluongtrong" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Tạo" class="btn btn-primary" />
-                
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
-            
         </form>
-        <hr />
-        <form>
-            <input asp-action="Index" type="submit" class="btn btn-primary" value="Trở lại danh sách kho">
-        </form>
-        
     </div>
 </div>
 
-
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

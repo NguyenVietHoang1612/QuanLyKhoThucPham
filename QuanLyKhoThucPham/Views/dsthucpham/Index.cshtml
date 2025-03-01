@@ -4,24 +4,26 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Danh sách thực phẩm</h1>
-<form asp-controller="dsthucpham" asp-action="Index" method="post">
-    <div class="input-group">
-        <input class="form-control" type="text" name="SearchString" placeholder="Tìm kiếm tên sản phẩm..." aria-describedby="btnNavbarSearch" />
-        <button class="btn btn-primary" type="submit" />Tìm kiếm</button>
-    </div>
-</form>
+<h1>Index</h1>
 
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
 <table class="table">
     <thead>
         <tr>
             <th>
+<<<<<<< Updated upstream:QuanLyKhoThucPham/Views/dsthucpham/Index.cshtml
                 <a>STT</a>
+=======
+                @Html.DisplayNameFor(model => model.TenSP)
+>>>>>>> Stashed changes:QuanLyKhoThucPham/Views/SanPham/Index.cshtml
             </th>
             <th>
-                <a>Tên sản phẩm</a>
+                @Html.DisplayNameFor(model => model.SoLuong)
             </th>
             <th>
+<<<<<<< Updated upstream:QuanLyKhoThucPham/Views/dsthucpham/Index.cshtml
                 <a>Mô tả</a>
             </th>
             <th>
@@ -35,33 +37,63 @@
                 <a asp-action="Create" class="khung">Tạo mới</a>
             </th>
 
+=======
+                @Html.DisplayNameFor(model => model.DonGia)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NhaSanXuat)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MoTa)
+            </th>
+            <th></th>
+>>>>>>> Stashed changes:QuanLyKhoThucPham/Views/SanPham/Index.cshtml
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
             <td>
+<<<<<<< Updated upstream:QuanLyKhoThucPham/Views/dsthucpham/Index.cshtml
                 @Html.DisplayFor(modelItem => item.ID)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.tenSP)
+=======
+                @Html.DisplayFor(modelItem => item.TenSP)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SoLuong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DonGia)
+>>>>>>> Stashed changes:QuanLyKhoThucPham/Views/SanPham/Index.cshtml
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.mota)
             </td>
         
             <td>
+<<<<<<< Updated upstream:QuanLyKhoThucPham/Views/dsthucpham/Index.cshtml
                 @Html.DisplayFor(modelItem => item.ngaysx)
             </td>
             
             <td>
                 @Html.DisplayFor(modelItem => item.nhasanxuat)
+=======
+                @Html.DisplayFor(modelItem => item.MoTa)
+>>>>>>> Stashed changes:QuanLyKhoThucPham/Views/SanPham/Index.cshtml
             </td>
-               
             <td>
+<<<<<<< Updated upstream:QuanLyKhoThucPham/Views/dsthucpham/Index.cshtml
                     <a asp-action="Edit" asp-route-id="@item.ID" class="khung">Chỉnh sửa </a> 
                     <a asp-action="Details" asp-route-id="@item.ID" class="khung">Xem chi tiết</a> 
                     <a asp-action="Delete" asp-route-id="@item.ID" class="khung">Xóa</a>
+=======
+                <a asp-action="Edit" asp-route-id="@item.MaSP">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.MaSP">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.MaSP">Delete</a>
+>>>>>>> Stashed changes:QuanLyKhoThucPham/Views/SanPham/Index.cshtml
             </td>
         </tr>
 }

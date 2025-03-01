@@ -4,44 +4,69 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Danh sách kho hàng</h1>
-<form asp-controller="dskhohangModels" asp-action="Index" >
+<h1>Index</h1>
+<form asp-controller="khohang" asp-action="Index" method="post">
     <div class="input-group">
-        <input class="form-control" type="text" name="SearchString" placeholder="Tìm kiếm tên kho hàng..." aria-describedby="btnNavbarSearch" />
-        <button class="btn btn-primary" type="submit"  />Tìm kiếm</button>
+        <input class="form-control" type="text" name="SearchString" placeholder="Tìm kiếm tên sản phẩm..." aria-describedby="btnNavbarSearch" />
+        <button class="btn btn-primary" type="submit" />Tìm kiếm</button>
     </div>
 </form>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
 <table class="table">
     <thead>
         <tr>
             <th>
-				<a >STT</a> 
+                @Html.DisplayNameFor(model => model.TenKho)
             </th>
             <th>
-                <a>Tên kho</a> 
+                @Html.DisplayNameFor(model => model.mota)
             </th>
             <th>
-                <a>Mô tả</a> 
+                @Html.DisplayNameFor(model => model.soluongtong)
             </th>
             <th>
-                <a>Số lượng tổng</a>
+                @Html.DisplayNameFor(model => model.soluongtrong)
+            </th>
+            <th></th>
+
+            <th>
+                <a>Mã sản phẩm</a>
             </th>
             <th>
-                <a>Số lượng trống</a>
+                <a>Tên sản phẩm</a>
             </th>
-            <td>
+            <th>
+                <a>Nhà sản xuất</a>
+            </th>
+            <th>
+                <a>Số lượng</a>
+            </th>
+
+            <th>
+                <a>Giá/1 sản phẩm</a>
+            </th>
+            <th>
+                <a>Mô tả</a>
+            </th>
+            <th>
                 <a asp-action="Create" class="khung">Tạo mới</a>
-            </td>
-        </tr>   
+            </th>
+        </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
             <td>
+<<<<<<< Updated upstream:QuanLyKhoThucPham/Views/dskhohangModels/Index.cshtml
 				@Html.DisplayFor(modelItem => item.ID)
            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
+=======
+                @Html.DisplayFor(modelItem => item.TenKho)
+>>>>>>> Stashed changes:QuanLyKhoThucPham/Views/KhoHang/Index.cshtml
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.mota)
@@ -49,6 +74,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.soluongtong)
             </td>
+<<<<<<< Updated upstream:QuanLyKhoThucPham/Views/dskhohangModels/Index.cshtml
                 <td>
                     @Html.DisplayFor(modelItem => item.soluongtrong)
                 </td>
@@ -58,6 +84,15 @@
                     <a asp-action="Edit" asp-route-id="@item.ID" class="khung">Chỉnh sửa</a> 
                     <a asp-action="Details" asp-route-id="@item.ID" class="khung">xem chi tiết</a> 
                     <a asp-action="Delete" asp-route-id="@item.ID" class="khung">Xóa</a>
+=======
+            <td>
+                @Html.DisplayFor(modelItem => item.soluongtrong)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.MaKho">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.MaKho">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.MaKho">Delete</a>
+>>>>>>> Stashed changes:QuanLyKhoThucPham/Views/KhoHang/Index.cshtml
             </td>
         </tr>
 }
