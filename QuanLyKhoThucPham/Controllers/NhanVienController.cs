@@ -20,11 +20,18 @@ namespace QuanLyKhoThucPham.Controllers
         }
 
         // GET: NhanVien
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-              return _context.NhanVien != null ? 
-                          View(await _context.NhanVien.ToListAsync()) :
-                          Problem("Entity set 'QuanLyKhoThucPhamContext.NhanVien'  is null.");
+            var nhanViens = from nv in _context.NhanVien
+                            select nv;
+
+            // Nếu searchString không rỗng, lọc danh sách nhân viên theo tên
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                nhanViens = nhanViens.Where(nv => nv.HoTen.Contains(searchString));
+            }
+
+            return View(await nhanViens.ToListAsync());
         }
 
         // GET: NhanVien/Details/5
