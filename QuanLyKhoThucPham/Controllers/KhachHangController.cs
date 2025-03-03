@@ -160,26 +160,23 @@ namespace QuanLyKhoThucPham.Controllers
             return (_context.KhachHang?.Any(e => e.MaKH == maKH)).GetValueOrDefault();
         }
         //Tìm kiếm
-        [HttpPost, ActionName("search")]
-        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(string searchString)
         {
             if (_context.KhachHang == null)
             {
-                return Problem("Entity set 'QuanLyKhoThucPhamContext.KhachHang' is null.");
+                return Problem("Danh sách kho hàng không có dữ liệu ");
             }
 
-
-            var quanlykhachhangs = from m in _context.KhachHang
-                         select m;
+            var dsthucphams = from m in _context.KhachHang select m;
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                quanlykhachhangs = quanlykhachhangs.Where(s => s.TenKH != null && s.TenKH.ToUpper().Contains(searchString.ToUpper()));
-
+                dsthucphams = dsthucphams.Where(s => s.TenKH.ToUpper().Contains(searchString.ToUpper()));
             }
 
-            return View(await quanlykhachhangs.ToListAsync());
+            return View(await dsthucphams.ToListAsync());
         }
     }
  }

@@ -54,16 +54,11 @@
         </tr>
 }
     </tbody>
-    <form asp-controller="KhachHang" asp-action="Index" method="post" style="margin-bottom: 15px; display: flex; align-items: center;">
-        <label for="searchInput" style="font-weight: bold; color: #007bff; font-size: 16px; margin-right: 10px;">
-            🔍 Tìm kiếm khách hàng:
-        </label>
-        <input id="searchInput" type="text" name="searchString" placeholder="Tìm kiếm dữ liệu"
-               style="border: 2px solid #007bff; border-radius: 5px; padding: 8px; width: 250px;" />
-        <button type="submit"
-                style="background-color: #007bff; color: white; padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer; margin-left: 10px;">
-            🔍 Tìm kiếm
-        </button>
+    <form asp-controller="KhachHang" asp-action="Index" method="post">
+        <div class="input-group">
+            <input class="form-control" type="text" name="SearchString" placeholder="Tìm kiếm tên khách hàng..." aria-describedby="btnNavbarSearch" />
+            <button class="btn btn-primary" type="submit" />Tìm kiếm</button>
+        </div>
     </form>
 
 

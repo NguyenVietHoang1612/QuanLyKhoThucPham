@@ -159,5 +159,24 @@ namespace QuanLyKhoThucPham.Controllers
         {
           return (_context.NhaCungCap?.Any(e => e.MaNhaCungCap == maNhaCungCap)).GetValueOrDefault();
         }
+        //Tìm kiếm
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Index(string searchString)
+        {
+            if (_context.NhaCungCap == null)
+            {
+                return Problem("Danh sách kho hàng không có dữ liệu ");
+            }
+
+            var dsthucphams = from m in _context.NhaCungCap select m;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                dsthucphams = dsthucphams.Where(s => s.TenNhaCungCap.ToUpper().Contains(searchString.ToUpper()));
+            }
+
+            return View(await dsthucphams.ToListAsync());
+        }
     }
 }
