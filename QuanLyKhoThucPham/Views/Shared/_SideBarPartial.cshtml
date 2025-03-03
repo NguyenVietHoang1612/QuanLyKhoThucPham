@@ -2,16 +2,18 @@
     <div class="p-3">
         <h4 class="text-center">Admin</h4>
     </div>
-    <ul class="nav nav-pills flex-column mb-auto">
+    <ul class="nav nav-pills flex-column mb-auto menuSidebar">
             <li class="nav-item">
-                <a asp-controller="" asp-action="" class="nav-link text-white active">
+            <a asp-controller="" asp-action="" class="nav-link text-white active">
                     <i class="fas fa-home"></i> Trang chủ
                 </a>
             </li>
-            <nav class="nav-item">
-                <li asp-controller="" asp-action="" class="nav-link text-white active">
-                    <i class="fas fade"></i> Chức năng
-                    <ul >
+            <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#menuChucNang" class="nav-link text-white">
+                    <i class="fas fa-cogs"></i> Chức năng
+                </a>
+                <div class="collapse show" id="menuChucNang">
+                    <ul class="nav flex-column ml-3">
                         <li>
                             <a asp-controller="SanPham" asp-action="Index" class="nav-link text-white ">
                                 <i class="fas fa-box"></i> Danh sách thực phẩm
@@ -49,8 +51,9 @@
                             </a>
                         </li>
                     </ul>
-                </li>
-            </nav>
+                </div>
+               
+            </li>
 
         
             <li>
