@@ -1,4 +1,4 @@
-﻿@model IEnumerable<QuanLyKhoThucPham.Models.PhieuNhapModel>
+﻿@model PaginatedList<QuanLyKhoThucPham.Models.PhieuNhapModel>
 
 @{
     ViewData["Title"] = "Danh Sách Phiếu Nhập";
@@ -41,3 +41,20 @@
 </table>
 
 <a asp-controller="PhieuNhap" asp-action="Create" class="btn btn-primary">Tạo Phiếu Nhập Mới</a>
+
+@{
+    var prevDisabled = !Model.HasNextPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

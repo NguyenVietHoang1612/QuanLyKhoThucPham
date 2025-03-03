@@ -16,14 +16,23 @@ namespace QuanLyKhoThucPham.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(
+        int? pageNumber)
         {
-            var phieuNhap = _context.PhieuNhap
+            var phieuNhapQuery = _context.PhieuNhap 
                 .Include(p => p.NhaCungCap)
-                .Include(p=> p.NhanVien)
-                .Include(p=>p.KhoHang)
-                .ToList();
-            return View(phieuNhap);
+                .Include(p => p.NhanVien)
+                .Include(p => p.KhoHang)
+                .AsNoTracking();
+
+            int pageSize = 3; 
+
+            var phieuNhapPage = PaginatedList<PhieuNhapModel>.CreateAsync(phieuNhapQuery, pageNumber ?? 1, pageSize);
+            
+
+            return View(await phieuNhapPage);
+
+           
         }
 
         public async Task<IActionResult> Create()
