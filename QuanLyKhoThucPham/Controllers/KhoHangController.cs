@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using QuanLyKhoThucPham.Data;
 using QuanLyKhoThucPham.Models;
@@ -17,14 +18,6 @@ namespace QuanLyKhoThucPham.Controllers
         public KhoHangController(QuanLyKhoThucPhamContext context)
         {
             _context = context;
-        }
-
-        // GET: KhoHang
-        public async Task<IActionResult> Index()
-        {
-            return _context.KhoHang != null ?
-                        View(await _context.KhoHang.ToListAsync()) :
-                        Problem("Entity set 'QuanLyKhoThucPhamContext.KhoHang'  is null.");
         }
 
         // GET: KhoHang/Details/5
@@ -162,9 +155,13 @@ namespace QuanLyKhoThucPham.Controllers
 
 
         //tìm kiếm
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(string searchString)
+       
+        public async Task<IActionResult> Index(
+            string searchString,
+            string sortOrder,
+            string currentFilter,
+            int? pageNumber
+        )
         {
             if (_context.KhoHang == null)
             {
@@ -178,8 +175,27 @@ namespace QuanLyKhoThucPham.Controllers
                 dskhohangs = dskhohangs.Where(s => s.TenKho.ToUpper().Contains(searchString.ToUpper()));
             }
 
-            return View(await dskhohangs.ToListAsync());
+            
+            //phân trang
+            {
+                ViewData["CurrentSort"] = sortOrder;
+
+
+                if (searchString != null)
+                {
+                    pageNumber = 1;
+                }
+                else
+                {
+                    searchString = currentFilter;
+                }
+                int pageSize = 3;
+                return View(await PaginatedList<KhoHangModel>.CreateAsync(dskhohangs.AsNoTracking(), pageNumber ?? 1, pageSize));
+            }
         }
 
+
+       
+       
     }
 }

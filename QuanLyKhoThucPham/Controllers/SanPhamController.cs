@@ -19,13 +19,7 @@ namespace QuanLyKhoThucPham.Controllers
             _context = context;
         }
 
-        // GET: SanPham
-        public async Task<IActionResult> Index()
-        {
-            return _context.SanPham != null ?
-                        View(await _context.SanPham.ToListAsync()) :
-                        Problem("Entity set 'QuanLyKhoThucPhamContext.SanPham'  is null.");
-        }
+      
 
         // GET: SanPham/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -162,9 +156,12 @@ namespace QuanLyKhoThucPham.Controllers
 
 
         //tìm kiếm
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(string searchString)
+      
+        public async Task<IActionResult> Index(
+            string searchString,
+            string sortOrder,
+            string currentFilter,
+            int? pageNumber)
         {
             if (_context.SanPham == null)
             {
@@ -178,7 +175,22 @@ namespace QuanLyKhoThucPham.Controllers
                 dsthucphams = dsthucphams.Where(s => s.TenSP.ToUpper().Contains(searchString.ToUpper()));
             }
 
-            return View(await dsthucphams.ToListAsync());
+            //phân trang
+            {
+                ViewData["CurrentSort"] = sortOrder;
+
+
+                if (searchString != null)
+                {
+                    pageNumber = 1;
+                }
+                else
+                {
+                    searchString = currentFilter;
+                }
+                int pageSize = 3;
+                return View(await PaginatedList<SanPhamModel>.CreateAsync(dsthucphams.AsNoTracking(), pageNumber ?? 1, pageSize));
+            }
         }
 
     }
