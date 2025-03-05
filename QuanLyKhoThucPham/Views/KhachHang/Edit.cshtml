@@ -10,7 +10,7 @@
 <hr />
 <div class="khung">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" asp-route-maKH="@Model.MaKH">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="MaKH" />
             <div class="form-group">
@@ -36,8 +36,15 @@
                     Lưu thay đổi
                 </button>
 
+<<<<<<< HEAD
                 <a asp-action="Index" class="btn btn-secondary">Quay lại</a> 
 
+=======
+                <a href="@Url.Action("Index", "KhachHang")"
+                   style="background-color: #6c757d; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none; font-size: 16px;">
+                    Quay lại
+                </a>
+>>>>>>> NguyenVietHoang3
             </div>
         </form>
     </div>

@@ -1,10 +1,10 @@
-﻿@model QuanLyKhoThucPham.Models.View_Model.ViewModelPhieuNhap
+﻿@model QuanLyKhoThucPham.Models.View_Model.ViewModelPhieuXuat
 
 @{
-    ViewData["Title"] = "Tạo Phiếu Nhập";
+    ViewData["Title"] = "Tạo Phiếu Xuất";
 }
 
-<h2>Tạo Phiếu Nhập</h2>
+<h2>Tạo Phiếu Xuất</h2>
 
 @if (!ViewData.ModelState.IsValid)
 {
@@ -15,49 +15,48 @@
 
 <form asp-action="Create" method="post">
     <div class="form-group">
-        <label asp-for="PhieuNhap.NgayNhap">Ngày Nhập</label>
-        <input asp-for="PhieuNhap.NgayNhap" class="form-control" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")  />
-        <span asp-validation-for="PhieuNhap.NgayNhap" class="text-danger"></span>
+        <label asp-for="PhieuXuat.NgayXuat">Ngày Nhập</label>
+        <input asp-for="PhieuXuat.NgayXuat" class="form-control" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")   />
+        <span asp-validation-for="PhieuXuat.NgayXuat" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="PhieuNhap.MaKho">Kho Nhập</label>
-        <select id="selectKho" asp-for="PhieuNhap.MaKho" class="form-control" asp-items="@(new SelectList(Model.DSKhoHang, "MaKho", "TenKho"))">
+        <label asp-for="PhieuXuat.MaKho">Kho Nhập</label>
+        <select id="selectKho" asp-for="PhieuXuat.MaKho" class="form-control" asp-items="@(new SelectList(Model.DSKhoHang, "MaKho", "TenKho"))">
             <option value="">Chọn Kho</option>
         </select>
-        <span asp-validation-for="PhieuNhap.MaKho" class="text-danger"></span>
+        <span asp-validation-for="PhieuXuat.MaKho" class="text-danger"></span>
     </div>
 
-
     <div class="form-group">
-        <label asp-for="PhieuNhap.MaNhanVien">Nhân Viên</label>
-        <select id="selectNhanVien" asp-for="PhieuNhap.MaNhanVien" class="form-control" asp-items="@(new SelectList(Model.DSNhanVien, "MaNhanVien", "HoTen"))">
+        <label asp-for="PhieuXuat.MaNhanVien">Nhân Viên</label>
+        <select id="selectNhanVien" asp-for="PhieuXuat.MaNhanVien" class="form-control" asp-items="@(new SelectList(Model.DSNhanVien, "MaNhanVien", "HoTen"))">
             <option value="">Chọn Nhân Viên</option>
         </select>
-        <span asp-validation-for="PhieuNhap.MaNhanVien" class="text-danger"></span>
+        <span asp-validation-for="PhieuXuat.MaNhanVien" class="text-danger"></span>
     </div>
-
+   
     <div class="form-group">
-        <label asp-for="PhieuNhap.MaNhaCungCap">Nhà Cung Cấp</label>
-        <select id="selectNhaCungCap" asp-for="PhieuNhap.MaNhaCungCap" class="form-control">
-            <option value="">Chọn Nhà Cung Cấp</option>
+        <label asp-for="PhieuXuat.MaKH">Khách hàng</label>
+        <select id="selectKhachHang" asp-for="PhieuXuat.MaKH" class="form-control">
+            <option value="">Chọn Khách hàng</option>
 
-            @foreach (var item in Model.DSNhaCungCap)
+            @foreach (var item in Model.DSKhachHang)
             {
-                <option value="@item.MaNhaCungCap" data-diachi="@item.DiaChi">@item.TenNhaCungCap</option>
+                <option value="@item.MaKH" data-diachikh="@item.DiaChi">@item.TenKH</option>
             }
         </select>
-        <span asp-validation-for="PhieuNhap.MaNhaCungCap" class="text-danger"></span>
+        <span asp-validation-for="PhieuXuat.MaKH" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label>Địa Chỉ</label>
-        <input id="diaChiNhaCungCap" class="form-control" readonly />
+        <input id="diaChiKhachHang" class="form-control" readonly />
     </div>
     <div class="form-group">
-        <label asp-for="@Model.PhieuNhap.Ghichu" class="control-label"></label>
-        <input asp-for="@Model.PhieuNhap.Ghichu" class="form-control" />
-        <span asp-validation-for="@Model.PhieuNhap.Ghichu" class="text-danger"></span>
+        <label asp-for="@Model.PhieuXuat.Ghichu" class="control-label"></label>
+        <input asp-for="@Model.PhieuXuat.Ghichu" class="form-control" />
+        <span asp-validation-for="@Model.PhieuXuat.Ghichu" class="text-danger"></span>
     </div>
 
     <h3>Danh Sách Sản Phẩm</h3>
@@ -67,6 +66,7 @@
                 <th>Sản Phẩm</th>
                 <th>Đơn Giá</th>
                 <th>Số Lượng</th>
+                <th>Số Lượng tồn</th>
                 <th>Tổng Tiền</th>
                 <th></th>
             </tr>
@@ -74,55 +74,68 @@
         <tbody>
             <tr>
                 <td>
-                    <select id="selectedSanPham" name="PhieuNhapChiTiet[0].MaSP" class="form-control" onchange="updateSanPham(this)">
+                    <select id="selectedSanPham" name="PhieuXuatChiTiet[0].MaSP" class="form-control" onchange="updateSanPham(this)">
                         <option value="">Chọn sản phẩm</option>
                         @foreach (var sp in Model.DSSanPham)
                         {
-                            <option value="@sp.MaSP" data-dongia="@sp.DonGia">@sp.TenSP</option>
+                            <option value="@sp.MaSP" data-dongia="@sp.DonGia" data-soluong="@sp.SoLuong">@sp.TenSP</option>
                         }
                     </select>
                 </td>
-                <td><input name="PhieuNhapChiTiet[0].DonGia" class="form-control" readonly /></td>
-                <td><input name="PhieuNhapChiTiet[0].SoLuong" class="form-control" type="number" oninput="updateTongTien(this)" value="1" /></td>
-                <td><input name="PhieuNhapChiTiet[0].ThanhTien" class="form-control" readonly /></td>
+                <td><input name="PhieuXuatChiTiet[0].DonGia" class="form-control" readonly /></td>
+                <td><input name="PhieuXuatChiTiet[0].SoLuong" class="form-control" type="number" oninput="updateTongTien(this)" value="1" /></td>
+                <td><input class="form-control" readonly data-soluongton /></td>
+                <td><input name="PhieuXuatChiTiet[0].ThanhTien" class="form-control" readonly /></td>
                 <td><button type="button" class="btn btn-danger" onclick="removeRow(this)">Xóa</button></td>
             </tr>
         </tbody>
     </table>
     <button type="button" class="btn btn-success" onclick="addRow()">Thêm sản phẩm</button>
     <div class="form-group">
-        <label>Tổng tiền phiếu nhập</label>
-        <input id="tongTien" name="PhieuNhap.TongTien" class="form-control" value="" readonly />
+        <label>Tổng tiền phiếu xuất</label>
+        <input id="tongTien" name="PhieuXuat.TongTien" class="form-control" value="" readonly />
     </div>
     <button type="submit" class="btn btn-primary">Lưu</button>
 </form>
 
+
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        
+
     <script>
         $(document).ready(function () {
             $("#selectedSanPham").select2({ width: '100%' });
-            $("#selectNhaCungCap").select2({ width: '100%' });
+            $("#selectKhachHang").select2({ width: '100%' });
             $("#selectNhanVien").select2({ width: '100%' });
             $("#selectKho").select2({ width: '100%' });
         });
 
         $(document).ready(function () {
-            $("#selectNhaCungCap").change(function () {
+            $("#selectKhachHang").change(function () {
                 var selectedOption = $(this).find(":selected");
-                $("#diaChiNhaCungCap").val(selectedOption.data("diachi") || "");
+                $("#diaChiKhachHang").val(selectedOption.data("diachikh") || "");
             });
         });
 
         function updateSanPham(select) {
             var row = select.closest("tr");
             var donGiaInput = row.querySelector("input[name$='DonGia']");
+            var soLuongNhapInput = row.querySelector("input[name$='SoLuong']");
+            var soLuongTonInput = row.querySelector("input[data-soluongton]");
             var tongTienInput = row.querySelector("input[name$='ThanhTien']");
+
             var selectedOption = select.options[select.selectedIndex];
-            donGiaInput.value = selectedOption.getAttribute("data-dongia");
-            updateTongTien(row.querySelector("input[name$='SoLuong']"));
+            var donGia = selectedOption.getAttribute("data-dongia");
+            var soLuongTon = selectedOption.getAttribute("data-soluong");
+
+            donGiaInput.value = donGia;
+            soLuongTonInput.value = soLuongTon; 
+            soLuongNhapInput.value = 1;
+            updateTongTien(soLuongNhapInput);
         }
+
         function updateTongTien(input) {
             var row = input.closest("tr");
             var donGia = parseFloat(row.querySelector("input[name$='DonGia']").value) || 0;
@@ -138,7 +151,6 @@
             });
             document.getElementById("tongTien").value = total;
         }
-
         function addRow() {
             var table = document.getElementById("tableSanPham").getElementsByTagName('tbody')[0];
             var newRow = table.rows[0].cloneNode(true);
@@ -172,7 +184,7 @@
             row.remove();
             updateTongTienPhieu();
         }
-    </script>
+    </script> 
 }
 
 <style>
@@ -181,7 +193,7 @@
     }
 
     .select2-container--default .select2-selection--single .select2-selection__rendered {
-        line-height: 40px !important; 
+        line-height: 40px !important;
     }
 
     .form-group {
@@ -199,3 +211,4 @@
 
 
 </style>
+

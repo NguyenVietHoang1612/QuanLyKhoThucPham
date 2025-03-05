@@ -1,57 +1,58 @@
-﻿@model PaginatedList<QuanLyKhoThucPham.Models.PhieuNhapModel>
+﻿@model PaginatedList<QuanLyKhoThucPham.Models.PhieuXuatModel>
 
 @{
-    ViewData["Title"] = "Danh Sách Phiếu Nhập";
+    ViewData["Title"] = "Danh Sách Phiếu Xuất";
 }
 
 <h1>@ViewData["Title"]</h1>
 
-    <div class="mb-3">
-        <form asp-action="Index" method="get">
-            <div class="input-group">
-                <input type="text" class="form-control" name="searchString" placeholder="Tìm kiếm theo mã phiếu nhập" value="@ViewData["CurrentFilter"]">
-                <input type="date" class="form-control" name="searchDate" value="@ViewData["CurrentDateFilter"]">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
-                </div>
+<div class="mb-3">
+    <form asp-action="Index" method="get">
+        <div class="input-group">
+            <input type="text" class="form-control" name="searchString" placeholder="Tìm kiếm theo mã phiếu nhập" value="@ViewData["CurrentFilter"]">
+            <input type="date" class="form-control" name="searchDate" value="@ViewData["CurrentDateFilter"]">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
+</div>
 
 <table class="table">
     <thead>
         <tr>
-            <a asp-controller="PhieuNhap" asp-action="Create" class="btn btn-primary">Tạo Phiếu Nhập Mới</a>
-            <th scope="col">Mã phiếu nhập</th>
+            <a asp-controller="PhieuXuat" asp-action="Create" class="btn btn-primary">Tạo Phiếu Nhập Mới</a>
+            <th scope="col">Mã phiếu xuất</th>
             <th scope="col">Ngày Nhập</th>
             <th scope="col">Người lập</th>
-            <th scope="col">Nhà Cung Cấp</th>
+            <th scope="col">Khách hàng</th>
             <th scope="col">Kho Nhập</th>
             <th scope="col">Tổng Tiền</th>
             <th scope="col">Hành Động</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var phieuNhap in Model)
+        @foreach (var phieuXuat in Model)
         {
             <tr>
-                <td>@phieuNhap.MaPhieuNhap</td>
-                <td>@phieuNhap.NgayNhap.ToString("dd/MM/yyyy")</td>
+                <td>@phieuXuat.MaPhieuXuat</td>
+                <td>@phieuXuat.NgayXuat.ToString("dd/MM/yyyy")</td>
 
                 <!-- Kiểm tra null trước khi hiển thị -->
-                <td>@phieuNhap.NhanVien.HoTen</td>
-                <td>@phieuNhap.NhaCungCap.TenNhaCungCap</td>
-                <td>@phieuNhap.KhoHang.TenKho</td>
+                <td>@phieuXuat.NhanVien.HoTen</td>
+                <td>@phieuXuat.KhachHang.TenKH</td>
+                <td>@phieuXuat.KhoHang.TenKho</td>
 
-                <td>@phieuNhap.TongTien VND</td>
+                <td>@phieuXuat.TongTien VND</td>
                 <td>
-                    <a asp-controller="PhieuNhap" asp-action="Detail" asp-route-maPN="@phieuNhap.MaPhieuNhap" class="btn btn-info btn-sm">Chi Tiết</a>
-                    <a asp-controller="PhieuNhap" asp-action="Delete" asp-route-maPN="@phieuNhap.MaPhieuNhap" class="btn btn-danger">Xóa</a>
+                    <a asp-action="Detail" asp-route-maPX="@phieuXuat.MaPhieuXuat" class="btn btn-info btn-sm">Chi Tiết</a>
+                    <a asp-action="Delete" asp-route-maPX="@phieuXuat.MaPhieuXuat" class="btn btn-danger">Xóa</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
 
 
 <div class="mt-16">
@@ -98,3 +99,9 @@
 
 </div>
 
+<style>
+    .form-control {
+        width: 100% !important;
+        box-sizing: border-box;
+    }
+</style>

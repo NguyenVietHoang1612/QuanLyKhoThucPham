@@ -16,31 +16,49 @@ namespace QuanLyKhoThucPham.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int? pageNumber, string searchString, DateTime? searchDate)
         {
             var phieuNhap = _context.PhieuNhap
                 .Include(p => p.NhaCungCap)
-                .Include(p=> p.NhanVien)
-                .Include(p=>p.KhoHang)
-                .ToList();
+                .Include(p => p.NhanVien)
+                .Include(p => p.KhoHang)
+                .AsNoTracking();
 
-            foreach (var pn in phieuNhap)
+            ViewData["CurrentFilter"] = searchString;
+            ViewData["CurrentDateFilter"] = searchDate?.ToString("yyyy-MM-dd"); 
+
+            if (!string.IsNullOrEmpty(searchString))
             {
-                Console.WriteLine($"Phiếu nhập: {pn.MaNhaCungCap}, nhà cung cấp: {pn.NhaCungCap?.TenNhaCungCap ?? "Không có nhà cung cấp"}");
+                phieuNhap = phieuNhap.Where(s => s.MaPhieuNhap.ToString().ToLower().Contains(searchString));
             }
 
-            return View(phieuNhap);
+            if (searchDate.HasValue)
+            {
+                phieuNhap = phieuNhap.Where(s => s.NgayNhap.Date == searchDate.Value.Date);
+            }
+
+            int pageSize = 3;
+
+            var phieuNhapPage = await PaginatedList<PhieuNhapModel>.CreateAsync(phieuNhap, pageNumber ?? 1, pageSize);
+
+            return View(phieuNhapPage);
         }
 
-        public async Task<IActionResult> Create()
+
+        private async Task<ViewModelPhieuNhap> GetPhieuNhapViewModel()
         {
-            ViewModelPhieuNhap phieuNhapViewModel = new ViewModelPhieuNhap
+            return new ViewModelPhieuNhap
             {
                 DSNhaCungCap = await _context.NhaCungCap.ToListAsync(),
                 DSSanPham = await _context.SanPham.ToListAsync(),
                 DSKhoHang = await _context.KhoHang.ToListAsync(),
                 DSNhanVien = await _context.NhanVien.ToListAsync()
             };
+        }
+
+        public async Task<IActionResult> Create()
+        {
+            var phieuNhapViewModel = await GetPhieuNhapViewModel();
 
             return View(phieuNhapViewModel);
         }
@@ -54,17 +72,13 @@ namespace QuanLyKhoThucPham.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewModelPhieuNhap phieuNhapViewModel1 = new ViewModelPhieuNhap
-                {
-                    DSNhaCungCap = await _context.NhaCungCap.ToListAsync(),
-                    DSSanPham = await _context.SanPham.ToListAsync(),
-                    DSKhoHang = await _context.KhoHang.ToListAsync(),
-                    DSNhanVien = await _context.NhanVien.ToListAsync(),
-                    PhieuNhap = phieuNhap,
-                    DSChiTietPhieuNhap = phieuNhapChiTiet
-                };
 
-                return View(phieuNhapViewModel1);
+                var phieuNhapViewModel = await GetPhieuNhapViewModel();
+                phieuNhapViewModel.PhieuNhap = phieuNhap;
+                phieuNhapViewModel.DSChiTietPhieuNhap = phieuNhapChiTiet;
+
+
+                return View(phieuNhapViewModel);
             }
 
 
@@ -73,7 +87,7 @@ namespace QuanLyKhoThucPham.Controllers
             _context.PhieuNhap.Add(phieuNhap);
             await _context.SaveChangesAsync(); 
 
-            if (phieuNhapChiTiet != null && phieuNhapChiTiet.Any())
+            if (phieuNhapChiTiet != null)
             {
                 foreach (var phieuNhapCT in phieuNhapChiTiet)
                 {
@@ -83,24 +97,30 @@ namespace QuanLyKhoThucPham.Controllers
                     var sanPham = await _context.SanPham.FindAsync(phieuNhapCT.MaSP);
                     var khoHang = await _context.KhoHang.FindAsync(phieuNhap.MaKho);
 
-                    if (khoHang != null)
+
+                    if (khoHang.soluongtrong - phieuNhapCT.SoLuong < 0)
                     {
-                        if (khoHang.soluongtrong - phieuNhapCT.SoLuong < 0)
-                        {
-                            ModelState.AddModelError("", "Kho hàng không đủ chỗ trống!");
-                            return View(phieuNhap);
-                        }
-                        khoHang.soluongtrong -= phieuNhapCT.SoLuong;
+                        ModelState.AddModelError("", $"Kho hàng '{khoHang.TenKho}' không đủ chỗ.");
+                        var phieuNhapViewModel = await GetPhieuNhapViewModel();
+                        return View(phieuNhapViewModel);
                     }
+
+                    khoHang.soluongtrong -= phieuNhapCT.SoLuong;
 
                     if (sanPham != null)
                     {
                         sanPham.SoLuong += phieuNhapCT.SoLuong;
                     }
+                    else
+                    {
+                        ModelState.AddModelError("", $"Sản phẩm '{sanPham.TenSP}' không tồn tại.");
+                        var phieuNhapViewModel = await GetPhieuNhapViewModel();
+                        return View(phieuNhapViewModel);
+                    }
 
                     _context.PhieuNhapChiTiet.Add(phieuNhapCT);
-                    _context.SanPham.Update(sanPham);
                     _context.KhoHang.Update(khoHang);
+                    _context.SanPham.Update(sanPham);
                 }
                 await _context.SaveChangesAsync(); 
             }
@@ -133,6 +153,7 @@ namespace QuanLyKhoThucPham.Controllers
             return View(phieuNhap);
         }
 
+        //Get
         public async Task<IActionResult> Delete(int maPN)
         {
             var phieuNhap = await _context.PhieuNhap
@@ -140,7 +161,7 @@ namespace QuanLyKhoThucPham.Controllers
                 .Include(p => p.NhanVien)
                 .Include(p => p.KhoHang)
                 .Include(p => p.DSChiTietPhieuNhap)
-                    .ThenInclude(p=>p.SanPham)
+                    .ThenInclude(p => p.SanPham)
                 .FirstOrDefaultAsync(p => p.MaPhieuNhap == maPN);
 
             if (phieuNhap == null)
@@ -166,23 +187,10 @@ namespace QuanLyKhoThucPham.Controllers
 
             var chiTietPhieuNhap = await _context.PhieuNhapChiTiet
                .Where(ct => ct.MaPhieuNhap == maPN)
-               .Include(ct => ct.SanPham)
                .ToListAsync();
-         
-
-            phieuNhap.DSChiTietPhieuNhap = chiTietPhieuNhap;
-            if(chiTietPhieuNhap != null) {
-                foreach (var ct in chiTietPhieuNhap)
-                {
-
-                    _context.PhieuNhapChiTiet.Remove(ct);
-                }
-            }
-            
-
-
+              
+            _context.PhieuNhapChiTiet.RemoveRange(chiTietPhieuNhap);
             _context.PhieuNhap.Remove(phieuNhap);
-
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));

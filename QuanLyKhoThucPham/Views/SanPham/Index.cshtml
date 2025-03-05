@@ -5,7 +5,7 @@
 }
 
 <h1>Danh sách thực phẩm</h1>
-<form asp-controller="dsthucpham" asp-action="Index" method="post">
+<form asp-controller="SanPham" asp-action="Index" method="post">
     <div class="input-group">
         <input class="form-control" type="text" name="SearchString" placeholder="Tìm kiếm tên sản phẩm..." aria-describedby="btnNavbarSearch" />
         <button class="btn btn-primary" type="submit" />Tìm kiếm</button>
@@ -63,9 +63,9 @@
             </td>
                
             <td>
-                    <a asp-action="Edit" asp-route-maSP="@item.MaSP" class="khung">Chỉnh sửa </a>
-                    <a asp-action="Details" asp-route-maSP="@item.MaSP" class="khung">Xem chi tiết</a>
-                    <a asp-action="Delete" asp-route-maSP="@item.MaSP" class="khung">Xóa</a>
+                    <a asp-action="Edit" asp-route-maSP="@item.MaSP" class="khung btn btn-info btn-sm">Chỉnh sửa </a>
+                    <a asp-action="Details" asp-route-maSP="@item.MaSP" class="khung btn btn-info btn-warning">Xem chi tiết</a>
+                    <a asp-action="Delete" asp-route-maSP="@item.MaSP" class="khung btn btn-info btn-danger">Xóa</a>
             </td>
         </tr>
 }
