@@ -22,7 +22,7 @@
 
     <div class="form-group">
         <label asp-for="PhieuXuat.MaKho">Kho Nhập</label>
-        <select asp-for="PhieuXuat.MaKho" class="form-control" asp-items="@(new SelectList(Model.DSKhoHang, "MaKho", "TenKho"))">
+        <select id="selectKho" asp-for="PhieuXuat.MaKho" class="form-control" asp-items="@(new SelectList(Model.DSKhoHang, "MaKho", "TenKho"))">
             <option value="">Chọn Kho</option>
         </select>
         <span asp-validation-for="PhieuXuat.MaKho" class="text-danger"></span>
@@ -30,7 +30,7 @@
 
     <div class="form-group">
         <label asp-for="PhieuXuat.MaNhanVien">Nhân Viên</label>
-        <select asp-for="PhieuXuat.MaNhanVien" class="form-control" asp-items="@(new SelectList(Model.DSNhanVien, "MaNhanVien", "HoTen"))">
+        <select id="selectNhanVien" asp-for="PhieuXuat.MaNhanVien" class="form-control" asp-items="@(new SelectList(Model.DSNhanVien, "MaNhanVien", "HoTen"))">
             <option value="">Chọn Nhân Viên</option>
         </select>
         <span asp-validation-for="PhieuXuat.MaNhanVien" class="text-danger"></span>
@@ -74,7 +74,7 @@
         <tbody>
             <tr>
                 <td>
-                    <select name="PhieuXuatChiTiet[0].MaSP" class="form-control" onchange="updateSanPham(this)">
+                    <select id="selectedSanPham" name="PhieuXuatChiTiet[0].MaSP" class="form-control" onchange="updateSanPham(this)">
                         <option value="">Chọn sản phẩm</option>
                         @foreach (var sp in Model.DSSanPham)
                         {
@@ -98,66 +98,112 @@
     <button type="submit" class="btn btn-primary">Lưu</button>
 </form>
 
-<script>
-    document.getElementById("selectKhachHang").addEventListener("change", function () {
-        var selectedOption = this.options[this.selectedIndex];
-        console.log("Selected Option:", selectedOption);
-        console.log("Địa chỉ:", selectedOption.getAttribute("data-diachikh"));
 
-        document.getElementById("diaChiKhachHang").value = selectedOption.getAttribute("data-diachikh") || "";
-    });
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        
 
-    function updateSanPham(select) {
-        var row = select.closest("tr");
-        var donGiaInput = row.querySelector("input[name$='DonGia']");
-        var soLuongNhapInput = row.querySelector("input[name$='SoLuong']");
-        var soLuongTonInput = row.querySelector("input[data-soluongton]");
-        var tongTienInput = row.querySelector("input[name$='ThanhTien']");
-
-        var selectedOption = select.options[select.selectedIndex];
-        var donGia = selectedOption.getAttribute("data-dongia");
-        var soLuongTon = selectedOption.getAttribute("data-soluong");
-
-        donGiaInput.value = donGia;
-        soLuongTonInput.value = soLuongTon; 
-        soLuongNhapInput.value = 1;
-        updateTongTien(soLuongNhapInput);
-    }
-
-    function updateTongTien(input) {
-        var row = input.closest("tr");
-        var donGia = parseFloat(row.querySelector("input[name$='DonGia']").value) || 0;
-        var soLuong = parseInt(input.value) || 0;
-        var tongTien = donGia * soLuong;
-        row.querySelector("input[name$='ThanhTien']").value = tongTien;
-        updateTongTienPhieu();
-    }
-    function updateTongTienPhieu() {
-        var total = 0;
-        document.querySelectorAll("#tableSanPham tbody tr").forEach(row => {
-            total += parseFloat(row.querySelector("input[name$='ThanhTien']").value) || 0;
+    <script>
+        $(document).ready(function () {
+            $("#selectedSanPham").select2({ width: '100%' });
         });
-        document.getElementById("tongTien").value = total;
-    }
-    function addRow() {
-        var table = document.getElementById("tableSanPham").getElementsByTagName('tbody')[0];
-        var newRow = table.rows[0].cloneNode(true);
-        var index = table.rows.length;
 
-        newRow.querySelectorAll("select, input").forEach((input) => {
-            var name = input.getAttribute("name");
-            if (name) {
-                input.setAttribute("name", name.replace("[0]", `[${index}]`));
-                input.value = "";
-            }
+        $(document).ready(function () {
+            $("#selectKhachHang").select2();
         });
-        newRow.querySelector("select").selectedIndex = 0;
-        table.appendChild(newRow);
+
+        $(document).ready(function () {
+            $("#selectNhanVien").select2();
+        });
+
+        $(document).ready(function () {
+            $("#selectKho").select2();
+        });
+
+        $(document).ready(function () {
+            $("#selectKhachHang").change(function () {
+                var selectedOption = $(this).find(":selected");
+                $("#diaChiKhachHang").val(selectedOption.data("diachikh") || "");
+            });
+        });
+
+        function updateSanPham(select) {
+            var row = select.closest("tr");
+            var donGiaInput = row.querySelector("input[name$='DonGia']");
+            var soLuongNhapInput = row.querySelector("input[name$='SoLuong']");
+            var soLuongTonInput = row.querySelector("input[data-soluongton]");
+            var tongTienInput = row.querySelector("input[name$='ThanhTien']");
+
+            var selectedOption = select.options[select.selectedIndex];
+            var donGia = selectedOption.getAttribute("data-dongia");
+            var soLuongTon = selectedOption.getAttribute("data-soluong");
+
+            donGiaInput.value = donGia;
+            soLuongTonInput.value = soLuongTon; 
+            soLuongNhapInput.value = 1;
+            updateTongTien(soLuongNhapInput);
+        }
+
+        function updateTongTien(input) {
+            var row = input.closest("tr");
+            var donGia = parseFloat(row.querySelector("input[name$='DonGia']").value) || 0;
+            var soLuong = parseInt(input.value) || 0;
+            var tongTien = donGia * soLuong;
+            row.querySelector("input[name$='ThanhTien']").value = tongTien;
+            updateTongTienPhieu();
+        }
+        function updateTongTienPhieu() {
+            var total = 0;
+            document.querySelectorAll("#tableSanPham tbody tr").forEach(row => {
+                total += parseFloat(row.querySelector("input[name$='ThanhTien']").value) || 0;
+            });
+            document.getElementById("tongTien").value = total;
+        }
+        function addRow() {
+            var table = document.getElementById("tableSanPham").getElementsByTagName('tbody')[0];
+            var newRow = table.rows[0].cloneNode(true);
+            var index = table.rows.length;
+
+            newRow.querySelectorAll("select, input").forEach((input) => {
+                var name = input.getAttribute("name");
+
+                if (name) {
+                    input.setAttribute("name", name.replace("[0]", `[${index}]`));
+                    if (input.tagName === 'SELECT') {
+                        $(input).select2('destroy');
+                        input.selectedIndex = 0;
+                        $(input).next(".select2-container").remove();
+                    } else {
+                        input.value = "";
+                    }
+                }
+            });
+
+            var selectSanPham = newRow.querySelector("select");
+
+            table.appendChild(newRow);
+
+            $(newRow).find("select").select2({ width: '100%' });
+            updateTongTienPhieu();
+        }
+
+        function removeRow(button) {
+            var row = button.closest("tr");
+            row.remove();
+            updateTongTienPhieu();
+        }
+    </script> 
+}
+
+<style>
+    .select2-container .select2-selection--single {
+        height: 40px !important;
     }
 
-    function removeRow(button) {
-        var row = button.closest("tr");
-        row.remove();
-        updateTongTienPhieu();
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 40px !important;
     }
-</script>
+
+</style>
+

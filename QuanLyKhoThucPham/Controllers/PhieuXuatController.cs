@@ -13,37 +13,51 @@ namespace QuanLyKhoThucPham.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int? pageNumber, string searchString, DateTime? searchDate)
         {
 
             var phieuXuat = _context.PhieuXuat
                 .Include(p => p.KhachHang)
                 .Include(p => p.NhanVien)
                 .Include(p => p.KhoHang)
-                .ToList();
-            return View(phieuXuat);
+                .AsNoTracking();
+            int pageSize = 3;
+
+            ViewData["CurrentFilter"] = searchString;
+            ViewData["CurrentDateFilter"] = searchDate?.ToString("yyyy-MM-dd"); 
+
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                phieuXuat = phieuXuat.Where(s => s.MaPhieuXuat.ToString().ToLower().Contains(searchString));
+            }
+
+            if (searchDate.HasValue)
+            {
+                phieuXuat = phieuXuat.Where(s => s.NgayXuat.Date == searchDate.Value.Date);
+            }
+
+            var phieuXuatPage = PaginatedList<PhieuXuatModel>.CreateAsync(phieuXuat, pageNumber ?? 1, pageSize);
+
+            return  View(await phieuXuatPage);
     
         }
 
-        public async Task<IActionResult> Create()
+        private async Task<ViewModelPhieuXuat> GetPhieuXuatViewModel()
         {
-            ViewModelPhieuXuat phieuXuatViewModel = new ViewModelPhieuXuat
+            return new ViewModelPhieuXuat
             {
                 DSKhachHang = await _context.KhachHang.ToListAsync(),
                 DSSanPham = await _context.SanPham.ToListAsync(),
                 DSKhoHang = await _context.KhoHang.ToListAsync(),
-                DSNhanVien = await _context.NhanVien.ToListAsync()
-
+                DSNhanVien = await _context.NhanVien.ToListAsync(),
             };
-            if(phieuXuatViewModel.DSKhachHang != null) 
-            {
-                Console.WriteLine($"Khách hàng: {phieuXuatViewModel.DSKhachHang}");
-                     
-            } 
-            else
-            {
-                Console.WriteLine("Không có khách hàng");
-            } 
+        }
+
+        public async Task<IActionResult> Create()
+        {
+
+            var phieuXuatViewModel = await GetPhieuXuatViewModel();
             return View(phieuXuatViewModel);
         }
 
@@ -53,15 +67,9 @@ namespace QuanLyKhoThucPham.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewModelPhieuXuat phieuXuatViewModel1 = new ViewModelPhieuXuat
-                {
-                    DSKhachHang = await _context.KhachHang.ToListAsync(),
-                    DSSanPham = await _context.SanPham.ToListAsync(),
-                    DSKhoHang = await _context.KhoHang.ToListAsync(),
-                    DSNhanVien = await _context.NhanVien.ToListAsync(),
-                };
+                var phieuXuatViewModel = await GetPhieuXuatViewModel();
 
-                return View(phieuXuatViewModel1);
+                return View(phieuXuatViewModel);
             }
 
 
@@ -85,8 +93,9 @@ namespace QuanLyKhoThucPham.Controllers
                     {
                         if (khoHang.soluongtrong + phieuXuatCT.SoLuong > khoHang.soluongtong)
                         {
-                            ModelState.AddModelError("", "Kho hàng đã đủ chỗ!");
-                            return View(phieuXuat);
+                            ModelState.AddModelError("", $"Kho hàng '{khoHang.TenKho}' đã đầy.");
+                            var phieuXuatViewModel = await GetPhieuXuatViewModel();
+                            return View(phieuXuatViewModel);
                         }
                         khoHang.soluongtrong += phieuXuatCT.SoLuong;
                     }
@@ -99,7 +108,9 @@ namespace QuanLyKhoThucPham.Controllers
                         }
                         else
                         {
-
+                            ModelState.AddModelError("", $"Sản phẩm '{sanPham.TenSP}' không đủ số lượng tồn.");
+                            var phieuXuatViewModel = await GetPhieuXuatViewModel();
+                            return View(phieuXuatViewModel);
                         }
                     }
 

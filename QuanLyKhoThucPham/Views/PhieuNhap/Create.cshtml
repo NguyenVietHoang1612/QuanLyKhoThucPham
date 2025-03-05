@@ -14,10 +14,6 @@
 }
 
 <form asp-action="Create" method="post">
-    @*  <div class="form-group">
-    <label asp-for="PhieuNhap.MaNhaCungCap">Nhà Cung Cấp</label>
-    <select asp-for="PhieuNhap.MaNhaCungCap" class="form-control" data-dichi="diachi" asp-items="@(new SelectList(Model.DSNhaCungCap, "MaNhaCungCap", "TenNhaCungCap"))" onchange="updateNhaCungCap()"></select>
-    </div> *@
     <div class="form-group">
         <label asp-for="PhieuNhap.NgayNhap">Ngày Nhập</label>
         <input asp-for="PhieuNhap.NgayNhap" class="form-control" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")  />
@@ -26,7 +22,7 @@
 
     <div class="form-group">
         <label asp-for="PhieuNhap.MaKho">Kho Nhập</label>
-        <select asp-for="PhieuNhap.MaKho" class="form-control" asp-items="@(new SelectList(Model.DSKhoHang, "MaKho", "TenKho"))">
+        <select id="selectKho" asp-for="PhieuNhap.MaKho" class="form-control" asp-items="@(new SelectList(Model.DSKhoHang, "MaKho", "TenKho"))">
             <option value="">Chọn Kho</option>
         </select>
         <span asp-validation-for="PhieuNhap.MaKho" class="text-danger"></span>
@@ -35,7 +31,7 @@
 
     <div class="form-group">
         <label asp-for="PhieuNhap.MaNhanVien">Nhân Viên</label>
-        <select asp-for="PhieuNhap.MaNhanVien" class="form-control" asp-items="@(new SelectList(Model.DSNhanVien, "MaNhanVien", "HoTen"))">
+        <select id="selectNhanVien" asp-for="PhieuNhap.MaNhanVien" class="form-control" asp-items="@(new SelectList(Model.DSNhanVien, "MaNhanVien", "HoTen"))">
             <option value="">Chọn Nhân Viên</option>
         </select>
         <span asp-validation-for="PhieuNhap.MaNhanVien" class="text-danger"></span>
@@ -78,7 +74,7 @@
         <tbody>
             <tr>
                 <td>
-                    <select name="PhieuNhapChiTiet[0].MaSP" class="form-control" onchange="updateSanPham(this)">
+                    <select id="selectedSanPham" name="PhieuNhapChiTiet[0].MaSP" class="form-control" onchange="updateSanPham(this)">
                         <option value="">Chọn sản phẩm</option>
                         @foreach (var sp in Model.DSSanPham)
                         {
@@ -101,52 +97,100 @@
     <button type="submit" class="btn btn-primary">Lưu</button>
 </form>
 
-<script>
-    document.getElementById("selectNhaCungCap").addEventListener("change", function () {
-        var selectedOption = this.options[this.selectedIndex];
-        document.getElementById("diaChiNhaCungCap").value = selectedOption.getAttribute("data-diachi") || "";
-    });
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script>
+        $(document).ready(function () {
+            $("#selectedSanPham").select2({ width: '100%' });
+        });
 
-    function updateSanPham(select) {
-        var row = select.closest("tr");
-        var donGiaInput = row.querySelector("input[name$='DonGia']");
-        var tongTienInput = row.querySelector("input[name$='ThanhTien']");
-        var selectedOption = select.options[select.selectedIndex];
-        donGiaInput.value = selectedOption.getAttribute("data-dongia");
-        updateTongTien(row.querySelector("input[name$='SoLuong']"));
-    }
-    function updateTongTien(input) {
-        var row = input.closest("tr");
-        var donGia = parseFloat(row.querySelector("input[name$='DonGia']").value) || 0;
-        var soLuong = parseInt(input.value) || 0;
-        var tongTien = donGia * soLuong;
-        row.querySelector("input[name$='ThanhTien']").value = tongTien;
-        updateTongTienPhieu();
-    }
-    function updateTongTienPhieu() {
-        var total = 0;
-        document.querySelectorAll("#tableSanPham tbody tr").forEach(row => {
-            total += parseFloat(row.querySelector("input[name$='ThanhTien']").value) || 0;
+        $(document).ready(function () {
+            $("#selectNhaCungCap").select2();
         });
-        document.getElementById("tongTien").value = total;
-    }
-    function addRow() {
-        var table = document.getElementById("tableSanPham").getElementsByTagName('tbody')[0];
-        var newRow = table.rows[0].cloneNode(true);
-        var index = table.rows.length;
-        newRow.querySelectorAll("select, input").forEach((input) => {
-            var name = input.getAttribute("name");
-            if (name) {
-                input.setAttribute("name", name.replace("[0]", `[${index}]`));
-                input.value = "";
-            }
+
+        $(document).ready(function () {
+            $("#selectNhanVien").select2();
         });
-        newRow.querySelector("select").selectedIndex = 0;
-        table.appendChild(newRow);
+
+        $(document).ready(function () {
+            $("#selectKho").select2();
+        });
+
+        $(document).ready(function () {
+            $("#selectNhaCungCap").change(function () {
+                var selectedOption = $(this).find(":selected");
+                $("#diaChiNhaCungCap").val(selectedOption.data("diachi") || "");
+            });
+        });
+
+        function updateSanPham(select) {
+            var row = select.closest("tr");
+            var donGiaInput = row.querySelector("input[name$='DonGia']");
+            var tongTienInput = row.querySelector("input[name$='ThanhTien']");
+            var selectedOption = select.options[select.selectedIndex];
+            donGiaInput.value = selectedOption.getAttribute("data-dongia");
+            updateTongTien(row.querySelector("input[name$='SoLuong']"));
+        }
+        function updateTongTien(input) {
+            var row = input.closest("tr");
+            var donGia = parseFloat(row.querySelector("input[name$='DonGia']").value) || 0;
+            var soLuong = parseInt(input.value) || 0;
+            var tongTien = donGia * soLuong;
+            row.querySelector("input[name$='ThanhTien']").value = tongTien;
+            updateTongTienPhieu();
+        }
+        function updateTongTienPhieu() {
+            var total = 0;
+            document.querySelectorAll("#tableSanPham tbody tr").forEach(row => {
+                total += parseFloat(row.querySelector("input[name$='ThanhTien']").value) || 0;
+            });
+            document.getElementById("tongTien").value = total;
+        }
+
+        function addRow() {
+            var table = document.getElementById("tableSanPham").getElementsByTagName('tbody')[0];
+            var newRow = table.rows[0].cloneNode(true);
+            var index = table.rows.length;
+
+            newRow.querySelectorAll("select, input").forEach((input) => {
+                var name = input.getAttribute("name");
+
+                if (name) {
+                    input.setAttribute("name", name.replace("[0]", `[${index}]`));
+                    if (input.tagName === 'SELECT') {
+                        $(input).select2('destroy');
+                        input.selectedIndex = 0;
+                        $(input).next(".select2-container").remove();
+                    } else {
+                        input.value = "";
+                    }
+                }
+            });
+
+            var selectSanPham = newRow.querySelector("select");
+
+            table.appendChild(newRow);
+
+            $(newRow).find("select").select2({ width: '100%' });
+            updateTongTienPhieu();
+        }
+
+        function removeRow(button) {
+            var row = button.closest("tr");
+            row.remove();
+            updateTongTienPhieu();
+        }
+    </script>
+}
+
+<style>
+    .select2-container .select2-selection--single {
+        height: 40px !important;
     }
-    function removeRow(button) {
-        var row = button.closest("tr");
-        row.remove();
-        updateTongTienPhieu();
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 40px !important; 
     }
-</script>
+
+</style>

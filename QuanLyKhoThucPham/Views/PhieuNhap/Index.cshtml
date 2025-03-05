@@ -6,10 +6,23 @@
 
 <h1>@ViewData["Title"]</h1>
 
+    <div class="mb-3">
+        <form asp-action="Index" method="get">
+            <div class="input-group">
+                <input type="text" class="form-control" name="searchString" placeholder="Tìm kiếm theo mã phiếu nhập" value="@ViewData["CurrentFilter"]">
+                <input type="date" class="form-control" name="searchDate" value="@ViewData["CurrentDateFilter"]">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
 <table class="table">
     <thead>
         <tr>
-            <th scope="col">STT</th>
+            <a asp-controller="PhieuNhap" asp-action="Create" class="btn btn-primary">Tạo Phiếu Nhập Mới</a>
+            <th scope="col">Mã phiếu nhập</th>
             <th scope="col">Ngày Nhập</th>
             <th scope="col">Người lập</th>
             <th scope="col">Nhà Cung Cấp</th>
@@ -40,21 +53,48 @@
     </tbody>
 </table>
 
-<a asp-controller="PhieuNhap" asp-action="Create" class="btn btn-primary">Tạo Phiếu Nhập Mới</a>
 
-@{
-    var prevDisabled = !Model.HasNextPage ? "disabled" : "";
-    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-}
+<div class="mt-16">
+    @{
+        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    }
+    @if (Model.HasPreviousPage)
+    {
+        <a asp-action="Index"
+           asp-route-pageNumber="@(Model.PageIndex - 1)"
+           class="btn btn-default">
+            <i style="font-size: 20px" padding: 8px;> &lt;&lt; </i>
+        </a>
+    }
+    else
+    {
+        <span class="btn btn-default disabled" style="font-size: 20px"> &lt;&lt; </span>
+    }
 
-<a asp-action="Index"
+    @for (int i = 1; i <= Model.TotalPages; i++)
+    {
+        if (i == Model.PageIndex)
+        {
+            <span style="font-size: 20px; border: 1px solid #ccc; padding: 3px;"><strong>@i</strong></span>
+        }
+        else
+        {
+            <a asp-action="Index" asp-route-pageNumber="@i" style="font-size: 20px">@i</a>
+        }
+    }
+    @if (Model.HasNextPage)
+    {
+        <a asp-action="Index"
+           asp-route-pageNumber="@(Model.PageIndex + 1)"
+           class="btn btn-default style=">
+            <i style="font-size: 20px" padding: 8px;> >> </i>
+        </a>
+    }
+    else
+    {
+        <span class="btn btn-default" style="font-size: 20px"> >> </span>
+    }
 
-   asp-route-pageNumber="@(Model.PageIndex - 1)"
-   class="btn btn-default @prevDisabled">
-    Previous
-</a>
-<a asp-action="Index"
-   asp-route-pageNumber="@(Model.PageIndex + 1)"
-   class="btn btn-default @nextDisabled">
-    Next
-</a>
+</div>
+
