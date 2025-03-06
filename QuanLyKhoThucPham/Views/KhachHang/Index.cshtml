@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Index";
 }
-<div class="khung">
+<div class="row">
     
     <h1>Danh Sách Khách Hàng</h1>
     </div>
@@ -28,7 +28,7 @@
                 @Html.DisplayNameFor(model => model.SDT)
             </th>
             <th>
-                <a asp-action="Create"class="khung">Tạo Mới</a>
+                <a asp-action="Create" class="btn-tao-moi">Tạo Mới</a>
             </th>
         </tr>
     </thead>
@@ -47,9 +47,9 @@
                 @Html.DisplayFor(modelItem => item.SDT)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-maKH="@item.MaKH" class="khung">Chỉnh sửa</a> 
-                    <a asp-action="Details" asp-route-maKH="@item.MaKH" class="khung">Chi Tiết</a>
-                    <a asp-action="Delete" asp-route-maKH="@item.MaKH" class="khung">Xóa</a>
+                    <a asp-action="Edit" asp-route-maKH="@item.MaKH" class="btn-chinh-sua">Chỉnh sửa</a>|
+                    <a asp-action="Details" asp-route-maKH="@item.MaKH" class="btn-chi-tiet">Chi Tiết</a>|
+                    <a asp-action="Delete" asp-route-maKH="@item.MaKH" class="btn-xoa">Xóa</a>
             </td>
         </tr>
 }

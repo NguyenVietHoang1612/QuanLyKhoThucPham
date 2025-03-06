@@ -30,7 +30,7 @@
                 @Html.DisplayNameFor(model => model.SoDienThoai)
             </th>
             <th>
-                <a asp-action="Create"class="khung">Tạo Mới </a>
+                <a asp-action="Create"class="btn-tao-moi">Tạo Mới </a>
 
             </th>
         </tr>
@@ -51,9 +51,9 @@
                 @Html.DisplayFor(modelItem => item.SoDienThoai)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-maNhaCungCap="@item.MaNhaCungCap" class="khung">Chỉnh sửa</a> |
-                <a asp-action="Details" asp-route-maNhaCungCap="@item.MaNhaCungCap" class="khung">Chi Tiết</a> |
-                <a asp-action="Delete" asp-route-maNhaCungCap="@item.MaNhaCungCap" class="khung">Xóa</a>
+                <a asp-action="Edit" asp-route-maNhaCungCap="@item.MaNhaCungCap" class="btn-chinh-sua">Chỉnh sửa</a> |
+                <a asp-action="Details" asp-route-maNhaCungCap="@item.MaNhaCungCap" class="btn-chi-tiet">Chi Tiết</a> |
+                <a asp-action="Delete" asp-route-maNhaCungCap="@item.MaNhaCungCap" class="btn-xoa">Xóa</a>
             </td>
         </tr>
 }
