@@ -175,7 +175,6 @@ namespace QuanLyKhoThucPham.Controllers
         {
             return (_context.KhachHang?.Any(e => e.MaKH == maKH)).GetValueOrDefault();
         }
-             
     }
  }
 
