@@ -4,7 +4,7 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Chỉnh sửa nhân viên</h1>
+<h1>Chỉnh Sửa Thông Tin</h1>
 
 <h4>Nhân viên</h4>
 <hr />
@@ -29,14 +29,14 @@
                 <span asp-validation-for="ChucVu" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Lưu" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-danger btn-sm">Quay Lại</a>
 </div>
 
 @section Scripts {
