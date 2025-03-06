@@ -9,9 +9,9 @@
     <div class="mb-3">
         <form asp-action="Index" method="get">
             <div class="input-group">
-                <input type="text" class="form-control" name="searchString" placeholder="Tìm kiếm theo mã phiếu nhập" value="@ViewData["CurrentFilter"]">
-                <input type="date" class="form-control" name="searchDate" value="@ViewData["CurrentDateFilter"]">
-                <div class="input-group-append">
+                <input type="text" class="form-control" name="searchString" placeholder="Tìm kiếm theo mã phiếu nhập" value="@ViewData["TimkiemtheoMa"]">
+                <input type="date" class="form-control" name="searchDate" value="@ViewData["TimKiemTheoNgay"]">
+                <div class="input-group-sm">
                     <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
                 </div>
             </div>
@@ -23,7 +23,9 @@
         <tr>
             <a asp-controller="PhieuNhap" asp-action="Create" class="btn btn-primary">Tạo Phiếu Nhập Mới</a>
             <th scope="col">Mã phiếu nhập</th>
-            <th scope="col">Ngày Nhập</th>
+            <th scope="col" >
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["SXTheoNgayNhap"]">Ngày nhập</a>
+            </th>
             <th scope="col">Người lập</th>
             <th scope="col">Nhà Cung Cấp</th>
             <th scope="col">Kho Nhập</th>
@@ -97,4 +99,10 @@
     }
 
 </div>
+
+<style>
+    .form-control {
+        max-width: unset;
+    }
+</style>
 

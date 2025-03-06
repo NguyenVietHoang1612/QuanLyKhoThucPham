@@ -94,12 +94,14 @@
         <label>Tổng tiền phiếu nhập</label>
         <input id="tongTien" name="PhieuNhap.TongTien" class="form-control" value="" readonly />
     </div>
-    <button type="submit" class="btn btn-primary">Lưu</button>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Lưu</button>
+    </div>
 </form>
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script>
         $(document).ready(function () {
             $("#selectedSanPham").select2({ width: '100%' });
@@ -184,18 +186,11 @@
         line-height: 40px !important; 
     }
 
-    .form-group {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        margin-bottom: 15px; 
-    }
-
     .form-control {
-        width: 100% !important; 
-        box-sizing: border-box; 
+        max-width: none;
     }
 
-
-
+    .form-group {
+        margin: 10px 0px;
+    }
 </style>

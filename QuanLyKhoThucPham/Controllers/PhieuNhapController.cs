@@ -4,6 +4,7 @@ using QuanLyKhoThucPham.Models.View_Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Data.SqlClient;
 
 namespace QuanLyKhoThucPham.Controllers
 {
@@ -16,7 +17,7 @@ namespace QuanLyKhoThucPham.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(int? pageNumber, string searchString, DateTime? searchDate)
+        public async Task<IActionResult> Index(int? pageNumber, string searchString, DateTime? searchDate, string sortOrder)
         {
             var phieuNhap = _context.PhieuNhap
                 .Include(p => p.NhaCungCap)
@@ -24,10 +25,25 @@ namespace QuanLyKhoThucPham.Controllers
                 .Include(p => p.KhoHang)
                 .AsNoTracking();
 
-            ViewData["CurrentFilter"] = searchString;
-            ViewData["CurrentDateFilter"] = searchDate?.ToString("yyyy-MM-dd"); 
+            ViewData["TimkiemtheoMa"] = searchString;
+            ViewData["TimKiemTheoNgay"] = searchDate?.ToString("yyyy-MM-dd");
+            ViewData["SXTheoNgayNhap"] = sortOrder == "Date" ? "date_desc" : "Date";
 
-            if (!string.IsNullOrEmpty(searchString))
+            switch (sortOrder)
+            {
+                case "Date":
+                    phieuNhap = phieuNhap.OrderBy(s => s.NgayNhap);
+                    break;
+                case "date_desc":
+                    phieuNhap = phieuNhap.OrderByDescending(s => s.NgayNhap);
+                    break;
+
+                default:
+                    phieuNhap = phieuNhap.OrderBy(s => s.MaPhieuNhap);
+                    break;
+            } 
+
+                    if (!string.IsNullOrEmpty(searchString))
             {
                 phieuNhap = phieuNhap.Where(s => s.MaPhieuNhap.ToString().ToLower().Contains(searchString));
             }
@@ -76,7 +92,29 @@ namespace QuanLyKhoThucPham.Controllers
                 var phieuNhapViewModel = await GetPhieuNhapViewModel();
                 phieuNhapViewModel.PhieuNhap = phieuNhap;
                 phieuNhapViewModel.DSChiTietPhieuNhap = phieuNhapChiTiet;
+                if(phieuNhapViewModel.KhoHang == null)
+                {
+                    ModelState.AddModelError("", $"Kho hàng chưa nhập.");
+                }
 
+                if(phieuNhapViewModel.SanPham == null)
+                {
+                    ModelState.AddModelError("", $"Sản phẩm chưa nhập.");
+                }
+               
+                if(phieuNhapViewModel.NhaCungCap == null)
+                {
+                    ModelState.AddModelError("", $"nhà cung cấp chưa nhập.");
+
+                }
+
+                if(phieuNhapViewModel.NhanVien == null)
+                {
+                    ModelState.AddModelError("", $"nhân viên chưa nhập.");
+                }
+                
+                
+               
 
                 return View(phieuNhapViewModel);
             }
