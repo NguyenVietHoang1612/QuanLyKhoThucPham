@@ -22,6 +22,7 @@ thead tr {
     background-color: #f8d775; /* Màu nền vàng nhạt */
     border: 2px solid #e0b100; /* Viền vàng đậm */
 }
+<<<<<<< HEAD
 
 thead th {
     padding: 10px; /* Tạo khoảng cách bên trong */
@@ -39,6 +40,13 @@ thead th {
 
 .btn-chinh-sua {
     background-color: #ffc107; /* Màu vàng */
+=======
+.khung {
+    border: 3px outset yellow;
+    background-color: lightyellow;
+    border-radius: 8px;
+    padding: 5px;
+>>>>>>> vu
     color: black;
     border: 1px solid #e0a800;
     padding: 5px 10px;
@@ -53,6 +61,7 @@ thead th {
     border-radius: 5px;
 }
 
+<<<<<<< HEAD
 .btn-xoa {
     background-color: #dc3545; /* Màu đỏ */
     color: white;
@@ -92,4 +101,6 @@ td {
     }
 
 
+=======
+>>>>>>> vu
 

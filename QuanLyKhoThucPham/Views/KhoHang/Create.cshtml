@@ -4,9 +4,8 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Tạo mới danh sách kho hàng</h1>
+<h1>Tạo mới</h1>
 
-<h4>dskhohangModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -32,20 +31,14 @@
                 <input asp-for="soluongtrong" class="form-control" />
                 <span asp-validation-for="soluongtrong" class="text-danger"></span>
             </div>
+            <hr />
             <div class="form-group">
                 <input type="submit" value="Tạo" class="btn btn-primary" />
-                
+				<a asp-action="Index" class="btn btn-warning">Quay lại</a>
             </div>
-            
         </form>
-        <hr />
-        <form>
-            <input asp-action="Index" type="submit" class="btn btn-primary" value="Trở lại danh sách kho">
-        </form>
-        
     </div>
 </div>
-
 
 
 @section Scripts {

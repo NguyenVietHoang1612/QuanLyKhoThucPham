@@ -19,78 +19,72 @@ namespace QuanLyKhoThucPham.Controllers
             _context = context;
         }
 
-        // GET: dsthucpham
-        public async Task<IActionResult> Index()
-        {
-              return _context.SanPham != null ? 
-                          View(await _context.SanPham.ToListAsync()) :
-                          Problem("Entity set 'QuanLyKhoThucPhamContext.dsthucpham'  is null.");
-        }
+      
 
-        // GET: dsthucpham/Details/5
-        public async Task<IActionResult> Details(int? maSP)
+        // GET: SanPham/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
-            if (maSP == null || _context.SanPham == null)
+            if (id == null || _context.SanPham == null)
             {
                 return NotFound();
             }
 
-            var dsthucpham = await _context.SanPham
-                .FirstOrDefaultAsync(m => m.MaSP == maSP);
-            if (dsthucpham == null)
+            var sanPhamModel = await _context.SanPham
+                .FirstOrDefaultAsync(m => m.MaSP == id);
+            if (sanPhamModel == null)
             {
                 return NotFound();
             }
 
-            return View(dsthucpham);
+            return View(sanPhamModel);
         }
 
-        // GET: dsthucpham/Create
+        // GET: SanPham/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: dsthucpham/Create
+        // POST: SanPham/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaSP,TenSP,SoLuong,DonGia,NhaSanXuat,MoTa,MaNhaCungCap")] SanPhamModel dsthucpham)
+        public async Task<IActionResult> Create([Bind("MaSP,TenSP,SoLuong,DonGia,NhaSanXuat,MoTa")] SanPhamModel sanPhamModel)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(dsthucpham);
+                _context.Add(sanPhamModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(dsthucpham);
+            return View(sanPhamModel);
         }
 
-        // GET: dsthucpham/Edit/5
-        public async Task<IActionResult> Edit(int? maSP)
+        // GET: SanPham/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
-            if (maSP == null || _context.SanPham == null)
+            if (id == null || _context.SanPham == null)
             {
                 return NotFound();
             }
 
-            var dsthucpham = await _context.SanPham.FindAsync(maSP);
-            if (dsthucpham == null)
+            var sanPhamModel = await _context.SanPham.FindAsync(id);
+            if (sanPhamModel == null)
             {
                 return NotFound();
             }
-            return View(dsthucpham);
+            return View(sanPhamModel);
         }
 
-        // POST: dsthucpham/Edit/5
+        // POST: SanPham/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? maSP, [Bind("MaSP,TenSP,SoLuong,DonGia,NhaSanXuat,MoTa")] SanPhamModel thucPham)
+        public async Task<IActionResult> Edit(int id, [Bind("MaSP,TenSP,SoLuong,DonGia,NhaSanXuat,MoTa")] SanPhamModel sanPhamModel)
         {
-            if (maSP != thucPham.MaSP)
+            if (id != sanPhamModel.MaSP)
             {
                 return NotFound();
             }
@@ -99,12 +93,12 @@ namespace QuanLyKhoThucPham.Controllers
             {
                 try
                 {
-                    _context.Update(thucPham);
+                    _context.Update(sanPhamModel);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!dsthucphamExists(thucPham.MaSP))
+                    if (!SanPhamModelExists(sanPhamModel.MaSP))
                     {
                         return NotFound();
                     }
@@ -115,55 +109,59 @@ namespace QuanLyKhoThucPham.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(thucPham);
+            return View(sanPhamModel);
         }
 
-        // GET: dsthucpham/Delete/5
-        public async Task<IActionResult> Delete(int? maSP)
+        // GET: SanPham/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
-            if (maSP == null || _context.SanPham == null)
+            if (id == null || _context.SanPham == null)
             {
                 return NotFound();
             }
 
-            var dsThucPham = await _context.SanPham
-                .FirstOrDefaultAsync(m => m.MaSP == maSP);
-            if (dsThucPham == null)
+            var sanPhamModel = await _context.SanPham
+                .FirstOrDefaultAsync(m => m.MaSP == id);
+            if (sanPhamModel == null)
             {
                 return NotFound();
             }
 
-            return View(dsThucPham);
+            return View(sanPhamModel);
         }
 
-        // POST: dsthucpham/Delete/5
+        // POST: SanPham/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int maSP)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.SanPham == null)
             {
-                return Problem("Entity set 'QuanLyKhoThucPhamContext.dsthucpham'  is null.");
+                return Problem("Entity set 'QuanLyKhoThucPhamContext.SanPham'  is null.");
             }
-            var dsthucpham = await _context.SanPham.FindAsync(maSP);
-            if (dsthucpham != null)
+            var sanPhamModel = await _context.SanPham.FindAsync(id);
+            if (sanPhamModel != null)
             {
-                _context.SanPham.Remove(dsthucpham);
+                _context.SanPham.Remove(sanPhamModel);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool dsthucphamExists(int maSP)
+        private bool SanPhamModelExists(int id)
         {
-          return (_context.SanPham?.Any(e => e.MaSP == maSP)).GetValueOrDefault();
+            return (_context.SanPham?.Any(e => e.MaSP == id)).GetValueOrDefault();
         }
 
+
         //tìm kiếm
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(string searchString)
+      
+        public async Task<IActionResult> Index(
+            string searchString,
+            string sortOrder,
+            string currentFilter,
+            int? pageNumber)
         {
             if (_context.SanPham == null)
             {
@@ -172,12 +170,28 @@ namespace QuanLyKhoThucPham.Controllers
 
             var dsthucphams = from m in _context.SanPham select m;
 
-            if (!String.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
                 dsthucphams = dsthucphams.Where(s => s.TenSP.ToUpper().Contains(searchString.ToUpper()));
             }
 
-            return View(await dsthucphams.ToListAsync());
+            //phân trang
+            {
+                ViewData["CurrentSort"] = sortOrder;
+
+
+                if (searchString != null)
+                {
+                    pageNumber = 1;
+                }
+                else
+                {
+                    searchString = currentFilter;
+                }
+                int pageSize = 3;
+                return View(await PaginatedList<SanPhamModel>.CreateAsync(dsthucphams.AsNoTracking(), pageNumber ?? 1, pageSize));
+            }
         }
+
     }
 }

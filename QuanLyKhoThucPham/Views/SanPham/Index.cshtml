@@ -1,17 +1,16 @@
-﻿@model IEnumerable<QuanLyKhoThucPham.Models.SanPhamModel>
+﻿@model PaginatedList<QuanLyKhoThucPham.Models.SanPhamModel>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Danh sách thực phẩm</h1>
-<form asp-controller="SanPham" asp-action="Index" method="post">
+<h1>Danh Sách Thực Phẩm </h1>
+<form asp-controller="SanPham" asp-action="Index">
     <div class="input-group">
         <input class="form-control" type="text" name="SearchString" placeholder="Tìm kiếm tên sản phẩm..." aria-describedby="btnNavbarSearch" />
-        <button class="btn btn-primary" type="submit" />Tìm kiếm</button>
+        <button class="btn btn-primary" type="submit" /> 🔍</button>
     </div>
 </form>
-
 <table class="table">
     <thead>
         <tr>
@@ -27,7 +26,7 @@
             <th>
                 <a>Số lượng</a>
             </th>
-       
+
             <th>
                 <a>Giá/1 sản phẩm</a>
             </th>
@@ -35,7 +34,7 @@
                 <a>Mô tả</a>
             </th>
             <th>
-                <a asp-action="Create" class="khung">Tạo mới</a>
+                <a asp-action="Create" class="btn btn-primary" >Tạo mới</a>
             </th>
 
         </tr>
@@ -50,24 +49,53 @@
                 @Html.DisplayFor(modelItem => item.TenSP)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.NhaSanXuat)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.SoLuong)
-            </td>          
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DonGia)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.NhaSanXuat)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.MoTa)
             </td>
-               
             <td>
-                    <a asp-action="Edit" asp-route-maSP="@item.MaSP" class="khung btn btn-info btn-sm">Chỉnh sửa </a>
-                    <a asp-action="Details" asp-route-maSP="@item.MaSP" class="khung btn btn-info btn-warning">Xem chi tiết</a>
-                    <a asp-action="Delete" asp-route-maSP="@item.MaSP" class="khung btn btn-info btn-danger">Xóa</a>
+                    <a asp-action="Edit" asp-route-id="@item.MaSP" class="btn btn-warning">Chỉnh sửa </a> 
+                    <a asp-action="Details" asp-route-id="@item.MaSP" class="btn btn-info">Chỉ tiết</a> 
+                    <a asp-action="Delete" asp-route-id="@item.MaSP" class="btn btn-danger">Xóa</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Trước
+</a>
+@for (int i = 1; i <= Model.TotalPages; i++)
+{
+    if (i == Model.PageIndex)
+    {
+        <span><strong>@i</strong></span> <!-- Trang hiện tại sẽ được in đậm -->
+    }
+    else
+    {
+        <a asp-action="Index" asp-route-pageNumber="@i">@i</a>
+    }
+}
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Sau
+</a>
