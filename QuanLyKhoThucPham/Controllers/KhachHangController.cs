@@ -22,9 +22,7 @@ namespace QuanLyKhoThucPham.Controllers
         // GET: Quanlykhachhang
         public async Task<IActionResult> Index(string searchString)
         {
-              return _context.KhachHang != null ? 
-                          View(await _context.KhachHang.ToListAsync()) :
-                          Problem("Entity set 'QuanLyKhoThucPhamContext.'  is null.");
+           
             if (_context.KhachHang == null)
             {
                 return Problem("Entity set 'QuanLyKhoThucPhamContext.KhachHang' is null.");
@@ -117,6 +115,7 @@ namespace QuanLyKhoThucPham.Controllers
                 {
                     _context.Update(dsKhachHang);
                     await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Cập nhật thành công!"; // Thêm thông báo
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -166,7 +165,7 @@ namespace QuanLyKhoThucPham.Controllers
             {
                 _context.KhachHang.Remove(quanlykhachhang);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -175,6 +174,8 @@ namespace QuanLyKhoThucPham.Controllers
         {
             return (_context.KhachHang?.Any(e => e.MaKH == maKH)).GetValueOrDefault();
         }
+
+
     }
- }
+}
 

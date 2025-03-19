@@ -3,10 +3,16 @@
 @{
     ViewData["Title"] = "Edit";
 }
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="btn-chinh-sua">
+        @TempData["SuccessMessage"]
+    </div>
+}
 
 <h1>Chỉnh Sửa Thông Tin</h1>
 
-<h4>Quanlykhachhang</h4>
+<h4>Thông tin khách hàng</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -32,21 +38,21 @@
             </div>
             <div style="margin-top: 20px; display: flex; gap: 10px; align-items: center;">
                 <button type="submit"
-                        style="background-color: #007bff; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
+                        style="background-color:  #007bff; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
                     Lưu thay đổi
+
                 </button>
 
-<<<<<<< HEAD
-                <a asp-action="Index" class="btn btn-secondary">Quay lại</a> 
 
-=======
-                <a href="@Url.Action("Index", "KhachHang")"
-                   style="background-color: #6c757d; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none; font-size: 16px;">
-                    Quay lại
-                </a>
->>>>>>> NguyenVietHoang3
+                
+
+
+
+
             </div>
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
         </form>
+
     </div>
 </div>
 
