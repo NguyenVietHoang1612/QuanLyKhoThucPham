@@ -19,12 +19,20 @@ namespace QuanLyKhoThucPham.Controllers
 
         public IActionResult Index()
         {
+            var nhapHang = _context.PhieuNhap;
+            var xuatHang = _context.PhieuXuat;
+            decimal tongGiaTrinhhapHang = nhapHang.Sum(t => t.TongTien);
+            decimal tongGiaTriXuatHang = xuatHang.Sum(t => t.TongTien);
+
             ViewData["SoLuongSanPham"] = _context.SanPham.Count();
             ViewData["SoLuongKho"] = _context.KhoHang.Count();
             ViewData["SoLuongNhaCungCap"] = _context.NhaCungCap.Count();
             ViewData["SoLuongNhanVien"] = _context.NhanVien.Count();
-            ViewData["SoLuongPhieuNhap"] = _context.PhieuNhap.Count();
-            ViewData["SoLuongPhieuXuat"] = _context.PhieuXuat.Count();
+            ViewData["TongGiaTriMua"] = tongGiaTrinhhapHang;
+            ViewData["SoLuongPhieuNhap"] = nhapHang.Count();
+            ViewData["SoLuongPhieuXuat"] = xuatHang.Count();
+            ViewData["TongDoanhThu"] = tongGiaTriXuatHang;
+            ViewData["TongLoiNhuan"] = tongGiaTriXuatHang - tongGiaTrinhhapHang;
             ViewData["SoLuongKhachHang"] = _context.KhachHang.Count();
 
             return View();
