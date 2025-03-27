@@ -6,13 +6,6 @@
 
 <h2>Tạo Phiếu Xuất</h2>
 
-@if (!ViewData.ModelState.IsValid)
-{
-    <div class="alert alert-danger">
-        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-    </div>
-}
-
 <form asp-action="Create" method="post">
     <div class="form-group">
         <label asp-for="PhieuXuat.NgayXuat">Ngày Nhập</label>

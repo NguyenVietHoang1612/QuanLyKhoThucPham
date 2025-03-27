@@ -4,19 +4,15 @@
     ViewData["Title"] = "Tạo Phiếu Nhập";
 }
 
-<h2>Tạo Phiếu Nhập</h2>
+<center>
+    <h2>@ViewData["Title"]</h2>
+</center>
 
-@if (!ViewData.ModelState.IsValid)
-{
-    <div class="alert alert-danger">
-        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-    </div>
-}
 
 <form asp-action="Create" method="post">
     <div class="form-group">
         <label asp-for="PhieuNhap.NgayNhap">Ngày Nhập</label>
-        <input asp-for="PhieuNhap.NgayNhap" class="form-control" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")  />
+        <input asp-for="PhieuNhap.NgayNhap" class="form-control" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")   />
         <span asp-validation-for="PhieuNhap.NgayNhap" class="text-danger"></span>
     </div>
 
@@ -61,34 +57,37 @@
     </div>
 
     <h3>Danh Sách Sản Phẩm</h3>
-    <table class="table" id="tableSanPham">
-        <thead>
-            <tr>
-                <th>Sản Phẩm</th>
-                <th>Đơn Giá</th>
-                <th>Số Lượng</th>
-                <th>Tổng Tiền</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>
-                    <select id="selectedSanPham" name="PhieuNhapChiTiet[0].MaSP" class="form-control" onchange="updateSanPham(this)">
-                        <option value="">Chọn sản phẩm</option>
-                        @foreach (var sp in Model.DSSanPham)
-                        {
-                            <option value="@sp.MaSP" data-dongia="@sp.DonGia">@sp.TenSP</option>
-                        }
-                    </select>
-                </td>
-                <td><input name="PhieuNhapChiTiet[0].DonGia" class="form-control" readonly /></td>
-                <td><input name="PhieuNhapChiTiet[0].SoLuong" class="form-control" type="number" oninput="updateTongTien(this)" value="1" /></td>
-                <td><input name="PhieuNhapChiTiet[0].ThanhTien" class="form-control" readonly /></td>
-                <td><button type="button" class="btn btn-danger" onclick="removeRow(this)">Xóa</button></td>
-            </tr>
-        </tbody>
-    </table>
+    <div style ="height: 200px; overflow: auto">
+            <table class="table" id="tableSanPham">
+                <thead>
+                    <tr>
+                        <th>Sản Phẩm</th>
+                        <th>Đơn Giá</th>
+                        <th>Số Lượng</th>
+                        <th>Tổng Tiền</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody style="overscroll-behavior-y: auto">
+                    <tr>
+                        <td>
+                            <select id="selectedSanPham" name="PhieuNhapChiTiet[0].MaSP" class="form-control" onchange="updateSanPham(this)">
+                                <option value="">Chọn sản phẩm</option>
+                                @foreach (var sp in Model.DSSanPham)
+                                {
+                                    <option value="@sp.MaSP" data-dongia="@sp.DonGia">@sp.TenSP</option>
+                                }
+                            </select>
+                        </td>
+                        <td><input name="PhieuNhapChiTiet[0].DonGia" class="form-control" readonly /></td>
+                        <td><input name="PhieuNhapChiTiet[0].SoLuong" class="form-control" type="number" oninput="updateTongTien(this)" value="1" /></td>
+                        <td><input name="PhieuNhapChiTiet[0].ThanhTien" class="form-control" readonly /></td>
+                        <td><button type="button" class="btn btn-danger" onclick="removeRow(this)">Xóa</button></td>
+                    </tr>
+                </tbody>
+            </table>
+
+    </div>
     <button type="button" class="btn btn-success" onclick="addRow()">Thêm sản phẩm</button>
     <div class="form-group">
         <label>Tổng tiền phiếu nhập</label>
@@ -126,6 +125,8 @@
             updateTongTien(row.querySelector("input[name$='SoLuong']"));
         }
         function updateTongTien(input) {
+            var table = document.getElementById("tableSanPham").getElementsByTagName('tbody')[0];
+            var index = table.rows.length;
             var row = input.closest("tr");
             var donGia = parseFloat(row.querySelector("input[name$='DonGia']").value) || 0;
             var soLuong = parseInt(input.value) || 0;
@@ -145,6 +146,7 @@
             var table = document.getElementById("tableSanPham").getElementsByTagName('tbody')[0];
             var newRow = table.rows[0].cloneNode(true);
             var index = table.rows.length;
+
 
             newRow.querySelectorAll("select, input").forEach((input) => {
                 var name = input.getAttribute("name");
@@ -183,7 +185,7 @@
     }
 
     .select2-container--default .select2-selection--single .select2-selection__rendered {
-        line-height: 40px !important; 
+        line-height: 40px !important;
     }
 
     .form-control {

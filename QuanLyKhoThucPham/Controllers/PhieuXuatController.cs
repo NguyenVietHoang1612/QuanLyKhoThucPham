@@ -13,7 +13,7 @@ namespace QuanLyKhoThucPham.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> Index(int? pageNumber, string searchString, DateTime? searchDate)
+        public async Task<IActionResult> Index(int? pageNumber, string searchString, DateTime? searchDateFrom, DateTime? searchDateTo)
         {
 
             var phieuXuat = _context.PhieuXuat
@@ -24,7 +24,9 @@ namespace QuanLyKhoThucPham.Controllers
             int pageSize = 3;
 
             ViewData["CurrentFilter"] = searchString;
-            ViewData["CurrentDateFilter"] = searchDate?.ToString("yyyy-MM-dd"); 
+            ViewData["TimKiemTheoNgayTu"] = searchDateFrom?.ToString("yyyy-MM-dd");
+            ViewData["TimKiemTheoNgayDen"] = searchDateTo?.ToString("yyyy-MM-dd");
+
 
 
             if (!string.IsNullOrEmpty(searchString))
@@ -32,9 +34,14 @@ namespace QuanLyKhoThucPham.Controllers
                 phieuXuat = phieuXuat.Where(s => s.MaPhieuXuat.ToString().ToLower().Contains(searchString));
             }
 
-            if (searchDate.HasValue)
+            if (searchDateFrom.HasValue)
             {
-                phieuXuat = phieuXuat.Where(s => s.NgayXuat.Date == searchDate.Value.Date);
+                phieuXuat = phieuXuat.Where(s => s.NgayXuat.Date >= searchDateFrom.Value.Date);
+            }
+
+            if (searchDateTo.HasValue)
+            {
+                phieuXuat = phieuXuat.Where(s => s.NgayXuat.Date <= searchDateTo.Value.Date);
             }
 
             var phieuXuatPage = PaginatedList<PhieuXuatModel>.CreateAsync(phieuXuat, pageNumber ?? 1, pageSize);
