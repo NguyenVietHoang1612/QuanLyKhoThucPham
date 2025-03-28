@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Data.SqlClient;
+using QuanLyKhoThucPham.Services;
 
 namespace QuanLyKhoThucPham.Controllers
 {
@@ -17,7 +18,7 @@ namespace QuanLyKhoThucPham.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(int? pageNumber, string searchString, DateTime? searchDate, string sortOrder)
+        public async Task<IActionResult> Index(int? pageNumber, string searchString, DateTime? searchDateFrom, DateTime? searchDateTo, string sortOrder)
         {
             var phieuNhap = _context.PhieuNhap
                 .Include(p => p.NhaCungCap)
@@ -26,8 +27,9 @@ namespace QuanLyKhoThucPham.Controllers
                 .AsNoTracking();
 
             ViewData["TimkiemtheoMa"] = searchString;
-            ViewData["TimKiemTheoNgay"] = searchDate?.ToString("yyyy-MM-dd");
             ViewData["SXTheoNgayNhap"] = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewData["TimKiemTheoNgayTu"] = searchDateFrom?.ToString("yyyy-MM-dd");
+            ViewData["TimKiemTheoNgayDen"] = searchDateTo?.ToString("yyyy-MM-dd");
 
             switch (sortOrder)
             {
@@ -43,14 +45,19 @@ namespace QuanLyKhoThucPham.Controllers
                     break;
             } 
 
-                    if (!string.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
                 phieuNhap = phieuNhap.Where(s => s.MaPhieuNhap.ToString().ToLower().Contains(searchString));
             }
 
-            if (searchDate.HasValue)
+            if (searchDateFrom.HasValue)
             {
-                phieuNhap = phieuNhap.Where(s => s.NgayNhap.Date == searchDate.Value.Date);
+                phieuNhap = phieuNhap.Where(s => s.NgayNhap.Date >= searchDateFrom.Value.Date);
+            }
+
+            if (searchDateTo.HasValue)
+            {
+                phieuNhap = phieuNhap.Where(s => s.NgayNhap.Date <= searchDateTo.Value.Date);
             }
 
             int pageSize = 5;
@@ -84,7 +91,7 @@ namespace QuanLyKhoThucPham.Controllers
         // POST: PhieuNhap/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(PhieuNhapModel phieuNhap, List<PhieuNhapChiTietModel> phieuNhapChiTiet)
+        public async Task<IActionResult> Create(PhieuNhapModel phieuNhap, List<PhieuNhapChiTietModel> phieuNhapChiTiet, int? pageNumber)
         {
             if (!ModelState.IsValid)
             {
@@ -143,6 +150,8 @@ namespace QuanLyKhoThucPham.Controllers
                         return View(phieuNhapViewModel);
                     }
 
+                   
+
                     khoHang.soluongtrong -= phieuNhapCT.SoLuong;
 
                     if (sanPham != null)
@@ -160,10 +169,19 @@ namespace QuanLyKhoThucPham.Controllers
                     _context.KhoHang.Update(khoHang);
                     _context.SanPham.Update(sanPham);
                 }
-                await _context.SaveChangesAsync(); 
+                await _context.SaveChangesAsync();
             }
+            var inPDF = new InPDF();
+            var pdfDocument = inPDF.GeneratePhieuNhapPdf(phieuNhap, phieuNhapChiTiet);
 
-            return RedirectToAction(nameof(Index));
+            // Trả về file PDF
+            using (var stream = new MemoryStream())
+            {
+                pdfDocument.Save(stream, false);
+                TempData["Message"] = "In phiếu nhập thành công. Bạn có thể quay về danh sách phiếu nhập.";
+                return File(stream.ToArray(), "application/pdf", $"PhieuNhap_{phieuNhap.MaPhieuNhap}.pdf");
+            }
+            //return RedirectToAction(nameof(Index));
         }
 
 
@@ -233,6 +251,18 @@ namespace QuanLyKhoThucPham.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        //public IActionResult Print(int maPN)
+        //{
+        //    var pdfService = new InPDF();
+        //    var pdfDocument = pdfService.GeneratePhieuNhapPdf();
+
+        //    using (MemoryStream stream = new MemoryStream())
+        //    {
+        //        pdfDocument.Save(stream, false);
+        //        return File(stream.ToArray(), "application/pdf", $"PhieuNhap_{maPN}.pdf");
+        //    }
+        //}
 
     }
 }

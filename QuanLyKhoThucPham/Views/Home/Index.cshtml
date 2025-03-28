@@ -1,114 +1,79 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Index";
 }
-<style>
-    .container {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        width: 150%;
-    }
 
-    .card {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px;
-        color: white;
-        font-size: 20px;
-        font-weight: bold;
-        border-radius: 8px;
-        position: relative;
-    }
-
-    .category {
-        background-color: #0097A7;
-    }
-
-    .news {
-        background-color: #388E3C;
-    }
-
-    .members {
-        background-color: #FBC02D;
-    }
-
-    .comments {
-        background-color: #D32F2F;
-    }
-
-    .details a {
-        color: white;
-        text-decoration: none;
-    }
-
-    h1 {
-        font-size: 60px;
-        margin-bottom: 20px;
-        margin-left: 350px;
-    }
-</style>
-<div>
-    <h1>Welcome</h1>
-    <h2>Tổng kho thực phẩm chuyên đề 5</h2>
-    <div class="container">
-        <div class="card category">
-            <div class="details">
-                <a asp-controller="SanPham" asp-action="Index" class="nav-link text-white">
-                    <i class="fas fa-box"></i> Danh sách thực phẩm: @ViewData["SoLuongSanPham"]
-                </a>
-            </div>
-        </div>
-        <div class="card news">
-            <span class="details">
-                <a asp-controller="Khohang" asp-action="Index" class="nav-link text-white">
-                    <i class="fas fa-building"></i> Danh sách kho hàng: @ViewData["SoLuongKho"]
-                </a>
-            </span>
-        </div>
-        <div class="card members">
-            <span class="details">
-                <a asp-controller="NhanVien" asp-action="Index" class="nav-link text-white">
-                    <i class="fas fa-users"></i> Danh sách nhân viên: @ViewData["SoLuongNhanVien"]
-                </a>
-            </span>
-        </div>
-        <div class="card members">
-            <span class="details">
-                <a asp-controller="PhieuXuat" asp-action="Index" class="nav-link text-white">
-                    <i class="fas fa-users"></i> Danh sách phiếu xuất: @ViewData["SoLuongPhieuXuat"]
-                </a>
-            </span>
-        </div>
-        <div class="card comments">
-            <span class="details">
-                <a asp-controller="PhieuNhap" asp-action="Index" class="nav-link text-white">
-                    <i class="fas fa-file-alt"></i> Danh sách phiếu nhập: @ViewData["SoLuongPhieuNhap"]
-                </a>
-            </span>
-        </div>
-        <div class="card comments">
-            <span class="details">
-                <a asp-controller="KhachHang" asp-action="Index" class="nav-link text-white">
-                    <i class="fas fa-user"></i> Danh sách khách hàng: @ViewData["SoLuongKhachHang"]
-                </a>
-            </span>
-        </div>
-        <div class="card comments">
-            <span class="details">
-                <a asp-controller="NhaCungCap" asp-action="Index" class="nav-link text-white">
-                    <i class="fas fa-user"></i> Danh sách nhà cung cấp ➜ @ViewData["SoLuongNhaCungCap"]
-                </a>
-            </span>
-        </div>
-
-        <div class="card category">
-            <div class="details">
-                <a asp-controller="TaiKhoan" asp-action="Index" class="nav-link text-white">
-                    <i class="fas fa-users-cog"></i> Quản lý tài khoản
-                </a>
+<div class="container mt-4">
+    <h2 class="text-center mb-4">@ViewData["Title"]</h2>
+    <div class="row row-cols-4 g-3">
+        <div class="col">
+            <div class="card text-white bg-primary h-100 text-center p-3">
+                <i class="fas fa-briefcase fa-2x"></i>
+                <h5 class="mt-2">Tổng Giá Trị Nhập</h5>
+                <p class="fs-4">@ViewData["TongGiaTriMua"]</p>
+                <a asp-controller="PhieuNhap" asp-action="Create" class="text-white">Nhập Hàng Mới</a>
             </div>
         </div>
 
+        <div class="col">
+            <div class="card text-white bg-danger h-100 text-center p-3">
+                <i class="fas fa-shopping-bag fa-2x"></i>
+                <h5 class="mt-2">Kho Hàng</h5>
+                <p class="fs-4">@ViewData["SoLuongKho"]</p>
+                <a asp-controller="KhoHang" asp-action="Index" class="text-white">Xem Kho</a>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card text-white bg-info h-100 text-center p-3">
+                <i class="fas fa-chart-bar fa-2x"></i>
+                <h5 class="mt-2">Tổng Doanh Thu</h5>
+                <p class="fs-4">@ViewData["TongDoanhThu"]</p>
+                <a asp-controller="PhieuXuat" asp-action="Create" class="text-white">Xuất hàng mới</a>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card text-white bg-secondary h-100 text-center p-3">
+                <i class="fas fa-chart-line fa-2x"></i>
+                <h5 class="mt-2">Lợi Nhuận</h5>
+                <p class="fs-4">@ViewData["TongLoiNhuan"]</p>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card text-dark bg-warning h-100 text-center p-3">
+                <i class="fas fa-shopping-cart fa-2x"></i>
+                <h5 class="mt-2">Phiếu nhập</h5>
+                <p class="fs-4">@ViewData["SoLuongPhieuNhap"]</p>
+                <a asp-controller="PhieuNhap" asp-action="Create" class="text-dark">Tạo phiếu nhập</a>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card text-white bg-success h-100 text-center p-3">
+                <i class="fas fa-truck fa-2x"></i>
+                <h5 class="mt-2">Phiếu Xuất</h5>
+                <p class="fs-4">@ViewData["SoLuongPhieuXuat"]</p>
+                <a asp-controller="PhieuXuat" asp-action="Create" class="text-white">Xuất hàng mới</a>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card text-dark bg-warning h-100 text-center p-3">
+                <i class="fas fa-truck-moving fa-2x"></i>
+                <h5 class="mt-2">Nhà Cung Cấp</h5>
+                <p class="fs-4">@ViewData["SoLuongNhaCungCap"]</p>
+                <a asp-controller="NhaCungCap" asp-action="Index" class="text-dark">Xem Nhà Cung Cấp</a>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card text-white bg-primary h-100 text-center p-3">
+                <i class="fas fa-users fa-2x"></i>
+                <h5 class="mt-2">Khách Hàng</h5>
+                <p class="fs-4">@ViewData["SoLuongKhachHang"]</p>
+                <a asp-controller="KhachHang" asp-action="Index" class="text-white">Xem Khách Hàng</a>
+            </div>
+        </div>
     </div>
-</div>  
+</div>

@@ -1,27 +1,30 @@
 ﻿@model PaginatedList<QuanLyKhoThucPham.Models.PhieuXuatModel>
 
 @{
-    ViewData["Title"] = "Danh Sách Phiếu Xuất";
+    ViewData["Title"] = "Phiếu Xuất";
 }
 
-<h1>@ViewData["Title"]</h1>
+<center>
+    <h2>@ViewData["Title"]</h2>
+</center>
 
-<div class="mb-3">
-    <form asp-action="Index" method="get">
-        <div class="input-group">
-            <input type="text" class="form-control" name="searchString" placeholder="Tìm kiếm theo mã phiếu nhập" value="@ViewData["CurrentFilter"]">
-            <input type="date" class="form-control" name="searchDate" value="@ViewData["CurrentDateFilter"]">
-            <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
-            </div>
-        </div>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <a asp-controller="PhieuXuat" asp-action="Create" class="btn btn-primary">Tạo phiếu xuất</a>
+
+    <form asp-action="Index" method="get" class="d-flex align-items-center">
+        <input type="text" class="form-control form-control-sm mx-2" name="searchString" placeholder="Tìm kiếm theo mã phiếu xuất" style="width: 200px;">
+        <input type="date" class="form-control form-control-sm mx-2" name="searchDateFrom" value="@ViewData["TimKiemTheoNgayTu"]" style="width: 150px;">
+        <input type="date" class="form-control form-control-sm mx-2" name="searchDateTo" value="@ViewData["TimKiemTheoNgayDen"]" style="width: 150px;">
+
+        <button class="btn btn-primary btn-sm">Tìm kiếm</button>
     </form>
 </div>
 
 <table class="table">
     <thead>
         <tr>
-            <a asp-controller="PhieuXuat" asp-action="Create" class="btn btn-primary">Tạo Phiếu Nhập Mới</a>
+            
             <th scope="col">Mã phiếu xuất</th>
             <th scope="col">Ngày Nhập</th>
             <th scope="col">Người lập</th>
