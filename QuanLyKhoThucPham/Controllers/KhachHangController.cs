@@ -22,9 +22,7 @@ namespace QuanLyKhoThucPham.Controllers
         // GET: Quanlykhachhang
         public async Task<IActionResult> Index(string searchString)
         {
-              return _context.KhachHang != null ? 
-                          View(await _context.KhachHang.ToListAsync()) :
-                          Problem("Entity set 'QuanLyKhoThucPhamContext.'  is null.");
+           
             if (_context.KhachHang == null)
             {
                 return Problem("Entity set 'QuanLyKhoThucPhamContext.KhachHang' is null.");
