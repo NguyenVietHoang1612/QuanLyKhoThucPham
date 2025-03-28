@@ -53,7 +53,7 @@ namespace QuanLyKhoThucPham.Controllers
                 phieuNhap = phieuNhap.Where(s => s.NgayNhap.Date == searchDate.Value.Date);
             }
 
-            int pageSize = 3;
+            int pageSize = 5;
 
             var phieuNhapPage = await PaginatedList<PhieuNhapModel>.CreateAsync(phieuNhap, pageNumber ?? 1, pageSize);
 

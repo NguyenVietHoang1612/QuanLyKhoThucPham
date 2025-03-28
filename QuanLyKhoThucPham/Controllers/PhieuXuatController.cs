@@ -21,7 +21,7 @@ namespace QuanLyKhoThucPham.Controllers
                 .Include(p => p.NhanVien)
                 .Include(p => p.KhoHang)
                 .AsNoTracking();
-            int pageSize = 3;
+            int pageSize = 5;
 
             ViewData["CurrentFilter"] = searchString;
             ViewData["CurrentDateFilter"] = searchDate?.ToString("yyyy-MM-dd"); 
