@@ -51,10 +51,7 @@
                 @Html.DisplayFor(modelItem => item.SoDienThoai)
             </td>
             <td>
-                @* <<<<<<< HEAD
-                <a asp-action="Edit" asp-route-maNhaCungCap="@item.MaNhaCungCap" class="khung btn btn-info btn-sm">Chỉnh sửa</a> |
-                <a asp-action="Details" asp-route-maNhaCungCap="@item.MaNhaCungCap" class="khung btn btn-info btn-warning">Chi Tiết</a> |
-                <a asp-action="Delete" asp-route-maNhaCungCap="@item.MaNhaCungCap" class="khung btn btn-info btn-danger">Xóa</a> *@
+                
                 <a asp-action="Edit" asp-route-maNhaCungCap="@item.MaNhaCungCap" class="btn-chinh-sua">Chỉnh sửa</a> |
                 <a asp-action="Details" asp-route-maNhaCungCap="@item.MaNhaCungCap" class="btn-chi-tiet">Chi Tiết</a> |
                 <a asp-action="Delete" asp-route-maNhaCungCap="@item.MaNhaCungCap" class="btn-xoa">Xóa</a>
