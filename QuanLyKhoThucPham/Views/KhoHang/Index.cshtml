@@ -6,7 +6,7 @@
 
 <h1>Danh sách kho hàng</h1>
 <form asp-controller="KhoHang" asp-action="Index">
-    <div class="input-group">
+    <div class="input-group" style=" width:600px">
         <input class="form-control" type="text" name="SearchString" placeholder="Tìm kiếm tên kho hàng..." aria-describedby="btnNavbarSearch" />
         <button class="btn btn-primary" type="submit" /> 🔍</button>
     </div>
@@ -66,30 +66,35 @@
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
 
-<a asp-action="Index"
-   asp-route-sortOrder="@ViewData["CurrentSort"]"
-   asp-route-pageNumber="@(Model.PageIndex - 1)"
-   asp-route-currentFilter="@ViewData["CurrentFilter"]"
-   class="btn btn-default @prevDisabled">
-    Trước 
-</a>
-<!-- Hiển thị danh sách số trang -->
-@for (int i = 1; i <= Model.TotalPages; i++)
-{
-    if (i == Model.PageIndex)
-    {
-        <span><strong>@i</strong></span> <!-- Trang hiện tại sẽ được in đậm -->
-    }
-    else
-    {
-        <a asp-action="Index" asp-route-pageNumber="@i">@i</a>
-    }
-}
 
-<a asp-action="Index"
-   asp-route-sortOrder="@ViewData["CurrentSort"]"
-   asp-route-pageNumber="@(Model.PageIndex + 1)"
-   asp-route-currentFilter="@ViewData["CurrentFilter"]"
-   class="btn btn-default @nextDisabled">
-    Sau
-</a>
+<!-- Hiển thị danh sách số trang -->
+<div style="display: flex; justify-content: center; align-items: center; margin-top: 20px; gap: 8px; font-size: 20px; ">
+    <!-- Nút Previous -->
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-default @prevDisabled"
+       Style="border: 1px solid #b1154a;">
+        Previous
+    </a>
+    @for (int i = 1; i <= Model.TotalPages; i++)
+    {
+        if (i == Model.PageIndex)
+        {
+            <span style="font-size: 20px; border: 1px solid #ccc; padding: 3px;"><strong>@i</strong></span> <!-- Trang hiện tại sẽ được in đậm -->
+        }
+        else
+        {
+            <a asp-action="Index" asp-route-pageNumber="@i" style="font-size: 20px ; text-decoration: none; color:black">@i</a>
+        }
+    }
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-default @nextDisabled"
+       style="border: 1px solid #b1154a;">
+        Next
+    </a>
+</div>

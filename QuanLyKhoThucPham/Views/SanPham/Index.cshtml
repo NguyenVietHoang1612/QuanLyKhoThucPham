@@ -6,8 +6,8 @@
 
 <h1>Danh Sách Thực Phẩm </h1>
 <form asp-controller="SanPham" asp-action="Index">
-    <div class="input-group">
-        <input class="form-control" type="text" name="SearchString" placeholder="Tìm kiếm tên sản phẩm..." aria-describedby="btnNavbarSearch" />
+    <div class="input-group" style=" width:600px">
+        <input  class="form-control" type="text" name="SearchString" placeholder="Tìm kiếm tên sản phẩm..." aria-describedby="btnNavbarSearch" />
         <button class="btn btn-primary" type="submit" /> 🔍</button>
     </div>
 </form>
@@ -74,29 +74,34 @@
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
+<div style="display: flex; justify-content: center; align-items: center; margin-top: 20px; gap: 8px; font-size: 20px; ">
+    <!-- Nút Previous -->
 
-<a asp-action="Index"
-   asp-route-sortOrder="@ViewData["CurrentSort"]"
-   asp-route-pageNumber="@(Model.PageIndex - 1)"
-   asp-route-currentFilter="@ViewData["CurrentFilter"]"
-   class="btn btn-default @prevDisabled">
-    Trước
-</a>
-@for (int i = 1; i <= Model.TotalPages; i++)
-{
-    if (i == Model.PageIndex)
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-default @prevDisabled"
+       Style="border: 1px solid #b1154a;">
+        Trước
+    </a>
+    @for (int i = 1; i <= Model.TotalPages; i++)
     {
-        <span><strong>@i</strong></span> <!-- Trang hiện tại sẽ được in đậm -->
+        if (i == Model.PageIndex)
+        {
+            <span style="font-size: 20px; border: 1px solid #ccc; padding: 3px;"><strong>@i</strong></span> <!-- Trang hiện tại sẽ được in đậm -->
+        }
+        else
+        {
+            <a asp-action="Index" asp-route-pageNumber="@i" style="font-size: 20px ; text-decoration: none; color:black">@i</a>
+        }
     }
-    else
-    {
-        <a asp-action="Index" asp-route-pageNumber="@i">@i</a>
-    }
-}
-<a asp-action="Index"
-   asp-route-sortOrder="@ViewData["CurrentSort"]"
-   asp-route-pageNumber="@(Model.PageIndex + 1)"
-   asp-route-currentFilter="@ViewData["CurrentFilter"]"
-   class="btn btn-default @nextDisabled">
-    Sau
-</a>
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-default @nextDisabled"
+       style="border: 1px solid #b1154a;">
+        Sau
+    </a>
+</div>
