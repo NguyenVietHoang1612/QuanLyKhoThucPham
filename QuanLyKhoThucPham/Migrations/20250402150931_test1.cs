@@ -4,7 +4,7 @@
 
 namespace QuanLyKhoThucPham.Migrations
 {
-    public partial class test : Migration
+    public partial class test1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

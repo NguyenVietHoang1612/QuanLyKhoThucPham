@@ -1,4 +1,3 @@
-
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,8 +10,6 @@ namespace QuanLyKhoThucPham.Models
         public string TenSP { get; set; }
         public int MaKho { get; set; }
 
-        public string KhoLoaiSP { get; set; }
-
         public int SoLuong { get; set; }
         public decimal DonGiaNhap { get; set; }
         public decimal DonGiaXuat { get; set; }
@@ -21,9 +18,10 @@ namespace QuanLyKhoThucPham.Models
         public string? MoTa { get; set; }
 
         [ForeignKey("MaKho")]
-        public KhoHangModel KhoHang { get; set; }
-        public ICollection<PhieuXuatChiTietModel> PhieuXuatChiTiets { get; set; }
-        public ICollection<PhieuNhapChiTietModel> PhieuNhapChiTiets { get; set; }
+        public KhoHangModel? KhoHang { get; set; }
+
+        public ICollection<PhieuXuatChiTietModel>? PhieuXuatChiTiets { get; set; }
+        public ICollection<PhieuNhapChiTietModel>? PhieuNhapChiTiets { get; set; }
 
     }
 }

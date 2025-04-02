@@ -49,7 +49,7 @@ namespace QuanLyKhoThucPham.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaKho,TenKho,mota,soluongtong,soluongtrong")] KhoHangModel khoHangModel)
+        public async Task<IActionResult> Create([Bind("MaKho,TenKho,KhoLoaiSP,mota,soluongtong,soluongtrong")] KhoHangModel khoHangModel)
         {
             if (ModelState.IsValid)
             {
@@ -57,7 +57,18 @@ namespace QuanLyKhoThucPham.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(khoHangModel);
+            else
+            {
+                foreach (var modelStateKey in ModelState.Keys)
+                {
+                    var modelStateVal = ModelState[modelStateKey];
+                    foreach (var error in modelStateVal.Errors)
+                    {
+                        Console.WriteLine($"Key: {modelStateKey}, Error: {error.ErrorMessage}");
+                    }
+                }
+                return View(khoHangModel);
+            }
         }
 
         // GET: KhoHang/Edit/5
@@ -81,7 +92,7 @@ namespace QuanLyKhoThucPham.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MaKho,TenKho,mota,soluongtong,soluongtrong")] KhoHangModel khoHangModel)
+        public async Task<IActionResult> Edit(int id, [Bind("MaKho,TenKho,KhoLoaiSP,mota,soluongtong,soluongtrong")] KhoHangModel khoHangModel)
         {
             if (id != khoHangModel.MaKho)
             {

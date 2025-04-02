@@ -69,7 +69,7 @@ namespace QuanLyKhoThucPham.Migrations
                     b.Property<int>("soluongtong")
                         .HasColumnType("int");
 
-                    b.Property<int>("soluongtrong")
+                    b.Property<int?>("soluongtrong")
                         .HasColumnType("int");
 
                     b.HasKey("MaKho");
@@ -281,10 +281,6 @@ namespace QuanLyKhoThucPham.Migrations
 
                     b.Property<decimal>("DonGiaXuat")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("KhoLoaiSP")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("MaKho")
                         .HasColumnType("int");

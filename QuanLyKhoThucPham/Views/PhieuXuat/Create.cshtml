@@ -65,6 +65,7 @@
             </tr>
         </thead>
         <tbody>
+<<<<<<< Updated upstream
             <tr>
                 <td>
                     <select id="selectedSanPham" name="PhieuXuatChiTiet[0].MaSP" class="form-control" onchange="updateSanPham(this)">
@@ -81,6 +82,9 @@
                 <td><input name="ThanhTien" class="form-control" readonly /></td>
                 <td><button type="button" class="btn btn-danger" onclick="removeRow(this)">Xóa</button></td>
             </tr>
+=======
+            
+>>>>>>> Stashed changes
         </tbody>
     </table>
     <button type="button" class="btn btn-success" onclick="addRow()">Thêm sản phẩm</button>
@@ -146,29 +150,30 @@
         }
         function addRow() {
             var table = document.getElementById("tableSanPham").getElementsByTagName('tbody')[0];
-            var newRow = table.rows[0].cloneNode(true);
             var index = table.rows.length;
 
-            newRow.querySelectorAll("select, input").forEach((input) => {
-                var name = input.getAttribute("name");
+            var template = `
+                <tr>
+                    <td>
+                        <select id="selectedSanPham" name="PhieuXuatChiTiet[${index}].MaSP" class="form-control" onchange="updateSanPham(this)">
+                            <option value="">Chọn sản phẩm</option>
+                                @foreach (var sp in Model.DSSanPham)
+                                {
+                                    <option value="@sp.MaSP" data-dongia="@sp.DonGiaXuat" data-soluong="@sp.SoLuong">@sp.TenSP</option>
+                                }
+                        </select>
+                    </td>
+                    <td><input name="PhieuXuatChiTiet[${index}].DonGia" class="form-control" readonly /></td>
+                    <td><input name="PhieuXuatChiTiet[${index}].SoLuong" class="form-control" type="number" oninput="updateTongTien(this)" value="1" /></td>
+                    <td><input class="form-control" readonly data-soluongton /></td>
+                    <td><input name="PhieuXuatChiTiet[${index}].ThanhTien" class="form-control" readonly /></td>
+                    <td><button type="button" class="btn btn-danger" onclick="removeRow(this)">Xóa</button></td>
+                </tr>
+            `;
 
-                if (name) {
-                    input.setAttribute("name", name.replace("[0]", `[${index}]`));
-                    if (input.tagName === 'SELECT') {
-                        $(input).select2('destroy');
-                        input.selectedIndex = 0;
-                        $(input).next(".select2-container").remove();
-                    } else {
-                        input.value = "";
-                    }
-                }
-            });
+            table.insertAdjacentHTML('beforeend', template);
 
-            var selectSanPham = newRow.querySelector("select");
-
-            table.appendChild(newRow);
-
-            $(newRow).find("select").select2({ width: '100%' });
+            $(table.rows[table.rows.length - 1]).find("select").select2({ width: '100%' });
             updateTongTienPhieu();
         }
 

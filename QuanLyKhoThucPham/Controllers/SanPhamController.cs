@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QuanLyKhoThucPham.Data;
 using QuanLyKhoThucPham.Models;
+using QuanLyKhoThucPham.Models.View_Model;
 
 namespace QuanLyKhoThucPham.Controllers
 {
@@ -19,62 +20,91 @@ namespace QuanLyKhoThucPham.Controllers
             _context = context;
         }
 
-      
+        private async Task<ViewModelKhoSanPham> GetKhoSPViewModel()
+        {
+            return new ViewModelKhoSanPham
+            {
+                DSKhoHang = await _context.KhoHang.ToListAsync(),
+                DSSanPham = await _context.SanPham.ToListAsync(),
+            };
+        }
+
+
+        // Get: SanPham/Create
+        public async Task<IActionResult> Create()
+        {
+            var viewModel = await GetKhoSPViewModel();
+            return View(viewModel);
+        }
+
+        // POST: SanPham/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(ViewModelKhoSanPham viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var sanpham = viewModel.SanPham;
+
+                // Kiểm tra xem MaKho có hợp lệ không
+                if (sanpham.MaKho == 0)
+                {
+                    ModelState.AddModelError("SanPham.MaKho", "Kho Hàng là bắt buộc.");
+                }
+
+                if (ModelState.IsValid)
+                {
+                    _context.Add(sanpham);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+
+            viewModel.DSKhoHang = _context.KhoHang.ToList();
+            viewModel.DSSanPham = _context.SanPham.ToList();
+
+            return View(viewModel);
+        }
 
         // GET: SanPham/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            var viewModel = await GetKhoSPViewModel();
+            
+
             if (id == null || _context.SanPham == null)
             {
                 return NotFound();
             }
+            //var sanPhamModel = await _context.SanPham
+            //    .FirstOrDefaultAsync(m => m.MaSP == id);
 
-            var sanPhamModel = await _context.SanPham
+            viewModel.SanPham = await _context.SanPham
                 .FirstOrDefaultAsync(m => m.MaSP == id);
-            if (sanPhamModel == null)
+            if (viewModel.SanPham == null)
             {
                 return NotFound();
             }
 
-            return View(sanPhamModel);
-        }
-
-        // GET: SanPham/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: SanPham/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaSP,TenSP,SoLuong,DonGia,NhaSanXuat,MoTa")] SanPhamModel sanPhamModel)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(sanPhamModel);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(sanPhamModel);
+            return View(viewModel);
         }
 
         // GET: SanPham/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+
+            var viewModel = await GetKhoSPViewModel();
             if (id == null || _context.SanPham == null)
             {
                 return NotFound();
             }
-
-            var sanPhamModel = await _context.SanPham.FindAsync(id);
-            if (sanPhamModel == null)
+            viewModel.SanPham = await _context.SanPham.FindAsync(id);
+            //var sanPhamModel = await _context.SanPham.FindAsync(id);
+            if (viewModel.SanPham == null)
             {
                 return NotFound();
             }
-            return View(sanPhamModel);
+            return View(viewModel);
         }
 
         // POST: SanPham/Edit/5
@@ -82,7 +112,7 @@ namespace QuanLyKhoThucPham.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MaSP,TenSP,SoLuong,DonGia,NhaSanXuat,MoTa")] SanPhamModel sanPhamModel)
+        public async Task<IActionResult> Edit(int id, [Bind("MaSP,TenSP,SoLuong,DonGiaNhap,DonGiaXuat,NhaSanXuat,MoTa,MaKho")] SanPhamModel sanPhamModel)
         {
             if (id != sanPhamModel.MaSP)
             {

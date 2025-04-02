@@ -12,8 +12,8 @@ namespace QuanLyKhoThucPham.Models
         public string mota { get; set; }
 
         public int soluongtong { get; set; }
-        public int soluongtrong { get; set; }
+        public int? soluongtrong { get; set; }
 
-        public ICollection<SanPhamModel> SanPhams { get; set; }
+        public ICollection<SanPhamModel>? SanPhams { get; set; }
     }
 }

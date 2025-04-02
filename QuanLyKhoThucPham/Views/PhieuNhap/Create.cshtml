@@ -69,21 +69,7 @@
                     </tr>
                 </thead>
                 <tbody style="overscroll-behavior-y: auto">
-                    <tr>
-                        <td>
-                            <select id="selectedSanPham" name="PhieuNhapChiTiet[0].MaSP" class="form-control" onchange="updateSanPham(this)">
-                                <option value="">Chọn sản phẩm</option>
-                                @foreach (var sp in Model.DSSanPham)
-                                {
-                                    <option value="@sp.MaSP" data-dongia="@sp.DonGiaNhap">@sp.TenSP</option>
-                                }
-                            </select>
-                        </td>
-                        <td><input name="PhieuNhapChiTiet[0].DonGia" class="form-control" readonly /></td>
-                        <td><input name="PhieuNhapChiTiet[0].SoLuong" class="form-control" type="number" oninput="updateTongTien(this)" value="1" /></td>
-                        <td><input name="PhieuNhapChiTiet[0].ThanhTien" class="form-control" readonly /></td>
-                        <td><button type="button" class="btn btn-danger" onclick="removeRow(this)">Xóa</button></td>
-                    </tr>
+
                 </tbody>
             </table>
 
@@ -144,30 +130,33 @@
 
         function addRow() {
             var table = document.getElementById("tableSanPham").getElementsByTagName('tbody')[0];
-            var newRow = table.rows[0].cloneNode(true);
             var index = table.rows.length;
 
+            var template = `
+                <tr>
+                    <td>
+                        <select id="selectedSanPham" name="PhieuNhapChiTiet[${index}].MaSP" class="form-control" onchange="updateSanPham(this)">
+                            <option value="">Chọn sản phẩm</option>
+                                @foreach (var sp in Model.DSSanPham)
+                                {
+                                    <option value="@sp.MaSP" data-dongia="@sp.DonGiaNhap">@sp.TenSP</option>
+                                }
+                        </select>
+                    </td>
 
-            newRow.querySelectorAll("select, input").forEach((input) => {
-                var name = input.getAttribute("name");
+                    <td><input name="PhieuNhapChiTiet[${index}].DonGia" class="form-control" readonly /></td>
+                    <td><input name="PhieuNhapChiTiet[${index}].SoLuong" class="form-control" type="number" oninput="updateTongTien(this)" value="1" /></td>
+                    <td><input name="PhieuNhapChiTiet${index}].ThanhTien" class="form-control" readonly /></td>
 
-                if (name) {
-                    input.setAttribute("name", name.replace("[0]", `[${index}]`));
-                    if (input.tagName === 'SELECT') {
-                        $(input).select2('destroy');
-                        input.selectedIndex = 0;
-                        $(input).next(".select2-container").remove();
-                    } else {
-                        input.value = "";
-                    }
-                }
-            });
+                    <td>
+                        <button type="button" class="btn btn-danger" onclick="removeRow(this)">Xóa</button>
+                    </td>
+                </tr>
+            `;
 
-            var selectSanPham = newRow.querySelector("select");
+            table.insertAdjacentHTML('beforeend', template);
 
-            table.appendChild(newRow);
-
-            $(newRow).find("select").select2({ width: '100%' });
+            $(table.rows[table.rows.length - 1]).find("select").select2({ width: '100%' });
             updateTongTienPhieu();
         }
 

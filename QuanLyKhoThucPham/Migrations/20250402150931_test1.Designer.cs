@@ -12,8 +12,8 @@ using QuanLyKhoThucPham.Data;
 namespace QuanLyKhoThucPham.Migrations
 {
     [DbContext(typeof(QuanLyKhoThucPhamContext))]
-    [Migration("20250402055049_test")]
-    partial class test
+    [Migration("20250402150931_test1")]
+    partial class test1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -71,7 +71,7 @@ namespace QuanLyKhoThucPham.Migrations
                     b.Property<int>("soluongtong")
                         .HasColumnType("int");
 
-                    b.Property<int>("soluongtrong")
+                    b.Property<int?>("soluongtrong")
                         .HasColumnType("int");
 
                     b.HasKey("MaKho");
@@ -283,10 +283,6 @@ namespace QuanLyKhoThucPham.Migrations
 
                     b.Property<decimal>("DonGiaXuat")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("KhoLoaiSP")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("MaKho")
                         .HasColumnType("int");

@@ -34,7 +34,7 @@ namespace QuanLyKhoThucPham.Migrations
                     TenKho = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     mota = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     soluongtong = table.Column<int>(type: "int", nullable: false),
-                    soluongtrong = table.Column<int>(type: "int", nullable: false)
+                    soluongtrong = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -79,7 +79,6 @@ namespace QuanLyKhoThucPham.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TenSP = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MaKho = table.Column<int>(type: "int", nullable: false),
-                    KhoLoaiSP = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SoLuong = table.Column<int>(type: "int", nullable: false),
                     DonGiaNhap = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     DonGiaXuat = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
