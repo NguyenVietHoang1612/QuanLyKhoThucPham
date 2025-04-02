@@ -23,13 +23,19 @@ namespace QuanLyKhoThucPham.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<NhaCungCapModel>().ToTable("NhaCungCap");
-            modelBuilder.Entity<SanPhamModel>().ToTable("SanPham");
-            modelBuilder.Entity<KhoHangModel>().ToTable("KhoHang");
-            modelBuilder.Entity<NhanVienModel>().ToTable("NhanVien");
-            modelBuilder.Entity<KhachHangModel>().ToTable("KhachHang");
-            modelBuilder.Entity<PhieuNhapModel>().ToTable("PhieuNhap");
-            modelBuilder.Entity<PhieuXuatModel>().ToTable("PhieuXuat");
+            modelBuilder.Entity<PhieuNhapChiTietModel>()
+                .HasOne(pnc => pnc.SanPham)
+                .WithMany(sp => sp.PhieuNhapChiTiets)
+                .HasForeignKey(pnc => pnc.MaSP)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+            modelBuilder.Entity<PhieuXuatChiTietModel>()
+                .HasOne(pnc => pnc.SanPham)
+                .WithMany(sp => sp.PhieuXuatChiTiets)
+                .HasForeignKey(pnc => pnc.MaSP)
+                .OnDelete(DeleteBehavior.Restrict);
+
         }
 
 

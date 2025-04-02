@@ -30,6 +30,7 @@ namespace QuanLyKhoThucPham.Migrations
                 {
                     MaKho = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    KhoLoaiSP = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TenKho = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     mota = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     soluongtong = table.Column<int>(type: "int", nullable: false),
@@ -77,14 +78,23 @@ namespace QuanLyKhoThucPham.Migrations
                     MaSP = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TenSP = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MaKho = table.Column<int>(type: "int", nullable: false),
+                    KhoLoaiSP = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SoLuong = table.Column<int>(type: "int", nullable: false),
-                    DonGia = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    DonGiaNhap = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    DonGiaXuat = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     NhaSanXuat = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MoTa = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SanPham", x => x.MaSP);
+                    table.ForeignKey(
+                        name: "FK_SanPham_KhoHang_MaKho",
+                        column: x => x.MaKho,
+                        principalTable: "KhoHang",
+                        principalColumn: "MaKho",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -185,7 +195,7 @@ namespace QuanLyKhoThucPham.Migrations
                         column: x => x.MaSP,
                         principalTable: "SanPham",
                         principalColumn: "MaSP",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -215,7 +225,7 @@ namespace QuanLyKhoThucPham.Migrations
                         column: x => x.MaSP,
                         principalTable: "SanPham",
                         principalColumn: "MaSP",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -267,6 +277,11 @@ namespace QuanLyKhoThucPham.Migrations
                 name: "IX_PhieuXuatChiTiet_MaSP",
                 table: "PhieuXuatChiTiet",
                 column: "MaSP");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SanPham_MaKho",
+                table: "SanPham",
+                column: "MaKho");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -293,10 +308,10 @@ namespace QuanLyKhoThucPham.Migrations
                 name: "KhachHang");
 
             migrationBuilder.DropTable(
-                name: "KhoHang");
+                name: "NhanVien");
 
             migrationBuilder.DropTable(
-                name: "NhanVien");
+                name: "KhoHang");
         }
     }
 }

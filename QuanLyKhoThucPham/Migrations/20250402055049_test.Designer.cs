@@ -12,8 +12,8 @@ using QuanLyKhoThucPham.Data;
 namespace QuanLyKhoThucPham.Migrations
 {
     [DbContext(typeof(QuanLyKhoThucPhamContext))]
-    [Migration("20250309111434_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250402055049_test")]
+    partial class test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -45,7 +45,7 @@ namespace QuanLyKhoThucPham.Migrations
 
                     b.HasKey("MaKH");
 
-                    b.ToTable("KhachHang", (string)null);
+                    b.ToTable("KhachHang");
                 });
 
             modelBuilder.Entity("QuanLyKhoThucPham.Models.KhoHangModel", b =>
@@ -55,6 +55,10 @@ namespace QuanLyKhoThucPham.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaKho"), 1L, 1);
+
+                    b.Property<string>("KhoLoaiSP")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TenKho")
                         .IsRequired()
@@ -72,7 +76,7 @@ namespace QuanLyKhoThucPham.Migrations
 
                     b.HasKey("MaKho");
 
-                    b.ToTable("KhoHang", (string)null);
+                    b.ToTable("KhoHang");
                 });
 
             modelBuilder.Entity("QuanLyKhoThucPham.Models.NhaCungCapModel", b =>
@@ -97,7 +101,7 @@ namespace QuanLyKhoThucPham.Migrations
 
                     b.HasKey("MaNhaCungCap");
 
-                    b.ToTable("NhaCungCap", (string)null);
+                    b.ToTable("NhaCungCap");
                 });
 
             modelBuilder.Entity("QuanLyKhoThucPham.Models.NhanVienModel", b =>
@@ -122,7 +126,7 @@ namespace QuanLyKhoThucPham.Migrations
 
                     b.HasKey("MaNhanVien");
 
-                    b.ToTable("NhanVien", (string)null);
+                    b.ToTable("NhanVien");
                 });
 
             modelBuilder.Entity("QuanLyKhoThucPham.Models.PhieuNhapChiTietModel", b =>
@@ -191,7 +195,7 @@ namespace QuanLyKhoThucPham.Migrations
 
                     b.HasIndex("MaNhanVien");
 
-                    b.ToTable("PhieuNhap", (string)null);
+                    b.ToTable("PhieuNhap");
                 });
 
             modelBuilder.Entity("QuanLyKhoThucPham.Models.PhieuXuatChiTietModel", b =>
@@ -263,7 +267,7 @@ namespace QuanLyKhoThucPham.Migrations
 
                     b.HasIndex("MaNhanVien");
 
-                    b.ToTable("PhieuXuat", (string)null);
+                    b.ToTable("PhieuXuat");
                 });
 
             modelBuilder.Entity("QuanLyKhoThucPham.Models.SanPhamModel", b =>
@@ -274,8 +278,18 @@ namespace QuanLyKhoThucPham.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaSP"), 1L, 1);
 
-                    b.Property<decimal>("DonGia")
+                    b.Property<decimal>("DonGiaNhap")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("DonGiaXuat")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("KhoLoaiSP")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MaKho")
+                        .HasColumnType("int");
 
                     b.Property<string>("MoTa")
                         .HasColumnType("nvarchar(max)");
@@ -293,7 +307,9 @@ namespace QuanLyKhoThucPham.Migrations
 
                     b.HasKey("MaSP");
 
-                    b.ToTable("SanPham", (string)null);
+                    b.HasIndex("MaKho");
+
+                    b.ToTable("SanPham");
                 });
 
             modelBuilder.Entity("QuanLyKhoThucPham.Models.PhieuNhapChiTietModel", b =>
@@ -305,9 +321,9 @@ namespace QuanLyKhoThucPham.Migrations
                         .IsRequired();
 
                     b.HasOne("QuanLyKhoThucPham.Models.SanPhamModel", "SanPham")
-                        .WithMany()
+                        .WithMany("PhieuNhapChiTiets")
                         .HasForeignKey("MaSP")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("PhieuNhap");
@@ -351,9 +367,9 @@ namespace QuanLyKhoThucPham.Migrations
                         .IsRequired();
 
                     b.HasOne("QuanLyKhoThucPham.Models.SanPhamModel", "SanPham")
-                        .WithMany()
+                        .WithMany("PhieuXuatChiTiets")
                         .HasForeignKey("MaSP")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("PhieuXuat");
@@ -388,6 +404,22 @@ namespace QuanLyKhoThucPham.Migrations
                     b.Navigation("NhanVien");
                 });
 
+            modelBuilder.Entity("QuanLyKhoThucPham.Models.SanPhamModel", b =>
+                {
+                    b.HasOne("QuanLyKhoThucPham.Models.KhoHangModel", "KhoHang")
+                        .WithMany("SanPhams")
+                        .HasForeignKey("MaKho")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("KhoHang");
+                });
+
+            modelBuilder.Entity("QuanLyKhoThucPham.Models.KhoHangModel", b =>
+                {
+                    b.Navigation("SanPhams");
+                });
+
             modelBuilder.Entity("QuanLyKhoThucPham.Models.NhaCungCapModel", b =>
                 {
                     b.Navigation("PhieuNhap");
@@ -401,6 +433,13 @@ namespace QuanLyKhoThucPham.Migrations
             modelBuilder.Entity("QuanLyKhoThucPham.Models.PhieuXuatModel", b =>
                 {
                     b.Navigation("DSChiTietPhieuXuat");
+                });
+
+            modelBuilder.Entity("QuanLyKhoThucPham.Models.SanPhamModel", b =>
+                {
+                    b.Navigation("PhieuNhapChiTiets");
+
+                    b.Navigation("PhieuXuatChiTiets");
                 });
 #pragma warning restore 612, 618
         }
