@@ -98,31 +98,7 @@ namespace QuanLyKhoThucPham.Controllers
 
                 var phieuNhapViewModel = await GetPhieuNhapViewModel();
                 phieuNhapViewModel.PhieuNhap = phieuNhap;
-                phieuNhapViewModel.DSChiTietPhieuNhap = phieuNhapChiTiet;
-                if(phieuNhapViewModel.KhoHang == null)
-                {
-                    ModelState.AddModelError("", $"Kho hàng chưa nhập.");
-                }
-
-                if(phieuNhapViewModel.SanPham == null)
-                {
-                    ModelState.AddModelError("", $"Sản phẩm chưa nhập.");
-                }
-               
-                if(phieuNhapViewModel.NhaCungCap == null)
-                {
-                    ModelState.AddModelError("", $"nhà cung cấp chưa nhập.");
-
-                }
-
-                if(phieuNhapViewModel.NhanVien == null)
-                {
-                    ModelState.AddModelError("", $"nhân viên chưa nhập.");
-                }
-                
-                
-               
-
+                phieuNhapViewModel.DSChiTietPhieuNhap = phieuNhapChiTiet;                                      
                 return View(phieuNhapViewModel);
             }
 
