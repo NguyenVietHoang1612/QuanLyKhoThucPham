@@ -97,19 +97,40 @@
             });
         });
 
+        var danhSachSanPham = [];
+
+        $(document).ready(function () {
+            $("#selectKho").change(function () {
+                var maKho = $(this).val();
+                if (maKho) {
+                    $.ajax({
+                        url: "/PhieuXuat/GetSanPhamByKho",
+                        type: "GET",
+                        data: { maKho: maKho },
+                        success: function (data) {
+                            danhSachSanPham = data; // Cập nhật biến toàn cục
+                            updateSanPhamOptions(data);
+                        }
+                    });
+                } else {
+                    danhSachSanPham = [];
+                    updateSanPhamOptions([]);
+                }
+            });
+        });
+
         function updateSanPham(select) {
             var row = select.closest("tr");
             var donGiaInput = row.querySelector("input[name$='DonGia']");
             var soLuongNhapInput = row.querySelector("input[name$='SoLuong']");
-            var soLuongTonInput = row.querySelector("input[data-soluongton]");
             var tongTienInput = row.querySelector("input[name$='ThanhTien']");
-
+            var soLuongTonInput = row.querySelector("input[name$='SoLuongTon']");
             var selectedOption = select.options[select.selectedIndex];
             var donGia = selectedOption.getAttribute("data-dongia");
-            var soLuongTon = selectedOption.getAttribute("data-soluong");
+            var soLuongTon = selectedOption.getAttribute("data-soluong"); // Sửa ở đây
 
+            soLuongTonInput.value = soLuongTon;
             donGiaInput.value = donGia;
-            soLuongTonInput.value = soLuongTon; 
             soLuongNhapInput.value = 1;
             updateTongTien(soLuongNhapInput);
         }
@@ -133,22 +154,24 @@
             var table = document.getElementById("tableSanPham").getElementsByTagName('tbody')[0];
             var index = table.rows.length;
 
+            var selectOptions = danhSachSanPham.map(sp =>
+                `<option value="${sp.maSP}" data-dongia="${sp.donGiaXuat}" data-soluong="${sp.soLuong}">${sp.tenSP}</option>`
+            ).join("");
             var template = `
                 <tr>
                     <td>
-                        <select id="selectedSanPham" name="PhieuXuatChiTiet[${index}].MaSP" class="form-control" onchange="updateSanPham(this)">
+                        <select class="form-control selectSanPham" name="PhieuXuatChiTiet[${index}].MaSP" onchange="updateSanPham(this)">
                             <option value="">Chọn sản phẩm</option>
-                                @foreach (var sp in Model.DSSanPham)
-                                {
-                                    <option value="@sp.MaSP" data-dongia="@sp.DonGiaXuat" data-soluong="@sp.SoLuong">@sp.TenSP</option>
-                                }
+                            ${selectOptions}
                         </select>
                     </td>
                     <td><input name="PhieuXuatChiTiet[${index}].DonGia" class="form-control" readonly /></td>
                     <td><input name="PhieuXuatChiTiet[${index}].SoLuong" class="form-control" type="number" oninput="updateTongTien(this)" value="1" /></td>
-                    <td><input class="form-control" readonly data-soluongton /></td>
+                    <td><input name="PhieuXuatChiTiet[${index}].SoLuongTon" class="form-control" readonly /></td>
                     <td><input name="PhieuXuatChiTiet[${index}].ThanhTien" class="form-control" readonly /></td>
-                    <td><button type="button" class="btn btn-danger" onclick="removeRow(this)">Xóa</button></td>
+                    <td>
+                        <button type="button" class="btn btn-danger" onclick="removeRow(this)">Xóa</button>
+                    </td>
                 </tr>
             `;
 

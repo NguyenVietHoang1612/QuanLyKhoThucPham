@@ -218,7 +218,23 @@ namespace QuanLyKhoThucPham.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        [HttpGet]
+        public async Task<JsonResult> GetSanPhamByKho(int maKho)
+        {
+            var sanPhamList = await _context.SanPham
+                .Where(sp => sp.MaKho == maKho)
+                .Select(sp => new {
+                    sp.MaSP,
+                    sp.TenSP,
+                    sp.DonGiaXuat,
+                    sp.SoLuong
+                })
+                .ToListAsync();
+
+            return Json(sanPhamList);
+        }
 
 
     }
+
 }
