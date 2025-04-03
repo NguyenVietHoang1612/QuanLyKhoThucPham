@@ -10,7 +10,7 @@ namespace QuanLyKhoThucPham.Controllers
     {
         private static List<TaiKhoan> _taiKhoans = new List<TaiKhoan>()
         {
-            new TaiKhoan { Id = 1, TaiKhoanNguoiDung = "admin", MatKhau = "password", HoTen = "Admin", Email = "admin@example.com" }
+            new TaiKhoan { Id = 1, TaiKhoanNguoiDung = "admin", MatKhau = "1", HoTen = "Admin", Email = "admin@example.com" }
         }; // Dữ liệu tạm thời, thay bằng DB  
 
         public IActionResult Index()

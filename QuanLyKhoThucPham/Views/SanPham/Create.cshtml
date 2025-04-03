@@ -1,4 +1,4 @@
-﻿@model QuanLyKhoThucPham.Models.SanPhamModel
+﻿@model QuanLyKhoThucPham.Models.View_Model.ViewModelKhoSanPham;
 
 @{
     ViewData["Title"] = "Create";
@@ -8,44 +8,56 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="TenSP" class="control-label">Tên sản phẩm</label>
-                <input asp-for="TenSP" class="form-control" />
-                <span asp-validation-for="TenSP" class="text-danger"></span>
+                <label asp-for="SanPham.TenSP" class="control-label">Tên sản phẩm</label>
+                <input asp-for="SanPham.TenSP" class="form-control" />
+                <span asp-validation-for="SanPham.TenSP" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MoTa" class="control-label">Mô tả</label>
-                <input asp-for="MoTa" class="form-control" />
-                <span asp-validation-for="MoTa" class="text-danger"></span>
+                <label asp-for="SanPham.MoTa" class="control-label">Mô tả</label>
+                <input asp-for="SanPham.MoTa" class="form-control" />
+                <span asp-validation-for="SanPham.MoTa" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SoLuong" class="control-label">Số lượng </label>
-                <input asp-for="SoLuong" class="form-control" />
-                <span asp-validation-for="SoLuong" class="text-danger"></span>
+                <label asp-for="SanPham.SoLuong" class="control-label">Số lượng </label>
+                <input asp-for="SanPham.SoLuong" class="form-control" />
+                <span asp-validation-for="SanPham.SoLuong" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="NhaSanXuat" class="control-label">Nhà sản xuất</label>
-                <input asp-for="NhaSanXuat" class="form-control" />
-                <span asp-validation-for="NhaSanXuat" class="text-danger"></span>
+                <label asp-for="SanPham.NhaSanXuat" class="control-label">Nhà sản xuất</label>
+                <input asp-for="SanPham.NhaSanXuat" class="form-control" />
+                <span asp-validation-for="SanPham.NhaSanXuat" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DonGia" class="control-label">Đơn giá</label>
-                <input asp-for="DonGia" class="form-control" />
-                <span asp-validation-for="DonGia" class="text-danger"></span>
+                <label asp-for="SanPham.DonGiaNhap" class="control-label">Đơn giá nhập</label>
+                <input asp-for="SanPham.DonGiaNhap" class="form-control" />
+                <span asp-validation-for="SanPham.DonGiaNhap" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SanPham.DonGiaXuat" class="control-label">Đơn giá xuất</label>
+                <input asp-for="SanPham.DonGiaXuat" class="form-control" />
+                <span asp-validation-for="SanPham.DonGiaXuat" class="text-danger"></span>
+            </div>
+           
+           
+            <div class="form-group">
+                <label asp-for="SanPham.MaKho">Kho Hàng</label>
+                <select asp-for="SanPham.MaKho" class="form-control" asp-items="@(new SelectList(Model.DSKhoHang, "MaKho", "KhoLoaiSP"))">
+                    <option value="">Chọn Kho Hàng</option>
+                </select>
+                <span asp-validation-for="SanPham.MaKho" class="text-danger"></span>
             </div>
             <hr />
             <div class="form-group">
                 <input type="submit" value="Tạo" class="btn btn-primary" />
-				<a asp-action="Index" class="btn btn-warning">Quay lại</a>
+                <a asp-action="Index" class="btn btn-warning">Quay lại</a>
             </div>
         </form>
     </div>
 </div>
 
-
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+  
 }

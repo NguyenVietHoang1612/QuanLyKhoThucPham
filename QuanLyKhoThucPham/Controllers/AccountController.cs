@@ -19,7 +19,7 @@ namespace QuanLyKhoThucPham.Controllers
         [ValidateAntiForgeryToken] // Thêm để bảo vệ khỏi tấn công CSRF  
         public async Task<IActionResult> Login(string TaiKhoan, string MatKhau, bool GhiNho)
         {
-            if (TaiKhoan == "admin" && MatKhau == "password")
+            if (TaiKhoan == "admin" && MatKhau == "1")
             {
                 // Tạo claims  
                 var claims = new List<Claim>

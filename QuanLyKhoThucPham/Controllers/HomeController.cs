@@ -19,6 +19,7 @@ namespace QuanLyKhoThucPham.Controllers
 
         public IActionResult Index()
         {
+            
             var nhapHang = _context.PhieuNhap;
             var xuatHang = _context.PhieuXuat;
             decimal tongGiaTrinhhapHang = nhapHang.Sum(t => t.TongTien);

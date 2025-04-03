@@ -12,31 +12,43 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TenSP)
+            Tên sản phẩm
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.TenSP)
         </dd>
+        <dt class="col-sm-2">
+            Loại sản phẩm
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.KhoHang.KhoLoaiSP)
+        </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoLuong)
+            Số lượng
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.SoLuong)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DonGia)
+            Đơn giá nhập
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DonGia)
+            @Html.DisplayFor(model => model.DonGiaNhap)
+        </dd>
+        <dt class="col-sm-2">
+            Đơn giá xuất
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DonGiaXuat)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NhaSanXuat)
+            Nhà sản xuất
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.NhaSanXuat)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MoTa)
+            Mô tả
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.MoTa)

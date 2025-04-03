@@ -26,7 +26,6 @@ namespace QuanLyKhoThucPham.Models
         public virtual NhanVienModel? NhanVien { get; set; }
         [ForeignKey("MaKho")]
         public virtual KhoHangModel? KhoHang { get; set; }
-
         public virtual ICollection<PhieuXuatChiTietModel>? DSChiTietPhieuXuat { get; set; }
     }
 }

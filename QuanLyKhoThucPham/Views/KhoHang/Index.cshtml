@@ -21,6 +21,9 @@
                 <a>Tên kho</a>
             </th>
             <th>
+                <a>loại kho</a>
+            </th>
+            <th>
                 <a>Mô tả</a>
             </th>
             <th>
@@ -35,13 +38,16 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model) {
         <tr>
             <td>
                     @Html.DisplayFor(modelItem => item.MaKho)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TenKho)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.KhoLoaiSP)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.mota)

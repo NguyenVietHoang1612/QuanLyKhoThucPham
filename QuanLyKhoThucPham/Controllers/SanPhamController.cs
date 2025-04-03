@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QuanLyKhoThucPham.Data;
 using QuanLyKhoThucPham.Models;
+using QuanLyKhoThucPham.Models.View_Model;
 
 namespace QuanLyKhoThucPham.Controllers
 {
@@ -19,62 +21,92 @@ namespace QuanLyKhoThucPham.Controllers
             _context = context;
         }
 
-      
+        private async Task<ViewModelKhoSanPham> GetKhoSPViewModel()
+        {
+            return new ViewModelKhoSanPham
+            {
+                DSKhoHang = await _context.KhoHang.ToListAsync(),
+                DSSanPham = await _context.SanPham.ToListAsync(),
+            };
+        }
+
+
+        // Get: SanPham/Create
+        public async Task<IActionResult> Create()
+        {
+            var viewModel = await GetKhoSPViewModel();
+            return View(viewModel);
+        }
+
+        // POST: SanPham/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(SanPhamModel sanPham)
+        {
+            if (ModelState.IsValid)
+            {
+
+                // Kiểm tra xem MaKho có hợp lệ không
+                if (sanPham.MaKho == 0)
+                {
+                    ModelState.AddModelError("SanPham.MaKho", "Kho Hàng là bắt buộc.");
+                }
+
+                if (ModelState.IsValid)
+                {
+                    _context.Add(sanPham);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            var viewModel = await GetKhoSPViewModel();  
+            
+
+            return View(viewModel);
+        }
 
         // GET: SanPham/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            
+
             if (id == null || _context.SanPham == null)
             {
                 return NotFound();
             }
+            //var sanPhamModel = await _context.SanPham
+            //    .FirstOrDefaultAsync(m => m.MaSP == id);
 
-            var sanPhamModel = await _context.SanPham
+            var sanPham = await _context.SanPham
+                .Include(sp=>sp.KhoHang)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.MaSP == id);
-            if (sanPhamModel == null)
+
+
+            if (sanPham == null)
             {
                 return NotFound();
             }
 
-            return View(sanPhamModel);
-        }
-
-        // GET: SanPham/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: SanPham/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaSP,TenSP,SoLuong,DonGia,NhaSanXuat,MoTa")] SanPhamModel sanPhamModel)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(sanPhamModel);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(sanPhamModel);
+            return View(sanPham);
         }
 
         // GET: SanPham/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+
+            var viewModel = await GetKhoSPViewModel();
             if (id == null || _context.SanPham == null)
             {
                 return NotFound();
             }
-
-            var sanPhamModel = await _context.SanPham.FindAsync(id);
-            if (sanPhamModel == null)
+            viewModel.SanPham = await _context.SanPham.FindAsync(id);
+            //var sanPhamModel = await _context.SanPham.FindAsync(id);
+            if (viewModel.SanPham == null)
             {
                 return NotFound();
             }
-            return View(sanPhamModel);
+            return View(viewModel);
         }
 
         // POST: SanPham/Edit/5
@@ -82,23 +114,24 @@ namespace QuanLyKhoThucPham.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MaSP,TenSP,SoLuong,DonGia,NhaSanXuat,MoTa")] SanPhamModel sanPhamModel)
+        public async Task<IActionResult> Edit(int id, ViewModelKhoSanPham viewModel)
         {
-            if (id != sanPhamModel.MaSP)
+            if (id != viewModel.SanPham.MaSP)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
+                var sanPham = viewModel.SanPham;
                 try
                 {
-                    _context.Update(sanPhamModel);
+                    _context.Update(sanPham);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SanPhamModelExists(sanPhamModel.MaSP))
+                    if (!SanPhamModelExists(sanPham.MaSP))
                     {
                         return NotFound();
                     }
@@ -109,7 +142,7 @@ namespace QuanLyKhoThucPham.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(sanPhamModel);
+            return View(viewModel);
         }
 
         // GET: SanPham/Delete/5
@@ -121,6 +154,8 @@ namespace QuanLyKhoThucPham.Controllers
             }
 
             var sanPhamModel = await _context.SanPham
+                .Include(sp=>sp.KhoHang)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.MaSP == id);
             if (sanPhamModel == null)
             {
@@ -168,7 +203,9 @@ namespace QuanLyKhoThucPham.Controllers
                 return Problem("Danh sách kho hàng không có dữ liệu ");
             }
 
-            var dsthucphams = from m in _context.SanPham select m;
+            var dsthucphams = _context.SanPham
+                .Include(sp=>sp.KhoHang)
+                .AsNoTracking();
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -188,8 +225,15 @@ namespace QuanLyKhoThucPham.Controllers
                 {
                     searchString = currentFilter;
                 }
-                int pageSize = 3;
-                return View(await PaginatedList<SanPhamModel>.CreateAsync(dsthucphams.AsNoTracking(), pageNumber ?? 1, pageSize));
+                int pageSize = 5;
+                int pageIndex = pageNumber ?? 1;
+
+                // Lấy giá trị stt từ TempData nếu có, nếu không thì khởi tạo từ 1
+                int stt = TempData["stt"] != null ? (int)TempData["stt"] : (pageIndex - 1) * pageSize + 1;
+
+                // Lưu giá trị stt vào TempData để sử dụng ở trang tiếp theo
+                TempData["stt"] = stt + (await PaginatedList<SanPhamModel>.CreateAsync(dsthucphams.AsNoTracking(), pageIndex, pageSize)).Count;
+                return View(await PaginatedList<SanPhamModel>.CreateAsync(dsthucphams.AsNoTracking(), pageIndex, pageSize));
             }
         }
 

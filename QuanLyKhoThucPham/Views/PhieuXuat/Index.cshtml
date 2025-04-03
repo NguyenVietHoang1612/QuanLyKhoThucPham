@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Phiếu Xuất";
+    int stt = TempData["stt"] != null ? (int)TempData["stt"] - Model.Count : 1;
+
 }
 
 <center>
@@ -25,7 +27,7 @@
     <thead>
         <tr>
             
-            <th scope="col">Mã phiếu xuất</th>
+            <th scope="col">STT</th>
             <th scope="col">Ngày Nhập</th>
             <th scope="col">Người lập</th>
             <th scope="col">Khách hàng</th>
@@ -38,7 +40,7 @@
         @foreach (var phieuXuat in Model)
         {
             <tr>
-                <td>@phieuXuat.MaPhieuXuat</td>
+                <td>@stt</td>
                 <td>@phieuXuat.NgayXuat.ToString("dd/MM/yyyy")</td>
 
                 <!-- Kiểm tra null trước khi hiển thị -->
@@ -52,6 +54,7 @@
                     <a asp-action="Delete" asp-route-maPX="@phieuXuat.MaPhieuXuat" class="btn btn-danger">Xóa</a>
                 </td>
             </tr>
+            stt++;
         }
     </tbody>
 </table>
