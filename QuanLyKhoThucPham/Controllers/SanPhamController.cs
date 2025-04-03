@@ -68,7 +68,6 @@ namespace QuanLyKhoThucPham.Controllers
         // GET: SanPham/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            var viewModel = await GetKhoSPViewModel();
             
 
             if (id == null || _context.SanPham == null)
@@ -78,14 +77,18 @@ namespace QuanLyKhoThucPham.Controllers
             //var sanPhamModel = await _context.SanPham
             //    .FirstOrDefaultAsync(m => m.MaSP == id);
 
-            viewModel.SanPham = await _context.SanPham
+            var sanPham = await _context.SanPham
+                .Include(sp=>sp.KhoHang)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.MaSP == id);
-            if (viewModel.SanPham == null)
+
+
+            if (sanPham == null)
             {
                 return NotFound();
             }
 
-            return View(viewModel);
+            return View(sanPham);
         }
 
         // GET: SanPham/Edit/5
@@ -151,6 +154,8 @@ namespace QuanLyKhoThucPham.Controllers
             }
 
             var sanPhamModel = await _context.SanPham
+                .Include(sp=>sp.KhoHang)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.MaSP == id);
             if (sanPhamModel == null)
             {
@@ -198,7 +203,9 @@ namespace QuanLyKhoThucPham.Controllers
                 return Problem("Danh sách kho hàng không có dữ liệu ");
             }
 
-            var dsthucphams = from m in _context.SanPham select m;
+            var dsthucphams = _context.SanPham
+                .Include(sp=>sp.KhoHang)
+                .AsNoTracking();
 
             if (!string.IsNullOrEmpty(searchString))
             {
