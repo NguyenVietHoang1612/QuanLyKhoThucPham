@@ -10,6 +10,7 @@
 
 
 <form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">
         <label asp-for="PhieuNhap.NgayNhap">Ngày Nhập</label>
         <input asp-for="PhieuNhap.NgayNhap" class="form-control" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")   />
@@ -18,7 +19,7 @@
 
     <div class="form-group">
         <label asp-for="PhieuNhap.MaKho">Kho Nhập</label>
-        <select id="selectKho" asp-for="PhieuNhap.MaKho" class="form-control" asp-items="@(new SelectList(Model.DSKhoHang, "MaKho", "TenKho"))">
+        <select id="selectKho" asp-for="PhieuNhap.MaKho" class="form-control" asp-items="@(new SelectList(Model.DSKhoHang, "MaKho", "TenKho")) ">
             <option value="">Chọn Kho</option>
         </select>
         <span asp-validation-for="PhieuNhap.MaKho" class="text-danger"></span>
@@ -82,6 +83,7 @@
 
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Lưu</button>
+        <a asp-action="Index" class="btn btn-secondary btn-lg">Thoát</a>
     </div>
 </form>
 
@@ -101,6 +103,31 @@
                 $("#diaChiNhaCungCap").val(selectedOption.data("diachi") || "");
             });
         });
+        //Thêm sự kiện change cho selectKho để gọi API và cập nhật danh sách sản phẩm
+        var danhSachSanPham = []; 
+
+        $(document).ready(function () {
+            $("#selectKho").change(function () {
+                var maKho = $(this).val();
+                if (!maKho) {
+                    alert("Vui lòng chọn kho trước!");
+                    return;
+                }
+
+                $.ajax({
+                    url: "/PhieuNhap/GetSanPhamByKho",
+                    type: "GET",
+                    data: { maKho: maKho },
+                    success: function (data) {
+                        danhSachSanPham = data; 
+                        // alert("Đã cập nhật danh sách sản phẩm!");
+                    },
+                    error: function () {
+                        alert("Không thể tải danh sách sản phẩm!");
+                    }
+                });
+            });
+        });
 
         function updateSanPham(select) {
             var row = select.closest("tr");
@@ -110,6 +137,7 @@
             donGiaInput.value = selectedOption.getAttribute("data-dongia");
             updateTongTien(row.querySelector("input[name$='SoLuong']"));
         }
+
         function updateTongTien(input) {
             var table = document.getElementById("tableSanPham").getElementsByTagName('tbody')[0];
             var index = table.rows.length;
@@ -129,25 +157,29 @@
         }
 
         function addRow() {
+            if (danhSachSanPham.length === 0) {
+                alert("Vui lòng chọn kho trước!");
+                return;
+            }
+
             var table = document.getElementById("tableSanPham").getElementsByTagName('tbody')[0];
             var index = table.rows.length;
+
+            var selectOptions = danhSachSanPham.map(sp =>
+                `<option value="${sp.maSP}" data-dongia="${sp.donGiaNhap}">${sp.tenSP}</option>`
+            ).join("");
 
             var template = `
                 <tr>
                     <td>
-                        <select id="selectedSanPham" name="PhieuNhapChiTiet[${index}].MaSP" class="form-control" onchange="updateSanPham(this)">
+                        <select class="form-control selectSanPham" name="PhieuNhapChiTiet[${index}].MaSP" onchange="updateSanPham(this)">
                             <option value="">Chọn sản phẩm</option>
-                                @foreach (var sp in Model.DSSanPham)
-                                {
-                                    <option value="@sp.MaSP" data-dongia="@sp.DonGiaNhap">@sp.TenSP</option>
-                                }
+                            ${selectOptions}
                         </select>
                     </td>
-
                     <td><input name="PhieuNhapChiTiet[${index}].DonGia" class="form-control" readonly /></td>
                     <td><input name="PhieuNhapChiTiet[${index}].SoLuong" class="form-control" type="number" oninput="updateTongTien(this)" value="1" /></td>
-                    <td><input name="PhieuNhapChiTiet${index}].ThanhTien" class="form-control" readonly /></td>
-
+                    <td><input name="PhieuNhapChiTiet[${index}].ThanhTien" class="form-control" readonly /></td>
                     <td>
                         <button type="button" class="btn btn-danger" onclick="removeRow(this)">Xóa</button>
                     </td>
@@ -155,9 +187,7 @@
             `;
 
             table.insertAdjacentHTML('beforeend', template);
-
-            $(table.rows[table.rows.length - 1]).find("select").select2({ width: '100%' });
-            updateTongTienPhieu();
+            $(".selectSanPham").select2({ width: '100%' }); // Cập nhật Select2 nếu đang dùng
         }
 
         function removeRow(button) {

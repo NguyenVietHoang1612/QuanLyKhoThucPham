@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Data.SqlClient;
 using QuanLyKhoThucPham.Services;
+using PdfSharp.Snippets.Font;
+using Newtonsoft.Json;
 
 namespace QuanLyKhoThucPham.Controllers
 {
@@ -61,8 +63,15 @@ namespace QuanLyKhoThucPham.Controllers
             }
 
             int pageSize = 5;
+            int pageIndex = pageNumber ?? 1;
 
-            var phieuNhapPage = await PaginatedList<PhieuNhapModel>.CreateAsync(phieuNhap, pageNumber ?? 1, pageSize);
+            var phieuNhapPage = await PaginatedList<PhieuNhapModel>.CreateAsync(phieuNhap.AsNoTracking(), pageIndex, pageSize);
+
+            // Lấy giá trị stt từ TempData nếu có, nếu không thì khởi tạo từ 1
+            int stt = TempData["stt"] != null ? (int)TempData["stt"] : (pageIndex - 1) * pageSize + 1;
+
+            // Lưu giá trị stt vào TempData để sử dụng ở trang tiếp theo
+            TempData["stt"] = stt + (await PaginatedList<PhieuNhapModel>.CreateAsync(phieuNhap.AsNoTracking(), pageIndex, pageSize)).Count;
 
             return View(phieuNhapPage);
         }
@@ -82,7 +91,6 @@ namespace QuanLyKhoThucPham.Controllers
         public async Task<IActionResult> Create()
         {
             var phieuNhapViewModel = await GetPhieuNhapViewModel();
-
             return View(phieuNhapViewModel);
         }
 
@@ -121,7 +129,7 @@ namespace QuanLyKhoThucPham.Controllers
 
                     if (khoHang.soluongtrong - phieuNhapCT.SoLuong < 0)
                     {
-                        ModelState.AddModelError("", $"Kho hàng '{khoHang.TenKho}' không đủ chỗ.");
+                        ModelState.AddModelError("", $"{khoHang.TenKho} đã đầy.");
                         var phieuNhapViewModel = await GetPhieuNhapViewModel();
                         return View(phieuNhapViewModel);
                     }
@@ -147,6 +155,13 @@ namespace QuanLyKhoThucPham.Controllers
                 }
                 await _context.SaveChangesAsync();
             }
+
+           
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Pdf(PhieuNhapModel phieuNhap, List<PhieuNhapChiTietModel> phieuNhapChiTiet)
+        {
             var inPDF = new InPDF();
             var pdfDocument = inPDF.GeneratePhieuNhapPdf(phieuNhap, phieuNhapChiTiet);
 
@@ -154,10 +169,8 @@ namespace QuanLyKhoThucPham.Controllers
             using (var stream = new MemoryStream())
             {
                 pdfDocument.Save(stream, false);
-                TempData["Message"] = "In phiếu nhập thành công. Bạn có thể quay về danh sách phiếu nhập.";
                 return File(stream.ToArray(), "application/pdf", $"PhieuNhap_{phieuNhap.MaPhieuNhap}.pdf");
             }
-            //return RedirectToAction(nameof(Index));
         }
 
 
@@ -239,6 +252,23 @@ namespace QuanLyKhoThucPham.Controllers
         //        return File(stream.ToArray(), "application/pdf", $"PhieuNhap_{maPN}.pdf");
         //    }
         //}
+
+        [HttpGet]
+        public async Task<IActionResult> GetSanPhamByKho(int maKho)
+        {
+            var sanPhamList = await _context.SanPham
+                .Where(sp => sp.MaKho == maKho)
+                .Select(sp => new
+                {
+                    sp.MaSP,
+                    sp.TenSP,
+                    sp.DonGiaNhap
+                })
+                .ToListAsync();
+
+            return Json(sanPhamList);
+        }
+
 
     }
 }

@@ -5,7 +5,7 @@
 }
 
 <h2>Tạo Phiếu Xuất</h2>
-
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 <form asp-action="Create" method="post">
     <div class="form-group">
         <label asp-for="PhieuXuat.NgayXuat">Ngày Nhập</label>
@@ -14,7 +14,7 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="PhieuXuat.MaKho">Kho Nhập</label>
+        <label asp-for="PhieuXuat.MaKho">Kho Hàng</label>
         <select id="selectKho" asp-for="PhieuXuat.MaKho" class="form-control" asp-items="@(new SelectList(Model.DSKhoHang, "MaKho", "TenKho"))">
             <option value="">Chọn Kho</option>
         </select>
@@ -65,26 +65,7 @@
             </tr>
         </thead>
         <tbody>
-<<<<<<< Updated upstream
-            <tr>
-                <td>
-                    <select id="selectedSanPham" name="PhieuXuatChiTiet[0].MaSP" class="form-control" onchange="updateSanPham(this)">
-                        <option value="">Chọn sản phẩm</option>
-                        @foreach (var sp in Model.DSSanPham)
-                        {
-                            <option value="@sp.MaSP" data-dongia="@sp.DonGiaXuat" data-soluong="@sp.SoLuong">@sp.TenSP</option>
-                        }
-                    </select>
-                </td>
-                <td><input name="DonGia" class="form-control" readonly /></td>
-                <td><input name="SoLuong" class="form-control" type="number" oninput="updateTongTien(this)" value="1" /></td>
-                <td><input class="form-control" readonly data-soluongton /></td>
-                <td><input name="ThanhTien" class="form-control" readonly /></td>
-                <td><button type="button" class="btn btn-danger" onclick="removeRow(this)">Xóa</button></td>
-            </tr>
-=======
-            
->>>>>>> Stashed changes
+
         </tbody>
     </table>
     <button type="button" class="btn btn-success" onclick="addRow()">Thêm sản phẩm</button>

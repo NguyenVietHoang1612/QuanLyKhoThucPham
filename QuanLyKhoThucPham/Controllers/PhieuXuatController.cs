@@ -21,7 +21,7 @@ namespace QuanLyKhoThucPham.Controllers
                 .Include(p => p.NhanVien)
                 .Include(p => p.KhoHang)
                 .AsNoTracking();
-            int pageSize = 5;
+            
 
             ViewData["CurrentFilter"] = searchString;
             ViewData["TimKiemTheoNgayTu"] = searchDateFrom?.ToString("yyyy-MM-dd");
@@ -44,7 +44,16 @@ namespace QuanLyKhoThucPham.Controllers
                 phieuXuat = phieuXuat.Where(s => s.NgayXuat.Date <= searchDateTo.Value.Date);
             }
 
-            var phieuXuatPage = PaginatedList<PhieuXuatModel>.CreateAsync(phieuXuat, pageNumber ?? 1, pageSize);
+            int pageSize = 5;
+            int pageIndex = pageNumber ?? 1;
+
+            var phieuXuatPage = PaginatedList<PhieuXuatModel>.CreateAsync(phieuXuat.AsNoTracking(), pageIndex, pageSize);
+
+            // Lấy giá trị stt từ TempData nếu có, nếu không thì khởi tạo từ 1
+            int stt = TempData["stt"] != null ? (int)TempData["stt"] : (pageIndex - 1) * pageSize + 1;
+
+            // Lưu giá trị stt vào TempData để sử dụng ở trang tiếp theo
+            TempData["stt"] = stt + (await phieuXuatPage).Count;
 
             return  View(await phieuXuatPage);
     
@@ -100,7 +109,7 @@ namespace QuanLyKhoThucPham.Controllers
                     {
                         if (khoHang.soluongtrong + phieuXuatCT.SoLuong > khoHang.soluongtong)
                         {
-                            ModelState.AddModelError("", $"Kho hàng '{khoHang.TenKho}' đã đầy.");
+                            ModelState.AddModelError("", $"{khoHang.TenKho} đã hết sản phẩm.");
                             var phieuXuatViewModel = await GetPhieuXuatViewModel();
                             return View(phieuXuatViewModel);
                         }

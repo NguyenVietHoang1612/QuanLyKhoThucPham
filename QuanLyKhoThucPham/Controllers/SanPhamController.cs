@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QuanLyKhoThucPham.Data;
@@ -40,28 +41,26 @@ namespace QuanLyKhoThucPham.Controllers
         // POST: SanPham/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ViewModelKhoSanPham viewModel)
+        public async Task<IActionResult> Create(SanPhamModel sanPham)
         {
             if (ModelState.IsValid)
             {
-                var sanpham = viewModel.SanPham;
 
                 // Kiểm tra xem MaKho có hợp lệ không
-                if (sanpham.MaKho == 0)
+                if (sanPham.MaKho == 0)
                 {
                     ModelState.AddModelError("SanPham.MaKho", "Kho Hàng là bắt buộc.");
                 }
 
                 if (ModelState.IsValid)
                 {
-                    _context.Add(sanpham);
+                    _context.Add(sanPham);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
             }
-
-            viewModel.DSKhoHang = _context.KhoHang.ToList();
-            viewModel.DSSanPham = _context.SanPham.ToList();
+            var viewModel = await GetKhoSPViewModel();  
+            
 
             return View(viewModel);
         }
@@ -112,23 +111,24 @@ namespace QuanLyKhoThucPham.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MaSP,TenSP,SoLuong,DonGiaNhap,DonGiaXuat,NhaSanXuat,MoTa,MaKho")] SanPhamModel sanPhamModel)
+        public async Task<IActionResult> Edit(int id, ViewModelKhoSanPham viewModel)
         {
-            if (id != sanPhamModel.MaSP)
+            if (id != viewModel.SanPham.MaSP)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
+                var sanPham = viewModel.SanPham;
                 try
                 {
-                    _context.Update(sanPhamModel);
+                    _context.Update(sanPham);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SanPhamModelExists(sanPhamModel.MaSP))
+                    if (!SanPhamModelExists(sanPham.MaSP))
                     {
                         return NotFound();
                     }
@@ -139,7 +139,7 @@ namespace QuanLyKhoThucPham.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(sanPhamModel);
+            return View(viewModel);
         }
 
         // GET: SanPham/Delete/5
@@ -218,8 +218,15 @@ namespace QuanLyKhoThucPham.Controllers
                 {
                     searchString = currentFilter;
                 }
-                int pageSize = 3;
-                return View(await PaginatedList<SanPhamModel>.CreateAsync(dsthucphams.AsNoTracking(), pageNumber ?? 1, pageSize));
+                int pageSize = 5;
+                int pageIndex = pageNumber ?? 1;
+
+                // Lấy giá trị stt từ TempData nếu có, nếu không thì khởi tạo từ 1
+                int stt = TempData["stt"] != null ? (int)TempData["stt"] : (pageIndex - 1) * pageSize + 1;
+
+                // Lưu giá trị stt vào TempData để sử dụng ở trang tiếp theo
+                TempData["stt"] = stt + (await PaginatedList<SanPhamModel>.CreateAsync(dsthucphams.AsNoTracking(), pageIndex, pageSize)).Count;
+                return View(await PaginatedList<SanPhamModel>.CreateAsync(dsthucphams.AsNoTracking(), pageIndex, pageSize));
             }
         }
 

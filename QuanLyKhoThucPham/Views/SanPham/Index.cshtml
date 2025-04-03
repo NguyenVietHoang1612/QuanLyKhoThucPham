@@ -2,20 +2,21 @@
 
 @{
     ViewData["Title"] = "Index";
+    int stt = TempData["stt"] != null ? (int)TempData["stt"] - Model.Count : 1; // Lấy giá trị stt từ TempData
 }
 
 <h1>Danh Sách Thực Phẩm </h1>
 <form asp-controller="SanPham" asp-action="Index">
     <div class="input-group">
         <input class="form-control" type="text" name="SearchString" placeholder="Tìm kiếm tên sản phẩm..." aria-describedby="btnNavbarSearch" />
-        <button class="btn btn-primary" type="submit" /> 🔍</button>
+        <button class="btn btn-primary" type="submit" /> </button>
     </div>
 </form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                <a>Mã sản phẩm</a>
+                <a>STT</a>
             </th>
             <th>
                 <a>Tên sản phẩm</a>
@@ -29,7 +30,6 @@
             <th>
                 <a>Số lượng</a>
             </th>
-
             <th>
                 <a>Giá nhập</a>
             </th>
@@ -40,46 +40,46 @@
                 <a>Mô tả</a>
             </th>
             <th>
-                <a asp-action="Create" class="btn btn-primary" >Tạo mới</a>
+                <a asp-action="Create" class="btn btn-primary">Tạo mới</a>
             </th>
-
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaSP)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TenSP)
-            </td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @stt
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TenSP)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.MaKho)
                 </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NhaSanXuat)
+                <td>
+                    @Html.DisplayFor(modelItem => item.NhaSanXuat)
                 </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SoLuong)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DonGiaNhap)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DonGiaXuat)
-            </td>
-            
-            <td>
-                @Html.DisplayFor(modelItem => item.MoTa)
-            </td>
-            <td>
-                    <a asp-action="Edit" asp-route-id="@item.MaSP" class="btn btn-warning">Chỉnh sửa </a> 
-                    <a asp-action="Details" asp-route-id="@item.MaSP" class="btn btn-info">Chỉ tiết</a> 
+                <td>
+                    @Html.DisplayFor(modelItem => item.SoLuong)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DonGiaNhap)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DonGiaXuat)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MoTa)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.MaSP" class="btn btn-warning">Chỉnh sửa </a>
+                    <a asp-action="Details" asp-route-id="@item.MaSP" class="btn btn-info">Chi tiết</a>
                     <a asp-action="Delete" asp-route-id="@item.MaSP" class="btn btn-danger">Xóa</a>
-            </td>
-        </tr>
-}
+                </td>
+            </tr>
+            stt++;
+        }
     </tbody>
 </table>
 @{
@@ -98,7 +98,7 @@
 {
     if (i == Model.PageIndex)
     {
-        <span><strong>@i</strong></span> <!-- Trang hiện tại sẽ được in đậm -->
+        <span><strong>@i</strong></span>
     }
     else
     {
