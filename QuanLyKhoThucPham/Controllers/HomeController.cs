@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using QuanLyKhoThucPham.Data;
 using QuanLyKhoThucPham.Models;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace QuanLyKhoThucPham.Controllers
 {
@@ -35,6 +36,11 @@ namespace QuanLyKhoThucPham.Controllers
             ViewData["TongDoanhThu"] = tongGiaTriXuatHang;
             ViewData["TongLoiNhuan"] = tongGiaTriXuatHang - tongGiaTrinhhapHang;
             ViewData["SoLuongKhachHang"] = _context.KhachHang.Count();
+
+            var hoTen = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+
+            // Truyền vào ViewData để sử dụng trong layout
+            ViewData["HoTenNhanVien"] = hoTen;
 
             return View();
         }
