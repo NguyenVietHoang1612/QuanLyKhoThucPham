@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuanLyKhoThucPham.Data;
 
@@ -11,9 +12,10 @@ using QuanLyKhoThucPham.Data;
 namespace QuanLyKhoThucPham.Migrations
 {
     [DbContext(typeof(QuanLyKhoThucPhamContext))]
-    partial class QuanLyKhoThucPhamContextModelSnapshot : ModelSnapshot
+    [Migration("20250404104218_AddFieldTKMKNhanVien")]
+    partial class AddFieldTKMKNhanVien
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -325,7 +327,7 @@ namespace QuanLyKhoThucPham.Migrations
                     b.HasOne("QuanLyKhoThucPham.Models.SanPhamModel", "SanPham")
                         .WithMany("PhieuNhapChiTiets")
                         .HasForeignKey("MaSP")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("PhieuNhap");
@@ -371,7 +373,7 @@ namespace QuanLyKhoThucPham.Migrations
                     b.HasOne("QuanLyKhoThucPham.Models.SanPhamModel", "SanPham")
                         .WithMany("PhieuXuatChiTiets")
                         .HasForeignKey("MaSP")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("PhieuXuat");

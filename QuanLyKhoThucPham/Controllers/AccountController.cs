@@ -4,11 +4,20 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using QuanLyKhoThucPham.Models; // Đảm bảo namespace này chính xác  
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using QuanLyKhoThucPham.Data;
 
 namespace QuanLyKhoThucPham.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly QuanLyKhoThucPhamContext _context;
+
+        public AccountController(QuanLyKhoThucPhamContext context)
+        {
+            _context = context;
+        }
+
         [HttpGet]
         public IActionResult Login()
         {
@@ -16,27 +25,26 @@ namespace QuanLyKhoThucPham.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken] // Thêm để bảo vệ khỏi tấn công CSRF  
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(string TaiKhoan, string MatKhau, bool GhiNho)
         {
-            if (TaiKhoan == "admin" && MatKhau == "1")
+            // Check tài khoản ẩn admin
+            if (TaiKhoan == "admin" && MatKhau == "admin")
             {
-                // Tạo claims  
                 var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, TaiKhoan),
-                    new Claim(ClaimTypes.Role, "Admin"), // Ví dụ về role  
-                };
+        {
+            new Claim(ClaimTypes.Name, "Admin"),
+            new Claim("TaiKhoan", "admin"),
+            new Claim(ClaimTypes.Role, "Admin")
+        };
 
-                // Tạo identity  
                 var claimsIdentity = new ClaimsIdentity(
                     claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                // Xác thực  
                 var authProperties = new AuthenticationProperties
                 {
-                    IsPersistent = GhiNho, // Ghi nhớ đăng nhập  
-                    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(20)
+                    IsPersistent = GhiNho,
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30)
                 };
 
                 await HttpContext.SignInAsync(
@@ -44,14 +52,45 @@ namespace QuanLyKhoThucPham.Controllers
                     new ClaimsPrincipal(claimsIdentity),
                     authProperties);
 
-                // Chuyển hướng đến trang home  
-                return RedirectToAction("Index", "Home"); // Chuyển hướng đến HomeController/Index  
+                return RedirectToAction("Index", "Home");
             }
 
-            // Nếu đăng nhập không thành công  
+            // Kiểm tra trong bảng NhanVien
+            var nhanVien = _context.NhanVien
+                .FirstOrDefault(nv => nv.TaiKhoan == TaiKhoan && nv.MatKhau == MatKhau);
+
+            if (nhanVien != null)
+            {
+                var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, nhanVien.HoTen),
+            new Claim("MaNhanVien", nhanVien.MaNhanVien.ToString()),
+            new Claim("TaiKhoan", nhanVien.TaiKhoan),
+            new Claim(ClaimTypes.Role, nhanVien.ChucVu ?? "NhanVien")
+        };
+
+                var claimsIdentity = new ClaimsIdentity(
+                    claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                var authProperties = new AuthenticationProperties
+                {
+                    IsPersistent = GhiNho,
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30)
+                };
+
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity),
+                    authProperties);
+
+                return RedirectToAction("Index", "Home");
+            }
+
             ModelState.AddModelError("", "Thông tin đăng nhập không hợp lệ.");
             return View();
         }
+
+
 
         [Authorize]
         public async Task<IActionResult> Logout()
