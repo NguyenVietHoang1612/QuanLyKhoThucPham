@@ -31,7 +31,7 @@ namespace QuanLyKhoThucPham.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                phieuXuat = phieuXuat.Where(s => s.MaPhieuXuat.ToString().ToLower().Contains(searchString));
+                phieuXuat = phieuXuat.Where(s => s.KhachHang != null && s.KhachHang.TenKH.ToLower().Contains(searchString));
             }
 
             if (searchDateFrom.HasValue)

@@ -4,6 +4,10 @@
     ViewData["Title"] = "Phiếu Xuất";
     int stt = TempData["stt"] != null ? (int)TempData["stt"] - Model.Count : 1;
 
+    string currentSearchString = ViewData["CurrentFilter"] as string;
+    string currentSearchDateFrom = ViewData["TimKiemTheoNgayTu"] as string;
+    string currentSearchDateTo = ViewData["TimKiemTheoNgayDen"] as string;
+
 }
 
 <center>
@@ -15,7 +19,7 @@
     <a asp-controller="PhieuXuat" asp-action="Create" class="btn btn-primary">Tạo phiếu xuất</a>
 
     <form asp-action="Index" method="get" class="d-flex align-items-center">
-        <input type="text" class="form-control form-control-sm mx-2" name="searchString" placeholder="Tìm kiếm theo mã phiếu xuất" style="width: 200px;">
+        <input type="text" class="form-control form-control-sm mx-2" name="searchString" placeholder="Tìm kiếm theo tên khách hàng" style="width: 200px;">
         <input type="date" class="form-control form-control-sm mx-2" name="searchDateFrom" value="@ViewData["TimKiemTheoNgayTu"]" style="width: 150px;">
         <input type="date" class="form-control form-control-sm mx-2" name="searchDateTo" value="@ViewData["TimKiemTheoNgayDen"]" style="width: 150px;">
 
@@ -70,8 +74,11 @@
     {
         <a asp-action="Index"
            asp-route-pageNumber="@(Model.PageIndex - 1)"
+           asp-route-searchString="@currentSearchString"
+           asp-route-searchDateFrom="@currentSearchDateFrom"
+           asp-route-searchDateTo="@currentSearchDateTo"
            class="btn btn-default">
-            <i style="font-size: 20px" padding: 8px;> &lt;&lt; </i>
+            <i style="font-size: 20px; padding: 8px;"> &lt;&lt; </i>
         </a>
     }
     else
@@ -87,15 +94,23 @@
         }
         else
         {
-            <a asp-action="Index" asp-route-pageNumber="@i" style="font-size: 20px">@i</a>
+            <a asp-action="Index"
+               asp-route-pageNumber="@i"
+               asp-route-searchString="@currentSearchString"
+               asp-route-searchDateFrom="@currentSearchDateFrom"
+               asp-route-searchDateTo="@currentSearchDateTo"
+               style="font-size: 20px">@i</a>
         }
     }
     @if (Model.HasNextPage)
     {
         <a asp-action="Index"
            asp-route-pageNumber="@(Model.PageIndex + 1)"
-           class="btn btn-default style=">
-            <i style="font-size: 20px" padding: 8px;> >> </i>
+           asp-route-searchString="@currentSearchString"
+           asp-route-searchDateFrom="@currentSearchDateFrom"
+           asp-route-searchDateTo="@currentSearchDateTo"
+           class="btn btn-default">
+            <i style="font-size: 20px; padding: 8px;"> >> </i>
         </a>
     }
     else
@@ -104,9 +119,3 @@
     }
 
 </div>
-
-<style>
-    .form-control {
-        max-width: unset;
-    }
-</style>

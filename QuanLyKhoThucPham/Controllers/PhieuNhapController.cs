@@ -28,7 +28,7 @@ namespace QuanLyKhoThucPham.Controllers
                 .Include(p => p.KhoHang)
                 .AsNoTracking();
 
-            ViewData["TimkiemtheoMa"] = searchString;
+            ViewData["TimKiemTheoTenNhaCC"] = searchString;
             ViewData["SXTheoNgayNhap"] = sortOrder == "Date" ? "date_desc" : "Date";
             ViewData["TimKiemTheoNgayTu"] = searchDateFrom?.ToString("yyyy-MM-dd");
             ViewData["TimKiemTheoNgayDen"] = searchDateTo?.ToString("yyyy-MM-dd");
@@ -49,7 +49,7 @@ namespace QuanLyKhoThucPham.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                phieuNhap = phieuNhap.Where(s => s.MaPhieuNhap.ToString().ToLower().Contains(searchString));
+                phieuNhap = phieuNhap.Where(s => s.NhaCungCap != null && s.NhaCungCap.TenNhaCungCap.ToLower().Contains(searchString));
             }
 
             if (searchDateFrom.HasValue)
