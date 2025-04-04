@@ -19,6 +19,14 @@ namespace QuanLyKhoThucPham.Models
         [Display(Name = "Chức Vụ")]
         public string ChucVu { get; set; }
 
+        [Required]
+        [Display(Name = "Tài Khoản")]
+        public string TaiKhoan { get; set; }
+
+        [Required]
+        [Display(Name = "Mật Khẩu")]
+        [DataType(DataType.Password)]
+        public string MatKhau { get; set; }
 
     }
 }
