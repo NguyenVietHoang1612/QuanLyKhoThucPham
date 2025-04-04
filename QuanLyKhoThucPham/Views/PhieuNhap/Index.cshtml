@@ -49,16 +49,16 @@
         @foreach (var phieuNhap in Model)
         {
             <tr>
-                <td>@stt</td>
+                <td scope="col">@stt</td>
                 <td>@phieuNhap.NgayNhap.ToString("dd/MM/yyyy")</td>
 
                 <!-- Kiểm tra null trước khi hiển thị -->
-                <td>@phieuNhap.NhanVien.HoTen</td>
-                <td>@phieuNhap.NhaCungCap.TenNhaCungCap</td>
-                <td>@phieuNhap.KhoHang.TenKho</td>
+                <td scope="col">@phieuNhap.NhanVien.HoTen</td>
+                <td scope="col">@phieuNhap.NhaCungCap.TenNhaCungCap</td>
+                <td scope="col">@phieuNhap.KhoHang.TenKho</td>
 
-                <td>@phieuNhap.TongTien VND</td>
-                <td>
+                <td scope="col">@phieuNhap.TongTien VND</td>
+                <td scope="col">
                     <a asp-controller="PhieuNhap" asp-action="Detail" asp-route-maPN="@phieuNhap.MaPhieuNhap" class="btn btn-info btn-sm">Chi Tiết</a>
                     <a asp-controller="PhieuNhap" asp-action="Delete" asp-route-maPN="@phieuNhap.MaPhieuNhap" class="btn btn-danger">Xóa</a>
                 </td>

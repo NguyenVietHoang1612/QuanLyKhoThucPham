@@ -20,11 +20,34 @@ namespace QuanLyKhoThucPham.Controllers
         }
 
         // GET: NhaCungCap
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, int? pageNumber)
         {
-              return _context.NhaCungCap != null ? 
-                          View(await _context.NhaCungCap.ToListAsync()) :
-                          Problem("Entity set 'QuanLyKhoThucPhamContext.NhaCungCap'  is null.");
+            if (_context.NhaCungCap == null)
+            {
+                return Problem("Danh sách kho hàng không có dữ liệu ");
+            }
+
+            var dsNhaCC = _context.NhaCungCap.AsNoTracking();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                dsNhaCC = dsNhaCC.Where(s => s.TenNhaCungCap.ToUpper().Contains(searchString.ToUpper()));
+            }
+
+            ViewData["searchString"] = searchString;
+            int pageSize = 5;
+            int pageIndex = pageNumber ?? 1;
+
+            var nhaCCPage = await PaginatedList<NhaCungCapModel>.CreateAsync(dsNhaCC, pageIndex, pageSize);
+
+            // Lấy giá trị stt từ TempData nếu có, nếu không thì khởi tạo từ 1
+            int stt = TempData["stt"] != null ? (int)TempData["stt"] : (pageIndex - 1) * pageSize + 1;
+
+            // Lưu giá trị stt vào TempData để sử dụng ở trang tiếp theo
+            TempData["stt"] = stt + nhaCCPage.Count;
+
+
+            return View(nhaCCPage);
         }
 
         // GET: NhaCungCap/Details/5
@@ -157,24 +180,6 @@ namespace QuanLyKhoThucPham.Controllers
         {
           return (_context.NhaCungCap?.Any(e => e.MaNhaCungCap == maNhaCungCap)).GetValueOrDefault();
         }
-        //Tìm kiếm
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(string searchString)
-        {
-            if (_context.NhaCungCap == null)
-            {
-                return Problem("Danh sách kho hàng không có dữ liệu ");
-            }
-
-            var dsthucphams = from m in _context.NhaCungCap select m;
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                dsthucphams = dsthucphams.Where(s => s.TenNhaCungCap.ToUpper().Contains(searchString.ToUpper()));
-            }
-
-            return View(await dsthucphams.ToListAsync());
-        }
+       
     }
 }

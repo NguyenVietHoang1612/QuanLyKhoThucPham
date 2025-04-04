@@ -2,13 +2,14 @@
 
 @{
     ViewData["Title"] = "Index";
+    int stt = TempData["stt"] != null ? (int)TempData["stt"] - Model.Count : 1;
 }
 
 <h1>Danh sách kho hàng</h1>
 <form asp-controller="KhoHang" asp-action="Index">
     <div class="input-group">
         <input class="form-control" type="text" name="SearchString" placeholder="Tìm kiếm tên kho hàng..." aria-describedby="btnNavbarSearch" />
-        <button class="btn btn-primary" type="submit" /> 🔍</button>
+        <button class="btn btn-primary" type="submit" /> Tìm kiếm</button>
     </div>
 </form>
 <table class="table">
@@ -41,7 +42,7 @@
         @foreach (var item in Model) {
         <tr>
             <td>
-                    @Html.DisplayFor(modelItem => item.MaKho)
+                @stt
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TenKho)
@@ -64,6 +65,7 @@
                     <a asp-action="Delete" asp-route-id="@item.MaKho" class="btn btn-danger">Xóa</a>
             </td>
         </tr>
+        stt++;
 }
     </tbody>
 </table>
@@ -75,7 +77,7 @@
 <a asp-action="Index"
    asp-route-sortOrder="@ViewData["CurrentSort"]"
    asp-route-pageNumber="@(Model.PageIndex - 1)"
-   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   asp-route-searchString="@ViewData["searchString"]"
    class="btn btn-default @prevDisabled">
     Trước 
 </a>
@@ -95,7 +97,9 @@
 <a asp-action="Index"
    asp-route-sortOrder="@ViewData["CurrentSort"]"
    asp-route-pageNumber="@(Model.PageIndex + 1)"
-   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   asp-route-searchString="@ViewData["searchString"]"
    class="btn btn-default @nextDisabled">
     Sau
 </a>
+
+

@@ -20,7 +20,7 @@ namespace QuanLyKhoThucPham.Controllers
         }
 
         // GET: Quanlykhachhang
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string searchString, int? pageNumber)
         {
            
             if (_context.KhachHang == null)
@@ -29,15 +29,26 @@ namespace QuanLyKhoThucPham.Controllers
             }
 
 
-            var quanlykhachhangs = from m in _context.KhachHang select m;
+            var quanlykhachhangs = _context.KhachHang.AsNoTracking();
 
             if (!String.IsNullOrEmpty(searchString))
             {
                 quanlykhachhangs = quanlykhachhangs.Where(s => s.TenKH.ToUpper().Contains(searchString.ToUpper()));
 
             }
+            ViewData["searchString"] = searchString;
+            int pageSize = 5;
+            int pageIndex = pageNumber ?? 1;
 
-            return View(await quanlykhachhangs.ToListAsync());
+            var khachHangPage = await PaginatedList<KhachHangModel>.CreateAsync(quanlykhachhangs.AsNoTracking(), pageIndex, pageSize);
+
+            // Lấy giá trị stt từ TempData nếu có, nếu không thì khởi tạo từ 1
+            int stt = TempData["stt"] != null ? (int)TempData["stt"] : (pageIndex - 1) * pageSize + 1;
+
+            // Lưu giá trị stt vào TempData để sử dụng ở trang tiếp theo
+            TempData["stt"] = stt + khachHangPage.Count;
+
+            return View(khachHangPage);
 
         }
 

@@ -172,15 +172,35 @@ namespace QuanLyKhoThucPham.Controllers
         {
             if (_context.SanPham == null)
             {
-                return Problem("Entity set 'QuanLyKhoThucPhamContext.SanPham'  is null.");
-            }
-            var sanPhamModel = await _context.SanPham.FindAsync(id);
-            if (sanPhamModel != null)
-            {
-                _context.SanPham.Remove(sanPhamModel);
+                return Problem("Entity set 'QuanLyKhoThucPhamContext.SanPham' is null.");
             }
 
-            await _context.SaveChangesAsync();
+            // Tìm sản phẩm, bao gồm các phiếu nhập và xuất chi tiết có liên quan
+            var sanPham = await _context.SanPham
+                .Include(sp => sp.PhieuNhapChiTiets)
+                .Include(sp => sp.PhieuXuatChiTiets)
+                .FirstOrDefaultAsync(sp => sp.MaSP == id);
+
+            if (sanPham != null)
+            {
+                // Xóa các chi tiết phiếu nhập liên quan
+                if (sanPham.PhieuNhapChiTiets != null && sanPham.PhieuNhapChiTiets.Any())
+                {
+                    _context.PhieuNhapChiTiet.RemoveRange(sanPham.PhieuNhapChiTiets);
+                }
+
+                // Xóa các chi tiết phiếu xuất liên quan
+                if (sanPham.PhieuXuatChiTiets != null && sanPham.PhieuXuatChiTiets.Any())
+                {
+                    _context.PhieuXuatChiTiet.RemoveRange(sanPham.PhieuXuatChiTiets);
+                }
+
+                // Sau khi xóa chi tiết, xóa sản phẩm
+                _context.SanPham.Remove(sanPham);
+
+                await _context.SaveChangesAsync();
+            }
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -225,6 +245,7 @@ namespace QuanLyKhoThucPham.Controllers
                 {
                     searchString = currentFilter;
                 }
+                ViewData["searchString"] = searchString;
                 int pageSize = 5;
                 int pageIndex = pageNumber ?? 1;
 

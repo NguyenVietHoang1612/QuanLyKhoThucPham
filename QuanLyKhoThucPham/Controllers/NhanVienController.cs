@@ -20,10 +20,10 @@ namespace QuanLyKhoThucPham.Controllers
         }
 
         // GET: NhanVien
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string searchString, int? pageNumber)
         {
-            var nhanViens = from nv in _context.NhanVien
-                            select nv;
+            var nhanViens = _context.NhanVien.AsNoTracking();
+                            
 
             // Nếu searchString không rỗng, lọc danh sách nhân viên theo tên
             if (!string.IsNullOrEmpty(searchString))
@@ -31,7 +31,19 @@ namespace QuanLyKhoThucPham.Controllers
                 nhanViens = nhanViens.Where(nv => nv.HoTen.Contains(searchString));
             }
 
-            return View(await nhanViens.ToListAsync());
+            ViewData["searchString"] = searchString;
+            int pageSize = 5;
+            int pageIndex = pageNumber ?? 1;
+
+            var nhanVienPage = await PaginatedList<NhanVienModel>.CreateAsync(nhanViens.AsNoTracking(), pageIndex, pageSize);
+
+            // Lấy giá trị stt từ TempData nếu có, nếu không thì khởi tạo từ 1
+            int stt = TempData["stt"] != null ? (int)TempData["stt"] : (pageIndex - 1) * pageSize + 1;
+
+            // Lưu giá trị stt vào TempData để sử dụng ở trang tiếp theo
+            TempData["stt"] = stt + nhanVienPage.Count;
+
+            return View(nhanVienPage);
         }
 
         // GET: NhanVien/Details/5

@@ -1,10 +1,11 @@
-﻿@model IEnumerable<QuanLyKhoThucPham.Models.NhanVienModel>
+﻿@model PaginatedList<QuanLyKhoThucPham.Models.NhanVienModel>
 
 @{
     ViewData["Title"] = "Index";
     var nhanVienTheoChucVu = Model.GroupBy(nv => nv.ChucVu)
                                  .Select(g => new { ChucVu = g.Key, SoLuong = g.Count() })
                                  .ToList();
+
 }
 <h1>Danh Sách Nhân Viên</h1>
 <form asp-action="Index" method="get" class="mb-3">
@@ -42,13 +43,13 @@
     <thead class="table-dark">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.HoTen)
+                Họ tên
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.GioiTinh)
+                Giới tính
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ChucVu)
+                Chức vụ
             </th>
             <th>Hoạt động</th>
         </tr>
@@ -79,3 +80,37 @@
 
     </tbody>
 </table>
+
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-searchString="@ViewData["searchString"]"
+   class="btn btn-default @prevDisabled">
+    Trước
+</a>
+<!-- Hiển thị danh sách số trang -->
+@for (int i = 1; i <= Model.TotalPages; i++)
+{
+    if (i == Model.PageIndex)
+    {
+        <span><strong>@i</strong></span> <!-- Trang hiện tại sẽ được in đậm -->
+    }
+    else
+    {
+        <a asp-action="Index" asp-route-pageNumber="@i">@i</a>
+    }
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-searchString="@ViewData["searchString"]"
+   class="btn btn-default @nextDisabled">
+    Sau
+</a>

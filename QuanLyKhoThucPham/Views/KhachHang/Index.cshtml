@@ -1,14 +1,15 @@
-﻿@model IEnumerable<QuanLyKhoThucPham.Models.KhachHangModel>
+﻿@model PaginatedList<QuanLyKhoThucPham.Models.KhachHangModel>
 
 @{
     ViewData["Title"] = "Index";
+    int stt = TempData["stt"] != null ? (int)TempData["stt"] - Model.Count : 1;
 }
 
 <div class="row">
     
     <h1>Danh Sách Khách Hàng</h1>
     </div>
-<form asp-controller="KhachHang" asp-action="Index" method="post">
+<form asp-controller="KhachHang" asp-action="Index">
     <div class="input-group">
         <input class="form-control" type="text" name="SearchString" placeholder="Tìm kiếm tên khách hàng..." aria-describedby="btnNavbarSearch" />
         <button class="btn btn-primary" type="submit" />Tìm kiếm</button>
@@ -24,14 +25,17 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TenKH)
+                STT
+            </th>
+            <th>
+                Tên khách hàng
             </th>          
             <th>
-                @Html.DisplayNameFor(model => model.DiaChi)
+                Địa chỉ
             </th>
            
             <th>
-                @Html.DisplayNameFor(model => model.SDT)
+                Số điện thoại
             </th>
             <th>
                 <a asp-action="Create" class="btn-tao-moi">Tạo Mới</a>
@@ -41,6 +45,9 @@
     <tbody>
     @foreach (var item in Model) {
         <tr>
+             <td> 
+                @stt
+            </td>
             <td> 
                 @Html.DisplayFor(modelItem => item.TenKH)
             </td>
@@ -59,12 +66,41 @@
                     <a asp-action="Delete" asp-route-maKH="@item.MaKH" class="btn-xoa">Xóa</a>
             </td>
         </tr>
+        stt++;
     }
     </tbody>
 
-
-
-    
-
-
 </table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-searchString="@ViewData["searchString"]"
+   class="btn btn-default @prevDisabled">
+    Trước
+</a>
+<!-- Hiển thị danh sách số trang -->
+@for (int i = 1; i <= Model.TotalPages; i++)
+{
+    if (i == Model.PageIndex)
+    {
+        <span><strong>@i</strong></span> <!-- Trang hiện tại sẽ được in đậm -->
+    }
+    else
+    {
+        <a asp-action="Index" asp-route-pageNumber="@i">@i</a>
+    }
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-searchString="@ViewData["searchString"]"
+   class="btn btn-default @nextDisabled">
+    Sau
+</a>
