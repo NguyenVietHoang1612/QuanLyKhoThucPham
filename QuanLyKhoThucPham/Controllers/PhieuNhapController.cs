@@ -160,10 +160,29 @@ namespace QuanLyKhoThucPham.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Pdf(PhieuNhapModel phieuNhap, List<PhieuNhapChiTietModel> phieuNhapChiTiet)
+        public async Task<IActionResult> Pdf(int maPN)
         {
+            var phieuNhap = await _context.PhieuNhap
+            .Include(p => p.NhaCungCap)
+            .Include(p => p.NhanVien)
+            .Include(p => p.KhoHang)
+            .FirstOrDefaultAsync(p => p.MaPhieuNhap == maPN);
+
+            if(phieuNhap == null)
+            {
+                return NotFound();
+            }
+
+            var chiTietPhieuNhap = await _context.PhieuNhapChiTiet
+                .Where(ct => ct.MaPhieuNhap == maPN)
+                .Include(ct => ct.SanPham)
+                .ToListAsync();
+
+
+            phieuNhap.DSChiTietPhieuNhap = chiTietPhieuNhap;
+
             var inPDF = new InPDF();
-            var pdfDocument = inPDF.GeneratePhieuNhapPdf(phieuNhap, phieuNhapChiTiet);
+            var pdfDocument = inPDF.GeneratePhieuNhapPdf(phieuNhap, chiTietPhieuNhap);
 
             // Trả về file PDF
             using (var stream = new MemoryStream())
